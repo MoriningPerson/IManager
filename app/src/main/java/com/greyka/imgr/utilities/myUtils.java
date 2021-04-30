@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.icu.util.ChineseCalendar;
 import android.os.Build;
 import android.util.Log;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import com.greyka.imgr.fragments.FragMine;
 import com.greyka.imgr.fragments.FragList;
 import com.greyka.imgr.fragments.myDialogFragment;
 
+import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -53,6 +55,7 @@ public class myUtils {
         }
     }
     public static class myCalenderHelper {
+        static String[] ChineseDayOfWeek ={"日","一","二","三","四","五","六"};
         private static final Calendar cal = Calendar.getInstance();
         public static int getYear() {
             return cal.get(Calendar.YEAR);
@@ -71,6 +74,15 @@ public class myUtils {
         }
         public static int getSecond() {
             return cal.get(Calendar.SECOND);
+        }
+        public static int getDayOfWeek(){return cal.get(Calendar.DAY_OF_WEEK);}
+        public static String getChineseDayOfWeek(){return ChineseDayOfWeek[getDayOfWeek()-1];}
+        public static String getChineseTotal(){
+            String d = String.valueOf(myUtils.myCalenderHelper.getDay());
+            String m = String.valueOf(myUtils.myCalenderHelper.getMonth());
+            String y = String.valueOf(myUtils.myCalenderHelper.getYear());
+            String str = y+"年"+m+"月"+d+"日"+"    "+"星期"+myUtils.myCalenderHelper.getChineseDayOfWeek();
+            return str;
         }
         public static String getSeason() {
             int month = getMonth();
