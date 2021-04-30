@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">My Application5</string>
+    <string name="topBarTitle_Home">主页</string>
+    <string name="topBarTitle_Mine">我的</string>
+    <string name="topBarTitle_Calendar">日历</string>
+    <string name="topBarTitle_Task">清单</string>
+    <string name="bottomNavigationLable_Home">主页</string>
+    <string name="bottomNavigationLable_Calendar">日历</string>
+    <string name="bottomNavigationLable_List">清单</string>
+    <string name="bottomNavigationLable_Mine">我的</string>
+    <!--    一些固定不变的资源  就是值  放在String这个资源下-->
+    <drawable name="clr_normal">#ff6501</drawable>
+    <drawable name="clr_pressed">#a44100</drawable>
+</resources>
