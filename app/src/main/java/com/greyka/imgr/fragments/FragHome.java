@@ -28,7 +28,6 @@ public class FragHome extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        textview=(TextView)view.findViewById(R.id.welcome);   //  使用viewBinding or dataBinding  去除大量的findviewbyID
         home_notice_board_title=(TextView)view.findViewById(R.id.home_notice_board_title);
         home_notice_board_title.setText(myUtils.myCalenderHelper.getChineseTotal());
     }

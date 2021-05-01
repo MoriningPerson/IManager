@@ -20,4 +20,5 @@
     <color name="transparent">#00000000</color>
     <color name="snow">#FFFAFA</color>
     <color name="floralwhite">#FFFAF0</color>
+    <color name="dimgrey">#696969</color>
 </resources>

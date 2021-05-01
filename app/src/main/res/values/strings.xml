@@ -8,6 +8,10 @@
     <string name="bottomNavigationLable_Calendar">日历</string>
     <string name="bottomNavigationLable_List">清单</string>
     <string name="bottomNavigationLable_Mine">我的</string>
+    <string name="string_uncomplete">未完成</string>
+    <string name="string_complete">已完成</string>
+    <string name="string_motto">每日一句</string>
+    <string name="string_situation">今日任务完成情况</string>
     <!--    一些固定不变的资源  就是值  放在String这个资源下-->
     <drawable name="clr_normal">#ff6501</drawable>
     <drawable name="clr_pressed">#a44100</drawable>
