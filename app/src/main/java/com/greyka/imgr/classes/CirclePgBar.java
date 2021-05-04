@@ -39,6 +39,7 @@ public class CirclePgBar extends ConstraintLayout {
     private float mRingRadius;
     // 圆环宽度
     private float mStrokeWidth;
+    private float mStrokeBgWidth;
     // 圆心x坐标
     private int mXCenter;
     // 圆心y坐标
@@ -48,7 +49,7 @@ public class CirclePgBar extends ConstraintLayout {
     // 字的高度
     private float mTxtHeight;
     // 总进度
-    private int mTotalProgress = 100;
+    private int mTotalProgress = 1000;
     // 当前进度
     private int mProgress;
 
@@ -69,6 +70,7 @@ public class CirclePgBar extends ConstraintLayout {
                 R.styleable.TasksCompletedView, 0, 0);
         mRadius = typeArray.getDimension(R.styleable.TasksCompletedView_radius, 80);
         mStrokeWidth = typeArray.getDimension(R.styleable.TasksCompletedView_strokeWidth, 10);
+        mStrokeBgWidth = typeArray.getDimension(R.styleable.TasksCompletedView_strokeBgWidth,10);
         mCircleColor = typeArray.getColor(R.styleable.TasksCompletedView_circleColor, 0xFFFFFFFF);
         mRingColor = typeArray.getColor(R.styleable.TasksCompletedView_ringColor, 0xFFFFFFFF);
         mRingBgColor = typeArray.getColor(R.styleable.TasksCompletedView_ringBgColor, 0xFFFFFFFF);
@@ -90,7 +92,8 @@ public class CirclePgBar extends ConstraintLayout {
         mRingPaintBg.setAntiAlias(true);
         mRingPaintBg.setColor(mRingBgColor);
         mRingPaintBg.setStyle(Paint.Style.STROKE);
-        mRingPaintBg.setStrokeWidth(mStrokeWidth);
+        mRingPaintBg.setStrokeWidth(mStrokeBgWidth);
+        //mRingPaintBg.setShadowLayer(mElevation/3,0,0,0xFF696969);
 
 
         //外圆弧
@@ -98,8 +101,9 @@ public class CirclePgBar extends ConstraintLayout {
         mRingPaint.setAntiAlias(true);
         mRingPaint.setColor(mRingColor);
         mRingPaint.setStyle(Paint.Style.STROKE);
-        mRingPaint.setStrokeWidth(mStrokeWidth);
-        //mRingPaint.setStrokeCap(Paint.Cap.ROUND);//设置线冒样式，有圆 有方
+        mRingPaint.setStrokeWidth((float)(mStrokeWidth));
+        mRingPaint.setStrokeCap(Paint.Cap.ROUND);//设置线冒样式，有圆 有方
+        //mRingPaint.setShadowLayer(mElevation/3,0,0,0xFF696969);
 
     }
 
@@ -167,7 +171,7 @@ public class CirclePgBar extends ConstraintLayout {
     }
 
     //设置进度
-    public void setProgress(int progress, String middle_text) {
+    public void setProgress(int progress) {
         mProgress = progress;
         postInvalidate();//重绘
     }

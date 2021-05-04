@@ -9,8 +9,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.icu.util.ChineseCalendar;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,14 +29,13 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.greyka.imgr.R;
-import com.greyka.imgr.activities.MainActivity;
 import com.greyka.imgr.fragments.FragCalendar;
 import com.greyka.imgr.fragments.FragHome;
 import com.greyka.imgr.fragments.FragMine;
 import com.greyka.imgr.fragments.FragList;
 import com.greyka.imgr.fragments.myDialogFragment;
+import com.greyka.imgr.interfaces.timer_handler;
 
-import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -288,6 +287,56 @@ public class myUtils {
                             left+width,top+height);
                     break;
             }
+        }
+    }
+    public static class myCountDownTimerHelper {
+        private long mMillisTotal;
+        private long mMillisRemain;
+        private boolean isRunning = false;
+        private CountDownTimer CDT;
+        private timer_handler TH;
+
+        public myCountDownTimerHelper(int secInFuture,timer_handler TH) {
+            mMillisTotal = (long)secInFuture * 1000;
+            mMillisRemain = mMillisTotal;
+            this.TH = TH;
+        }
+
+        public void mStart(){
+            isRunning = true;
+            CDT = new CountDownTimer(mMillisRemain, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    mMillisRemain = millisUntilFinished;
+                    TH.onTickEvent();
+                }
+                @Override
+                public void onFinish() {
+                    TH.onFinishEvent();
+                }
+            };
+            CDT.start();
+        }
+        public void mCancel(){
+            isRunning = false;
+            CDT.cancel();
+        }
+        public Boolean getIsRunning(){
+            return isRunning;
+        }
+        public long getmMillisTotal(){
+            return mMillisTotal;
+        }
+        public long getmMillisRemain(){
+            return mMillisRemain;
+        }
+        @SuppressLint("DefaultLocale")
+        public String getTimeRemain(){
+            int res = (int)(mMillisRemain / 1000);
+            int sec = res % 60;
+            int min = res / 60 % 60;
+            int hour = res / 3600 % 24;
+            return String.format("%02d:%02d:%02d",hour,min,sec);
         }
     }
 }

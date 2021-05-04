@@ -28,6 +28,7 @@ android {
 }
 
 dependencies {
+    compile 'com.contrarywind:Android-PickerView:4.1.9'
     implementation "com.android.support:support-compat:28.0.0"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
