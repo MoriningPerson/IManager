@@ -175,4 +175,8 @@ public class CirclePgBar extends ConstraintLayout {
         mProgress = progress;
         postInvalidate();//重绘
     }
+
+    public int getTotalProgress(){
+        return mTotalProgress;
+    }
 }

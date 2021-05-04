@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:radius="120dp"
+        app:radius="125dp"
         app:ringBgColor="@color/grey91"
         app:ringColor="@color/myThemeDeep"
         app:strokeWidth="6dp"

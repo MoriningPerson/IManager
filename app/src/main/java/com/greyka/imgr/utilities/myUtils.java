@@ -297,9 +297,10 @@ public class myUtils {
         private timer_handler TH;
 
         public myCountDownTimerHelper(int secInFuture,timer_handler TH) {
-            mMillisTotal = (long)secInFuture * 1000;
+            mMillisTotal = (long)secInFuture * 1000 + 500;
             mMillisRemain = mMillisTotal;
             this.TH = TH;
+            this.TH.onCreateEvent(secInFuture,TH);
         }
 
         public void mStart(){
@@ -307,11 +308,13 @@ public class myUtils {
             CDT = new CountDownTimer(mMillisRemain, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
+                    Log.d("aa",String.valueOf(millisUntilFinished));
                     mMillisRemain = millisUntilFinished;
                     TH.onTickEvent();
                 }
                 @Override
                 public void onFinish() {
+                    mMillisRemain = 0;
                     TH.onFinishEvent();
                 }
             };
@@ -331,12 +334,18 @@ public class myUtils {
             return mMillisRemain;
         }
         @SuppressLint("DefaultLocale")
-        public String getTimeRemain(){
-            int res = (int)(mMillisRemain / 1000);
+        private String millisToString(long millis){
+            int res = (int)(millis / 1000);
             int sec = res % 60;
             int min = res / 60 % 60;
             int hour = res / 3600 % 24;
             return String.format("%02d:%02d:%02d",hour,min,sec);
+        }
+        public String getTimeRemain(){
+            return millisToString(mMillisRemain);
+        }
+        public String getTimeTotal(){
+            return millisToString(mMillisTotal);
         }
     }
 }

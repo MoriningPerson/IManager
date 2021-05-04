@@ -19,8 +19,8 @@ import com.greyka.imgr.utilities.myUtils;
 
 public class Timer extends AppCompatActivity{
 
-    private Boolean locked = false;
-    private Boolean alwaysOn = false;
+    private boolean locked = false;
+    private boolean alwaysOn = false;
     private ImageView ic_alwaysOn;
     private CirclePgBar mPgBar;
     private TextView mTimeRemain;
@@ -55,7 +55,7 @@ public class Timer extends AppCompatActivity{
 
             }
         });
-        mCDT = new myUtils.myCountDownTimerHelper(120, new timer_handler() {
+        mCDT = new myUtils.myCountDownTimerHelper(60, new timer_handler() {
             @Override
             public void onTickEvent() {
                 mTimeRemain.setText(mCDT.getTimeRemain());
@@ -64,9 +64,13 @@ public class Timer extends AppCompatActivity{
 
             @Override
             public void onFinishEvent() {
-
+                mPgBar.setProgress(mPgBar.getTotalProgress());
+            }
+            @Override
+            public void onCreateEvent(int secInFuture,timer_handler TH){
             }
         });
+        mTimeTotal.setText("总 "+mCDT.getTimeTotal());
         mPanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
