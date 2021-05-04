@@ -334,7 +334,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/home_button1"
+            android:id="@+id/home_timer_button"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
@@ -371,7 +371,7 @@
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/home_notice_board"
-            app:layout_constraintStart_toEndOf="@id/home_button1"
+            app:layout_constraintStart_toEndOf="@id/home_timer_button"
             app:layout_constraintTop_toBottomOf="@+id/home_notice_board">
 
             <ImageView

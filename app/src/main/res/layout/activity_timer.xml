@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myThemeShallow">
+
+
+    <com.greyka.imgr.classes.CirclePgBar
+        android:id="@+id/timer_PgBar"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:elevation="15dp"
+        app:circleColor="@color/calendar_white"
+        app:elevation="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:radius="120dp"
+        app:ringBgColor="@color/grey91"
+        app:ringColor="@color/myThemeDeep"
+        app:strokeWidth="30dp"
+        tools:ignore="MissingConstraints">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/timer_pannel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/timer_remain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="13:25"
+                android:textSize="70sp"
+                android:textColor="@color/myThemeDeep"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/timer_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="总30分钟25秒"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/timer_remain"
+                app:layout_constraintStart_toStartOf="@+id/timer_remain"
+                app:layout_constraintTop_toBottomOf="@+id/timer_remain" />
+
+            <ImageView
+                android:id="@+id/timer_lock"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginEnd="60dp"
+                app:layout_constraintBottom_toTopOf="@+id/timer_remain"
+                app:layout_constraintEnd_toEndOf="@+id/timer_remain"
+                app:layout_constraintStart_toStartOf="@+id/timer_remain"
+                app:srcCompat="@drawable/ic_timer_lock"
+                app:tint="@color/grey81" />
+
+            <ImageView
+                android:id="@+id/timer_alwaysOn"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="60dp"
+                app:layout_constraintEnd_toEndOf="@+id/timer_remain"
+                app:layout_constraintStart_toStartOf="@+id/timer_remain"
+                app:layout_constraintTop_toTopOf="@+id/timer_lock"
+                app:srcCompat="@drawable/ic_timer_always_on"
+                app:tint="@color/grey81" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.greyka.imgr.classes.CirclePgBar>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

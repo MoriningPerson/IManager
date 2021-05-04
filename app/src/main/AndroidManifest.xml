@@ -25,6 +25,7 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="92c3a4a8cddd18d0c03dfe29a1e132fd" />
+        
         <activity android:name="com.greyka.imgr.activities.launcher"
             android:theme="@style/SplashActivityTheme"
             android:screenOrientation="portrait">
@@ -33,12 +34,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name="com.greyka.imgr.activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.greyka.imgr.activities.Timer" ></activity>
+
         <service android:name="com.amap.api.location.APSService" />
     </application>
 
