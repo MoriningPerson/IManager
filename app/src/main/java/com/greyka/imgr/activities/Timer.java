@@ -27,8 +27,9 @@ import com.greyka.imgr.utilities.myUtils;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Timer extends AppCompatActivity implements myTimerCancelFragment.NoticeDialogListener{
+public class Timer extends AppCompatActivity implements myTimerCancelFragment.NoticeDialogListener {
 
+    private final Intent serviceIntent = new Intent();
     private boolean alwaysOn = false;
     private ImageView ic_alwaysOn;
     private CirclePgBar mPgBar;
@@ -36,39 +37,38 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
     private TextView mTimeTotal;
     private ViewGroup mPanel;
     private MyService.MyBinder binder = null;
-    private final Intent serviceIntent = new Intent();
     private MyService myService;
 
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             binder = (MyService.MyBinder) service;
             myService = binder.getService();
-            Log.d("th","2");
+            Log.d("th", "2");
             myService.setCallback(new MyService.Callback() {
                 @Override
                 public void onDataChange(String timeRemain, int progress) {
                     mTimeRemain.setText(timeRemain);
                     mPgBar.setProgress(progress);
                 }
+
                 @Override
-                public void setTotalTime(boolean opt){
-                    if(opt == true) {
+                public void setTotalTime(boolean opt) {
+                    if (opt == true) {
                         mTimeTotal.setText("总 " + myService.getTimeTotal());
-                    }
-                    else{
+                    } else {
                         mTimeTotal.setText("总 " + "00:00:00");
                     }
                 }
             });
-            if(myService.cdtHasInstance()) {
+            if (myService.cdtHasInstance()) {
                 myService.setTime();
             }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Log.d("aaa","123456");
+            Log.d("aaa", "123456");
             myService = null;
         }
     };
@@ -78,22 +78,21 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
         super.onCreate(savedInstanceState);
         getTimerService();
         setContentView(R.layout.activity_timer);
-        mPgBar = (CirclePgBar)findViewById(R.id.timer_PgBar);
-        ic_alwaysOn = (ImageView)findViewById(R.id.timer_alwaysOn);
-        mTimeRemain = (TextView)findViewById(R.id.timer_remain);
-        mTimeTotal = (TextView)findViewById(R.id.timer_total);
-        mPanel = (ViewGroup)findViewById(R.id.timer_pannel);
+        mPgBar = (CirclePgBar) findViewById(R.id.timer_PgBar);
+        ic_alwaysOn = (ImageView) findViewById(R.id.timer_alwaysOn);
+        mTimeRemain = (TextView) findViewById(R.id.timer_remain);
+        mTimeTotal = (TextView) findViewById(R.id.timer_total);
+        mPanel = (ViewGroup) findViewById(R.id.timer_pannel);
         ic_alwaysOn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                if(alwaysOn){
-                    myUtils.myToastHelper.showText(getApplicationContext(),"屏幕常亮：关闭", Toast.LENGTH_SHORT);
+                if (alwaysOn) {
+                    myUtils.myToastHelper.showText(getApplicationContext(), "屏幕常亮：关闭", Toast.LENGTH_SHORT);
                     ic_alwaysOn.setColorFilter(getColor(R.color.grey81));
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                }
-                else{
-                    myUtils.myToastHelper.showText(getApplicationContext(),"屏幕常亮：开启", Toast.LENGTH_SHORT);
+                } else {
+                    myUtils.myToastHelper.showText(getApplicationContext(), "屏幕常亮：开启", Toast.LENGTH_SHORT);
                     ic_alwaysOn.setColorFilter(getColor(R.color.dimgrey));
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
@@ -104,20 +103,17 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
         mPanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("click","click");
-                if(myService == null){
+                Log.d("click", "click");
+                if (myService == null) {
                     return;
-                }
-                else if(!myService.cdtHasInstance()){
+                } else if (!myService.cdtHasInstance()) {
                     myService.timerSetter(40);
                     myService.timerStart();
-                }
-                else if(binder.getService().getCDTisRunning()){
-                    myUtils.myToastHelper.showText(getApplicationContext(),"暂停",Toast.LENGTH_SHORT);
+                } else if (binder.getService().getCDTisRunning()) {
+                    myUtils.myToastHelper.showText(getApplicationContext(), "暂停", Toast.LENGTH_SHORT);
                     myService.timerPause();
-                }
-                else{
-                    myUtils.myToastHelper.showText(getApplicationContext(),"开始",Toast.LENGTH_SHORT);
+                } else {
+                    myUtils.myToastHelper.showText(getApplicationContext(), "开始", Toast.LENGTH_SHORT);
                     myService.timerStart();
                 }
             }
@@ -125,7 +121,7 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
         mPanel.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(myService.cdtHasInstance()) {
+                if (myService.cdtHasInstance()) {
                     myTimerCancelFragment mTCF = new myTimerCancelFragment();
                     mTCF.show(getSupportFragmentManager(), "aa");
                 }
@@ -133,19 +129,21 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
             }
         });
     }
-    private void getTimerService(){
-        serviceIntent.setClass(this,MyService.class);
-        bindService(serviceIntent,connection,BIND_AUTO_CREATE);
+
+    private void getTimerService() {
+        serviceIntent.setClass(this, MyService.class);
+        bindService(serviceIntent, connection, BIND_AUTO_CREATE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             startForegroundService(serviceIntent);
         } else {
             startService(serviceIntent);
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(myService != null && !myService.cdtHasInstance()) {
+        if (myService != null && !myService.cdtHasInstance()) {
             myService.stopSelf();
             unbindService(connection);
         }

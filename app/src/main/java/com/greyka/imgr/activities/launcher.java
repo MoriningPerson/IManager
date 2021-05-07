@@ -8,7 +8,8 @@ import android.os.Bundle;
 import com.greyka.imgr.R;
 
 public class launcher extends AppCompatActivity {
-    private  final int SPLASH_DISPLAY_LENGHT = 1200;
+    private final int SPLASH_DISPLAY_LENGHT = 1200;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +21,6 @@ public class launcher extends AppCompatActivity {
                 launcher.this.startActivity(mainIntent);
                 launcher.this.finish();
             }
-        },SPLASH_DISPLAY_LENGHT);
+        }, SPLASH_DISPLAY_LENGHT);
     }
 }
