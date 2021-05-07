@@ -33,8 +33,7 @@ import com.greyka.imgr.fragments.FragCalendar;
 import com.greyka.imgr.fragments.FragHome;
 import com.greyka.imgr.fragments.FragMine;
 import com.greyka.imgr.fragments.FragList;
-import com.greyka.imgr.fragments.myDialogFragment;
-import com.greyka.imgr.interfaces.timer_handler;
+import com.greyka.imgr.fragments.myLocationPermissionDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -103,7 +102,7 @@ public class myUtils {
         }
         public void getPermissionDialog(){
             if (ContextCompat.checkSelfPermission(myActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                myDialogFragment mdf = new myDialogFragment();
+                myLocationPermissionDialogFragment mdf = new myLocationPermissionDialogFragment();
                 mdf.show(myActivity.getSupportFragmentManager(),"aa");
             }
         }
@@ -320,8 +319,11 @@ public class myUtils {
             };
             CDT.start();
         }
-        public void mCancel(){
+        public void mPause(){
             isRunning = false;
+            CDT.cancel();
+        }
+        public void mCancel(){
             CDT.cancel();
         }
         public Boolean getIsRunning(){
@@ -347,5 +349,11 @@ public class myUtils {
         public String getTimeTotal(){
             return millisToString(mMillisTotal);
         }
+    }
+
+    public interface timer_handler {
+        void onTickEvent();
+        void onFinishEvent();
+        void onCreateEvent(int secInFuture,timer_handler TH);
     }
 }

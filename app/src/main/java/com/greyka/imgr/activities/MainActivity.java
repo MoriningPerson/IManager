@@ -17,10 +17,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.greyka.imgr.R;
-import com.greyka.imgr.fragments.myDialogFragment;
+import com.greyka.imgr.fragments.myLocationPermissionDialogFragment;
 import com.greyka.imgr.utilities.myUtils;
 
-public class MainActivity extends AppCompatActivity  implements myDialogFragment.NoticeDialogListener {
+public class MainActivity extends AppCompatActivity implements myLocationPermissionDialogFragment.NoticeDialogListener {
 
     private final ActivityResultLauncher<String> requestPermissionLauncher=
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {

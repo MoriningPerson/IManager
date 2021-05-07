@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.greyka.imgr.fragments.myDialogFragment;
+import com.greyka.imgr.fragments.myLocationPermissionDialogFragment;
 import com.greyka.imgr.fragments.myObjectFragment;
 
 
@@ -18,7 +18,7 @@ public class myCollectionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        Fragment fragment = new myDialogFragment();
+        Fragment fragment = new myLocationPermissionDialogFragment();
         Bundle args = new Bundle();
         // Our object is just an integer :-P
         args.putInt(myObjectFragment.ARG_OBJECT, i + 1);

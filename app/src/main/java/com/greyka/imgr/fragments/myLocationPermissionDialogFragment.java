@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-public class myDialogFragment extends DialogFragment {
+public class myLocationPermissionDialogFragment extends DialogFragment {
 
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
@@ -46,7 +46,7 @@ public class myDialogFragment extends DialogFragment {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Send the positive button event back to the host activity
-                        listener.onDialogPositiveClick(myDialogFragment.this);
+                        listener.onDialogPositiveClick(myLocationPermissionDialogFragment.this);
                     }
                 });
         setCancelable(false);

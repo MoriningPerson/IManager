@@ -1,7 +1,12 @@
 package com.greyka.imgr.activities;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -11,26 +16,67 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.classes.CirclePgBar;
-import com.greyka.imgr.interfaces.timer_handler;
+import com.greyka.imgr.fragments.myTimerCancelFragment;
+import com.greyka.imgr.services.MyService;
 import com.greyka.imgr.utilities.myUtils;
 
-public class Timer extends AppCompatActivity{
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-    private boolean locked = false;
+public class Timer extends AppCompatActivity implements myTimerCancelFragment.NoticeDialogListener{
+
     private boolean alwaysOn = false;
     private ImageView ic_alwaysOn;
     private CirclePgBar mPgBar;
     private TextView mTimeRemain;
     private TextView mTimeTotal;
     private ViewGroup mPanel;
-    private myUtils.myCountDownTimerHelper mCDT;
+    private MyService.MyBinder binder = null;
+    private final Intent serviceIntent = new Intent();
+    private MyService myService;
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            binder = (MyService.MyBinder) service;
+            myService = binder.getService();
+            Log.d("th","2");
+            myService.setCallback(new MyService.Callback() {
+                @Override
+                public void onDataChange(String timeRemain, int progress) {
+                    mTimeRemain.setText(timeRemain);
+                    mPgBar.setProgress(progress);
+                }
+                @Override
+                public void setTotalTime(boolean opt){
+                    if(opt == true) {
+                        mTimeTotal.setText("总 " + myService.getTimeTotal());
+                    }
+                    else{
+                        mTimeTotal.setText("总 " + "00:00:00");
+                    }
+                }
+            });
+            if(myService.cdtHasInstance()) {
+                myService.setTime();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d("aaa","123456");
+            myService = null;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getTimerService();
         setContentView(R.layout.activity_timer);
         mPgBar = (CirclePgBar)findViewById(R.id.timer_PgBar);
         ic_alwaysOn = (ImageView)findViewById(R.id.timer_alwaysOn);
@@ -55,35 +101,58 @@ public class Timer extends AppCompatActivity{
 
             }
         });
-        mCDT = new myUtils.myCountDownTimerHelper(60, new timer_handler() {
-            @Override
-            public void onTickEvent() {
-                mTimeRemain.setText(mCDT.getTimeRemain());
-                mPgBar.setProgress((int)(1000 * (mCDT.getmMillisTotal() - mCDT.getmMillisRemain()) / mCDT.getmMillisTotal()));
-            }
-
-            @Override
-            public void onFinishEvent() {
-                mPgBar.setProgress(mPgBar.getTotalProgress());
-            }
-            @Override
-            public void onCreateEvent(int secInFuture,timer_handler TH){
-            }
-        });
-        mTimeTotal.setText("总 "+mCDT.getTimeTotal());
         mPanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCDT.getIsRunning()){
+                Log.d("click","click");
+                if(myService == null){
+                    return;
+                }
+                else if(!myService.cdtHasInstance()){
+                    myService.timerSetter(40);
+                    myService.timerStart();
+                }
+                else if(binder.getService().getCDTisRunning()){
                     myUtils.myToastHelper.showText(getApplicationContext(),"暂停",Toast.LENGTH_SHORT);
-                    mCDT.mCancel();
+                    myService.timerPause();
                 }
                 else{
                     myUtils.myToastHelper.showText(getApplicationContext(),"开始",Toast.LENGTH_SHORT);
-                    mCDT.mStart();
+                    myService.timerStart();
                 }
             }
         });
-        mCDT.mStart();
+        mPanel.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(myService.cdtHasInstance()) {
+                    myTimerCancelFragment mTCF = new myTimerCancelFragment();
+                    mTCF.show(getSupportFragmentManager(), "aa");
+                }
+                return true;
+            }
+        });
+    }
+    private void getTimerService(){
+        serviceIntent.setClass(this,MyService.class);
+        bindService(serviceIntent,connection,BIND_AUTO_CREATE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent);
+        } else {
+            startService(serviceIntent);
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(myService != null && !myService.cdtHasInstance()) {
+            myService.stopSelf();
+            unbindService(connection);
+        }
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        myService.timerCancel();
     }
 }
