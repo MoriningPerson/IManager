@@ -11,13 +11,6 @@ import androidx.fragment.app.DialogFragment;
 
 public class myLocationPermissionDialogFragment extends DialogFragment {
 
-    /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
-    public interface NoticeDialogListener {
-        void onDialogPositiveClick(DialogFragment dialog);
-    }
-
     // Use this instance of the interface to deliver action events
     NoticeDialogListener listener;
 
@@ -43,14 +36,19 @@ public class myLocationPermissionDialogFragment extends DialogFragment {
         builder
                 .setTitle("权限提示")
                 .setMessage("为了更好的体验，软件需申请位置权限")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the positive button event back to the host activity
-                        listener.onDialogPositiveClick(myLocationPermissionDialogFragment.this);
-                    }
+                .setPositiveButton("确定", (dialog, id) -> {
+                    // Send the positive button event back to the host activity
+                    listener.onDialogPositiveClick(myLocationPermissionDialogFragment.this);
                 });
         setCancelable(false);
         // Create the AlertDialog object and return it
         return builder.create();
+    }
+
+    /* The activity that creates an instance of this dialog fragment must
+     * implement this interface in order to receive event callbacks.
+     * Each method passes the DialogFragment in case the host needs to query it. */
+    public interface NoticeDialogListener {
+        void onDialogPositiveClick(DialogFragment dialog);
     }
 }

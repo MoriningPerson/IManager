@@ -115,9 +115,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="7dp"
-                    android:textSize="18sp"
                     android:text="即将开始"
                     android:textColor="@color/black"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/home_next"
                     app:layout_constraintStart_toEndOf="@+id/home_next"
                     app:layout_constraintTop_toTopOf="@+id/home_next"
@@ -129,8 +129,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/string_motto"
-                    android:textSize="12sp"
                     android:textColor="@color/black"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/home_motto"
                     app:layout_constraintStart_toStartOf="@+id/home_motto"
                     app:layout_constraintTop_toBottomOf="@+id/home_motto"
@@ -153,12 +153,12 @@
                     android:id="@+id/home_motto"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toTopOf="@+id/horizontal_0.95"
                     app:layout_constraintEnd_toStartOf="@+id/vertical_0.3"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@+id/vertical_0.05"
                     app:layout_constraintTop_toTopOf="@+id/horizontal_0.65"
-                    android:layout_marginBottom="20dp"
                     app:srcCompat="@drawable/ic_home_motto"
                     tools:ignore="MissingConstraints" />
 
@@ -396,8 +396,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Top_bar" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

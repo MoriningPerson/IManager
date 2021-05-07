@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/grey101">
+
     <androidx.cardview.widget.CardView
         android:id="@+id/Top_bar"
         android:layout_width="match_parent"
@@ -17,21 +18,22 @@
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UnknownIdInLayout">
-    <TextView
-        android:id="@+id/textViewMine"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:text="@string/topBarTitle_Mine"
-        android:textColor="@color/white"
-        android:paddingTop="45dp"
-        android:paddingLeft="20dp"
-        tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textViewMine"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="45dp"
+            android:text="@string/topBarTitle_Mine"
+            android:textColor="@color/white"
+            tools:ignore="MissingConstraints" />
     </androidx.cardview.widget.CardView>
-<!--    为啥你总是一个TextView撑死父容器  然后再在里面写-->
+    <!--    为啥你总是一个TextView撑死父容器  然后再在里面写-->
     <TextView
         android:id="@+id/mine"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="Mine"/>
+        android:text="Mine" />
 </androidx.constraintlayout.widget.ConstraintLayout>

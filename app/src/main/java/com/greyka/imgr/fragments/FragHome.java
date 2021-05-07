@@ -38,12 +38,9 @@ public class FragHome extends Fragment {
         home_notice_board_title=(TextView)view.findViewById(R.id.home_notice_board_title);
         home_notice_board_title.setText(myUtils.myCalenderHelper.getChineseTotal());
         timer = (CardView) view.findViewById(R.id.home_timer_button);
-        timer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), Timer.class);
-                startActivity(intent);
-            }
+        timer.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), Timer.class);
+            startActivity(intent);
         });
     }
 }

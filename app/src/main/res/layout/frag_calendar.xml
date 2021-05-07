@@ -97,16 +97,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/card_top_radius"
         android:elevation="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Calendar_card"
-        tools:ignore="UnknownIdInLayout"
-        android:orientation="vertical">
+        tools:ignore="UnknownIdInLayout">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -121,13 +122,12 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="15dp"
             android:background="@color/transparent"
-            android:overScrollMode="never"
-            android:scrollbars="vertical"
             android:fadeScrollbars="false"
+            android:overScrollMode="never"
             android:scrollbarSize="2dp"
             android:scrollbarThumbVertical="@color/grey"
             android:scrollbarTrackVertical="@color/grey91"
-            />
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 

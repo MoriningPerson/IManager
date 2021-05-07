@@ -18,10 +18,11 @@ public class FragList extends Fragment {
     // representing an object in the collection.
     myCollectionPagerAdapter demoCollectionPagerAdapter;
     ViewPager viewPager;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_list,container,false);
+        return inflater.inflate(R.layout.frag_list, container, false);
     }
 
     @Override

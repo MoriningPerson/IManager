@@ -11,32 +11,13 @@ import com.greyka.imgr.R;
 
 public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAdapter.ViewHolder> {
 
-    private String[] localDataSet;
-
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
-
-        public ViewHolder(View view) {
-            super(view);
-            // Define click listener for the ViewHolder's View
-
-            textView = (TextView) view.findViewById(R.id.recyclerViewItem);
-        }
-
-        public TextView getTextView() {
-            return textView;
-        }
-    }
+    private final String[] localDataSet;
 
     /**
      * Initialize the dataset of the Adapter.
      *
      * @param dataSet String[] containing the data to populate views to be used
-     * by RecyclerView.
+     *                by RecyclerView.
      */
     public myRecyclerViewAdapter(String[] dataSet) {
         localDataSet = dataSet;
@@ -65,5 +46,24 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
     @Override
     public int getItemCount() {
         return localDataSet.length;
+    }
+
+    /**
+     * Provide a reference to the type of views that you are using
+     * (custom ViewHolder).
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textView;
+
+        public ViewHolder(View view) {
+            super(view);
+            // Define click listener for the ViewHolder's View
+
+            textView = (TextView) view.findViewById(R.id.recyclerViewItem);
+        }
+
+        public TextView getTextView() {
+            return textView;
+        }
     }
 }

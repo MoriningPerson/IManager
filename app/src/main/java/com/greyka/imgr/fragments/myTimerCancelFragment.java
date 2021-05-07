@@ -11,13 +11,6 @@ import androidx.fragment.app.DialogFragment;
 
 public class myTimerCancelFragment extends DialogFragment {
 
-    /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
-    public interface NoticeDialogListener {
-        void onDialogPositiveClick(DialogFragment dialog);
-    }
-
     // Use this instance of the interface to deliver action events
     myTimerCancelFragment.NoticeDialogListener listener;
 
@@ -43,19 +36,21 @@ public class myTimerCancelFragment extends DialogFragment {
         builder
                 .setTitle("计时器")
                 .setMessage("是否中止本次计时")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the positive button event back to the host activity
-                        listener.onDialogPositiveClick(myTimerCancelFragment.this);
-                    }
+                .setPositiveButton("确定", (dialog, id) -> {
+                    // Send the positive button event back to the host activity
+                    listener.onDialogPositiveClick(myTimerCancelFragment.this);
                 })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
+                .setNegativeButton("取消", (dialog, which) -> {
                 });
         setCancelable(false);
         // Create the AlertDialog object and return it
         return builder.create();
+    }
+
+    /* The activity that creates an instance of this dialog fragment must
+     * implement this interface in order to receive event callbacks.
+     * Each method passes the DialogFragment in case the host needs to query it. */
+    public interface NoticeDialogListener {
+        void onDialogPositiveClick(DialogFragment dialog);
     }
 }

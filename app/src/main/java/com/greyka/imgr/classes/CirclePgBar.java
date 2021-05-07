@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.greyka.imgr.R;
+
 /**
  * Created by Administrator on 2017/8/5.
  */
@@ -49,7 +50,7 @@ public class CirclePgBar extends ConstraintLayout {
     // 字的高度
     private float mTxtHeight;
     // 总进度
-    private int mTotalProgress = 1000;
+    private final int mTotalProgress = 1000;
     // 当前进度
     private int mProgress;
 
@@ -63,18 +64,17 @@ public class CirclePgBar extends ConstraintLayout {
     }
 
 
-
     //属性
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray typeArray = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.TasksCompletedView, 0, 0);
         mRadius = typeArray.getDimension(R.styleable.TasksCompletedView_radius, 80);
         mStrokeWidth = typeArray.getDimension(R.styleable.TasksCompletedView_strokeWidth, 10);
-        mStrokeBgWidth = typeArray.getDimension(R.styleable.TasksCompletedView_strokeBgWidth,10);
+        mStrokeBgWidth = typeArray.getDimension(R.styleable.TasksCompletedView_strokeBgWidth, 10);
         mCircleColor = typeArray.getColor(R.styleable.TasksCompletedView_circleColor, 0xFFFFFFFF);
         mRingColor = typeArray.getColor(R.styleable.TasksCompletedView_ringColor, 0xFFFFFFFF);
         mRingBgColor = typeArray.getColor(R.styleable.TasksCompletedView_ringBgColor, 0xFFFFFFFF);
-        mElevation = (int) typeArray.getDimension(R.styleable.TasksCompletedView_elevation,0);
+        mElevation = (int) typeArray.getDimension(R.styleable.TasksCompletedView_elevation, 0);
         mRingRadius = mRadius + mStrokeWidth / 2;
     }
 
@@ -85,7 +85,7 @@ public class CirclePgBar extends ConstraintLayout {
         mCirclePaint.setAntiAlias(true);
         mCirclePaint.setColor(mCircleColor);
         mCirclePaint.setStyle(Paint.Style.FILL);
-        mCirclePaint.setShadowLayer(mElevation,0,0,0xFF696969);
+        mCirclePaint.setShadowLayer(mElevation, 0, 0, 0xFF696969);
 
         //外圆弧背景
         mRingPaintBg = new Paint();
@@ -101,7 +101,7 @@ public class CirclePgBar extends ConstraintLayout {
         mRingPaint.setAntiAlias(true);
         mRingPaint.setColor(mRingColor);
         mRingPaint.setStyle(Paint.Style.STROKE);
-        mRingPaint.setStrokeWidth((float)(mStrokeWidth));
+        mRingPaint.setStrokeWidth((float) (mStrokeWidth));
         mRingPaint.setStrokeCap(Paint.Cap.ROUND);//设置线冒样式，有圆 有方
         //mRingPaint.setShadowLayer(mElevation/3,0,0,0xFF696969);
 
@@ -114,11 +114,12 @@ public class CirclePgBar extends ConstraintLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int childCount = getChildCount();       //获取子View的数量
         //使用遍历的方式通知子View对自身进行测量
-        for (int i=0;i<childCount;i++){
+        for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
-            measureChild(childView,widthMeasureSpec,heightMeasureSpec);
+            measureChild(childView, widthMeasureSpec, heightMeasureSpec);
         }
     }
+
     @Override
     protected void onLayout(boolean b, int l, int i1, int i2, int i3) {
         //初始化一些变量
@@ -128,7 +129,7 @@ public class CirclePgBar extends ConstraintLayout {
         MarginLayoutParams params = null;
 
         //循环子View,并定义他们的位置
-        for (int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             View childView = getChildAt(i);
             width = childView.getMeasuredWidth();
             height = childView.getMeasuredHeight();
@@ -138,10 +139,11 @@ public class CirclePgBar extends ConstraintLayout {
             i2 = l + width;
             i3 = height + i1;
             //调用子View的layout,就是上篇自定义View说的layout方法
-            Log.d("a",String.valueOf(l)+" "+String.valueOf(i1));
+            Log.d("a", l + " " + i1);
             childView.layout(l, i1, i2, i3);
         }
     }
+
     @Override
     protected void dispatchDraw(Canvas canvas) {
         mXCenter = getWidth() / 2;
@@ -159,13 +161,13 @@ public class CirclePgBar extends ConstraintLayout {
         canvas.drawArc(oval1, 0, 360, false, mRingPaintBg); //圆弧所在的椭圆对象、圆弧的起始角度、圆弧的角度、是否显示半径连线
 
         //外圆弧
-        if (mProgress > 0 ) {
+        if (mProgress > 0) {
             RectF oval = new RectF();
             oval.left = (mXCenter - mRingRadius);
             oval.top = (mYCenter - mRingRadius);
             oval.right = mRingRadius * 2 + (mXCenter - mRingRadius);
             oval.bottom = mRingRadius * 2 + (mYCenter - mRingRadius);
-            canvas.drawArc(oval, -90, ((float)mProgress / mTotalProgress) * 360, false, mRingPaint); //
+            canvas.drawArc(oval, -90, ((float) mProgress / mTotalProgress) * 360, false, mRingPaint); //
         }
         super.dispatchDraw(canvas);
     }
@@ -176,7 +178,7 @@ public class CirclePgBar extends ConstraintLayout {
         postInvalidate();//重绘
     }
 
-    public int getTotalProgress(){
+    public int getTotalProgress() {
         return mTotalProgress;
     }
 }
