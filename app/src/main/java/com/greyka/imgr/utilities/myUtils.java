@@ -40,6 +40,7 @@ import com.greyka.imgr.fragments.myLocationPermissionDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class myUtils {
     public interface timer_handler {
@@ -404,34 +405,25 @@ public class myUtils {
     public static class beeper {
         public static final int scrollWheel = 1; // 滚轮
         private static SoundPool soundPool = null;
+        private static int nowSound;
+        private final HashMap<Integer, Integer> soundID = new HashMap<Integer, Integer>();
 
-        public void init() {
+        public beeper(Context context) {
             if (soundPool == null) {
                 AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
                 soundPool = new SoundPool.Builder().setMaxStreams(16).setAudioAttributes(audioAttributes).build();
+                soundID.put(scrollWheel, soundPool.load(context, R.raw.scroll_wheel, 1));
             }
         }
 
-        public void play(Context context, int sound) {
-            if (soundPool == null) {
-                init();
-            }
-
-            switch (sound) {
-                case scrollWheel:
-                    soundPool.load(context, R.raw.scroll_wheel, 1);
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + sound);
-            }
-
-            soundPool.setOnLoadCompleteListener((soundPool, soundID, status) -> {
-                int a = soundPool.play(soundID, 1, 1, 1, 0, 1);
-                //Toast.makeText(context, String.valueOf(a), Toast.LENGTH_SHORT).show();
-            });
-
+        public void play(int sound) {
+            if (soundID.containsKey(sound)) {
+                nowSound = soundPool.play(soundID.get(sound), 1, 1, 1, 0, 1);
+            } else throw new IllegalStateException("Unexpected value: " + sound);
         }
 
+        public void stop() {
+            soundPool.stop(nowSound);
+        }
     }
-
 }

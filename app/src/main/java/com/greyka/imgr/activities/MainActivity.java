@@ -38,9 +38,8 @@ public class MainActivity extends AppCompatActivity implements myLocationPermiss
         new myUtils.myWindowManager().setWindow(this);
         new myUtils.myPermissionManager(this).getPermissionDialog();
         new myUtils.myNavigationManagerForMainActivity().runNavigation(this);
-        myUtils.beeper beeper = new myUtils.beeper();
-        beeper.init();
-        beeper.play(this, myUtils.beeper.scrollWheel);
+        myUtils.beeper beeper = new myUtils.beeper(this);
+        beeper.play(myUtils.beeper.scrollWheel);
     }
 
     @Override
