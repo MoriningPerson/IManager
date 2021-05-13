@@ -19,10 +19,9 @@ import com.greyka.imgr.activities.Timer;
 import com.greyka.imgr.utilities.myUtils;
 
 public class FragHome extends Fragment {
-    private TextView textview, home_notice_board_title;
+    private TextView home_notice_board_title;
     private CardView timer;
     private CardView button2;
-    private SoundPool soundPool;
 
     @Nullable
     @Override
