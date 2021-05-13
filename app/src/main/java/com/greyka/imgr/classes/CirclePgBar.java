@@ -20,6 +20,8 @@ import com.greyka.imgr.R;
 
 public class CirclePgBar extends ConstraintLayout {
 
+    // 总进度
+    private final int mTotalProgress = 1000;
     // 画实心圆的画笔
     private Paint mCirclePaint;
     // 画圆环的画笔
@@ -49,8 +51,6 @@ public class CirclePgBar extends ConstraintLayout {
     private float mTxtWidth;
     // 字的高度
     private float mTxtHeight;
-    // 总进度
-    private final int mTotalProgress = 1000;
     // 当前进度
     private int mProgress;
 

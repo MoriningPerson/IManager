@@ -9,6 +9,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -328,10 +331,10 @@ public class myUtils {
 
     public static class myCountDownTimerHelper {
         private final long mMillisTotal;
+        private final timer_handler TH;
         private long mMillisRemain;
         private boolean isRunning = false;
         private CountDownTimer CDT;
-        private final timer_handler TH;
 
         public myCountDownTimerHelper(int secInFuture, timer_handler TH) {
             mMillisTotal = (long) secInFuture * 1000 + 500;
@@ -397,4 +400,38 @@ public class myUtils {
             return millisToString(mMillisTotal);
         }
     }
+
+    public static class beeper {
+        public static final int scrollWheel = 1; // 滚轮
+        private static SoundPool soundPool = null;
+
+        public void init() {
+            if (soundPool == null) {
+                AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
+                soundPool = new SoundPool.Builder().setMaxStreams(16).setAudioAttributes(audioAttributes).build();
+            }
+        }
+
+        public void play(Context context, int sound) {
+            if (soundPool == null) {
+                init();
+            }
+
+            switch (sound) {
+                case scrollWheel:
+                    soundPool.load(context, R.raw.scroll_wheel, 1);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + sound);
+            }
+
+            soundPool.setOnLoadCompleteListener((soundPool, soundID, status) -> {
+                int a = soundPool.play(soundID, 1, 1, 1, 0, 1);
+                //Toast.makeText(context, String.valueOf(a), Toast.LENGTH_SHORT).show();
+            });
+
+        }
+
+    }
+
 }
