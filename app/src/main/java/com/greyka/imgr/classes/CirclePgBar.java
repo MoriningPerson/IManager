@@ -8,7 +8,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -101,7 +100,7 @@ public class CirclePgBar extends ConstraintLayout {
         mRingPaint.setAntiAlias(true);
         mRingPaint.setColor(mRingColor);
         mRingPaint.setStyle(Paint.Style.STROKE);
-        mRingPaint.setStrokeWidth((float) (mStrokeWidth));
+        mRingPaint.setStrokeWidth(mStrokeWidth);
         mRingPaint.setStrokeCap(Paint.Cap.ROUND);//设置线冒样式，有圆 有方
         //mRingPaint.setShadowLayer(mElevation/3,0,0,0xFF696969);
 
@@ -124,9 +123,9 @@ public class CirclePgBar extends ConstraintLayout {
     protected void onLayout(boolean b, int l, int i1, int i2, int i3) {
         //初始化一些变量
         int count = getChildCount();
-        int width = 0;
-        int height = 0;
-        MarginLayoutParams params = null;
+        int width;
+        int height;
+        MarginLayoutParams params;
 
         //循环子View,并定义他们的位置
         for (int i = 0; i < count; i++) {

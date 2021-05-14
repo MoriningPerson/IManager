@@ -1,6 +1,5 @@
 package com.greyka.imgr.services;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;

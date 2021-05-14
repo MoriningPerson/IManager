@@ -1,13 +1,11 @@
 package com.greyka.imgr.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,12 +32,12 @@ public class FragCalendar extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        CardView calenderCard = (CardView) view.findViewById(R.id.Calendar_card);
-        View memo = (View) view.findViewById(R.id.memo);
+        CardView calenderCard = view.findViewById(R.id.Calendar_card);
+        View memo = view.findViewById(R.id.memo);
         myUtils.myViewMover calenderCardMover = new myUtils.myViewMover(calenderCard);
         myUtils.myViewMover memoMover = new myUtils.myViewMover(memo);
         myUtils.myDensityHelper density = new myUtils.myDensityHelper(this.requireContext());
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.requireContext()));
         recyclerView.setAdapter(new myRecyclerViewAdapter(memos));
         calenderCard.setOnTouchListener((v, event) -> {
@@ -48,7 +46,7 @@ public class FragCalendar extends Fragment {
             recyclerView.layout(recyclerView.getLeft(), recyclerView.getTop(), recyclerView.getRight(), memo.getHeight() - density.dp2px(15));
             return true;
         });
-        CalendarView calendarView = (CalendarView) view.findViewById(R.id.calendarView);
+        CalendarView calendarView = view.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> myUtils.myToastHelper.showText(view1.getContext(), +year + "年" + month + "月" + dayOfMonth + "日", Toast.LENGTH_SHORT));
 
         super.onViewCreated(view, savedInstanceState);

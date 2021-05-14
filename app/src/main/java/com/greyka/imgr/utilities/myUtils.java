@@ -10,18 +10,15 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioAttributes;
-import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -34,8 +31,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.greyka.imgr.R;
 import com.greyka.imgr.fragments.FragCalendar;
 import com.greyka.imgr.fragments.FragHome;
-import com.greyka.imgr.fragments.FragMine;
 import com.greyka.imgr.fragments.FragList;
+import com.greyka.imgr.fragments.FragMine;
 import com.greyka.imgr.fragments.myLocationPermissionDialogFragment;
 
 import java.util.ArrayList;
@@ -107,8 +104,7 @@ public class myUtils {
             String d = String.valueOf(myUtils.myCalenderHelper.getDay());
             String m = String.valueOf(myUtils.myCalenderHelper.getMonth());
             String y = String.valueOf(myUtils.myCalenderHelper.getYear());
-            String str = y + "年" + m + "月" + d + "日" + "    " + "星期" + myUtils.myCalenderHelper.getChineseDayOfWeek();
-            return str;
+            return y + "年" + m + "月" + d + "日" + "    " + "星期" + myCalenderHelper.getChineseDayOfWeek();
         }
 
         public static String getSeason() {
@@ -406,7 +402,7 @@ public class myUtils {
         public static final int scrollWheel = 1; // 滚轮
         private static SoundPool soundPool = null;
         private static int nowSound;
-        private final HashMap<Integer, Integer> soundID = new HashMap<Integer, Integer>();
+        private final HashMap<Integer, Integer> soundID = new HashMap<>();
 
         public beeper(Context context) {
             if (soundPool == null) {

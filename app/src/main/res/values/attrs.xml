@@ -12,14 +12,14 @@
         <attr name="rcv_bottomLeftRadiu" format="dimension" />
 
     </declare-styleable>
-        <declare-styleable name="TasksCompletedView">
-            <attr name="radius" format="dimension"/>
-            <attr name="strokeWidth" format="dimension"/>
-            <attr name="strokeBgWidth" format="dimension"/>
-            <attr name="circleColor" format="color"/>
-            <attr name="ringColor" format="color"/>
-            <attr name="ringBgColor" format="color"/>
-            <attr name="elevation" format="dimension"/>
-        </declare-styleable>
+    <declare-styleable name="TasksCompletedView">
+        <attr name="radius" format="dimension" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="strokeBgWidth" format="dimension" />
+        <attr name="circleColor" format="color" />
+        <attr name="ringColor" format="color" />
+        <attr name="ringBgColor" format="color" />
+        <attr name="elevation" format="dimension" />
+    </declare-styleable>
 
 </resources>

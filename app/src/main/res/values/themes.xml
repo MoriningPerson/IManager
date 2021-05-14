@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-<!--    全局主题选用设置-->
+    <!--    全局主题选用设置-->
     <style name="Theme.imgr" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/myThemeShallow</item>

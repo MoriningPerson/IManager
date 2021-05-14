@@ -2,12 +2,11 @@ package com.greyka.imgr.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.media.AudioAttributes;
-import android.media.SoundPool;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,12 +32,17 @@ public class FragHome extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        home_notice_board_title = (TextView) view.findViewById(R.id.home_notice_board_title);
+        home_notice_board_title = view.findViewById(R.id.home_notice_board_title);
         home_notice_board_title.setText(myUtils.myCalenderHelper.getChineseTotal());
-        timer = (CardView) view.findViewById(R.id.home_timer_button);
+        timer = view.findViewById(R.id.home_timer_button);
         timer.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), Timer.class);
             startActivity(intent);
         });
+        /*button2 = view.findViewById(R.id.home_button2);
+        button2.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), MapDisplayActivity.class);
+            startActivity(intent);
+        });*/
     }
 }

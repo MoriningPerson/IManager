@@ -3,17 +3,17 @@
     <item
         android:id="@+id/home_bottom_navigation"
         android:icon="@mipmap/ic_home"
-        android:title="@string/bottomNavigationLable_Home"/>
+        android:title="@string/bottomNavigationLable_Home" />
     <item
         android:id="@+id/calendar_bottom_navigation"
         android:icon="@mipmap/ic_calendar"
-        android:title="@string/bottomNavigationLable_Calendar"/>
+        android:title="@string/bottomNavigationLable_Calendar" />
     <item
         android:id="@+id/task_bottom_navigation"
         android:icon="@mipmap/ic_task"
-        android:title="@string/bottomNavigationLable_List"/>
+        android:title="@string/bottomNavigationLable_List" />
     <item
         android:id="@+id/mine_bottom_navigation"
         android:icon="@mipmap/ic_mine"
-        android:title="@string/bottomNavigationLable_Mine"/>
+        android:title="@string/bottomNavigationLable_Mine" />
 </menu>

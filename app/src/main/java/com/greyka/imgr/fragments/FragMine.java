@@ -1,7 +1,9 @@
 package com.greyka.imgr.fragments;
 
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,6 @@ public class FragMine extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        textview = (TextView) view.findViewById(R.id.mine);
+        textview = view.findViewById(R.id.mine);
     }
 }

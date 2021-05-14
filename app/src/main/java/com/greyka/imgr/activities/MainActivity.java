@@ -1,20 +1,12 @@
 package com.greyka.imgr.activities;
 
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
-
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.fragments.myLocationPermissionDialogFragment;
