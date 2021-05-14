@@ -24,6 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.imgr">
+        <activity android:name=".activities.MapPoiSearch" />
         <activity android:name=".activities.MapDisplayActivity" />
 
         <service
