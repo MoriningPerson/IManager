@@ -43,7 +43,7 @@ public class Data {
         public static Task task5 = new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
                 "共青场",0,0,1,1,0,0,5);
 
-        public static List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5);
+        public static List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
 
 
         private long task_id;

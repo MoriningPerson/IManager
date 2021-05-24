@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/task_dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/ll_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:background="@color/grey">
+   </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/task_selector"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="400dp"
+        android:layout_marginTop="50dp" />
+    <LinearLayout
+        android:id="@+id/ll_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="450dp"
+        android:orientation="horizontal"
+        android:background="@color/grey">
+    </LinearLayout>
 
 </RelativeLayout>
