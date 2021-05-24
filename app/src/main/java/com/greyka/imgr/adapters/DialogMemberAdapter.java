@@ -47,7 +47,7 @@ public class DialogMemberAdapter extends RecyclerView.Adapter<DialogMemberAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item,parent,false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }

@@ -33,6 +33,7 @@ public class TaskListSelector extends Dialog implements DialogMemberAdapter.OnIt
     private DialogMemberAdapter mSelectorBranchAdapter;
     private RecyclerView rv_selector_branch;
     private TodayTaskDialog todayTaskDialog;
+    private TaskItemDialog taskItemDialog;
 
 
     public TaskListSelector(Context context, List<Task> mSimpleListItemEntity) {
@@ -60,6 +61,8 @@ public class TaskListSelector extends Dialog implements DialogMemberAdapter.OnIt
         rv_selector_branch.setAdapter(mSelectorBranchAdapter);
     }
 
+
+
     /**
      * adpter里面的checkbox监听接口
      * @param position item的位置
@@ -67,9 +70,12 @@ public class TaskListSelector extends Dialog implements DialogMemberAdapter.OnIt
      */
     @Override
     public void onItemClick(int position) {
-        todayTaskDialog = new TodayTaskDialog();
-        final FragmentActivity myActivity=(FragmentActivity) context;
-        todayTaskDialog.show(myActivity.getSupportFragmentManager(), "TaskDialog"); ;
+       // todayTaskDialog = new TodayTaskDialog();
+       // final FragmentActivity myActivity=(FragmentActivity) context;
+        //todayTaskDialog.show(myActivity.getSupportFragmentManager(), "TaskDialog"); ;
+        taskItemDialog = new TaskItemDialog(context,taskList.get(position));
+        taskItemDialog.setCancelable(false);
+        taskItemDialog.show();
 
     }
 
