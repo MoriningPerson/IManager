@@ -46,7 +46,7 @@ public class TaskListSelector extends Dialog implements DialogMemberAdapter.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.task_dialog);
-        this.setCanceledOnTouchOutside(false); // 点击外部会消失
+        this.setCanceledOnTouchOutside(true); // 点击外部会消失
         InitViews();
     }
 
