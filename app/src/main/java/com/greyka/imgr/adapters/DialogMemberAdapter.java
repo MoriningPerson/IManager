@@ -1,6 +1,7 @@
 package com.greyka.imgr.adapters;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.List;
 public class DialogMemberAdapter extends RecyclerView.Adapter<DialogMemberAdapter.ViewHolder> {
     private List<Task> list;
     private OnItemClickListener mOnItemClickListener;
+    private static ViewHolder holder;
 
     static public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
@@ -48,7 +50,7 @@ public class DialogMemberAdapter extends RecyclerView.Adapter<DialogMemberAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item,parent,false);
-        ViewHolder holder = new ViewHolder(view);
+       holder = new ViewHolder(view);
         return holder;
     }
 
@@ -88,6 +90,14 @@ public class DialogMemberAdapter extends RecyclerView.Adapter<DialogMemberAdapte
      */
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
+    }
+
+    public void UpdateItem(int pos,Task task_edited){
+      Log.d("myAdapter",task_edited.getTask_name());
+        holder.name.setText(task_edited.getTask_name());
+        String test=(String)holder.name.getText();
+       Log.d("myAdapter",test);
+        holder.description.setText(task_edited.getTask_description());
     }
 
     /**
