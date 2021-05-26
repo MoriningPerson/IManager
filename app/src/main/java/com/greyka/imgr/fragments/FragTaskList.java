@@ -1,80 +1,75 @@
-package com.greyka.imgr.dialogs;
-
+package com.greyka.imgr.fragments;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import com.greyka.imgr.R;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.greyka.imgr.adapters.TaskDialogMemberAdapter;
-import com.greyka.imgr.data.Data.Task;
 
-import java.util.ArrayList;
+import com.greyka.imgr.R;
+import com.greyka.imgr.adapters.TaskDialogMemberAdapter;
+import com.greyka.imgr.data.Data;
+import com.greyka.imgr.dialogs.TaskItemDialog;
+import com.greyka.imgr.dialogs.ViewUpdator;
+
 import java.util.List;
 
-/**
- * Created by jie on 2018/9/9.
- */
-
-public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.OnItemClickListener,ViewUpdator{
-    private List<Task> taskList = new ArrayList<>();    //选择列表的数据
-    private Task task = new Task();
+public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.OnItemClickListener, ViewUpdator {
+    public static final String ARG_OBJECT = "object";
     private Context context;
-    private static int mPosition;
-
-    private TaskDialogMemberAdapter mSelectorBranchAdapter;
+    private List<Data.Task> taskList;
     private RecyclerView rv_selector_branch;
-    private TodayTaskDialog todayTaskDialog;
+    private TaskDialogMemberAdapter mSelectorBranchAdapter;
+    private static int mPosition;
     private TaskItemDialog taskItemDialog;
-    private ImageView editTitle;
+    private View view;
 
-
-    public TaskListSelector(Context context, List<Task> mSimpleListItemEntity) {
-        super(context);
+    public FragTaskList(Context context, List<Data.Task> mSimpleListItemEntity) {
+        super();
         this.context = context;
         this.taskList = mSimpleListItemEntity;
 
     }
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.task_dialog);
-        this.setCanceledOnTouchOutside(true); // 点击外部会消失
-        InitViews();
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.frag_task_list, container, false);
+
     }
 
-    private void InitViews() {
+    private void InitViews(View view) {
 
-        rv_selector_branch = (RecyclerView) findViewById(R.id.task_selector);
-        LinearLayoutManager layoutmanager = new LinearLayoutManager(getContext());
-        rv_selector_branch.setLayoutManager(layoutmanager);
+        rv_selector_branch = (RecyclerView)view.findViewById(R.id.task_recycle);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rv_selector_branch.setLayoutManager(layoutManager);
         mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList);
         mSelectorBranchAdapter.setOnItemClickListener(this);
         rv_selector_branch.setAdapter(mSelectorBranchAdapter);
     }
 
 
-    /**
-     * adpter里面的checkbox监听接口
-     * @param position item的位置
-     *                 改变元数据集的内容
-     */
+
+
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        this.view=view;
+        InitViews(view);
+    }
+
     @Override
     public void onItemClick(int position) {
-       // todayTaskDialog = new TodayTaskDialog();
-       // final FragmentActivity myActivity=(FragmentActivity) context;
-        //todayTaskDialog.show(myActivity.getSupportFragmentManager(), "TaskDialog"); ;
         mPosition=position;
         taskItemDialog = new TaskItemDialog(this,context,taskList.get(position));
         taskItemDialog.setCancelable(false);
@@ -90,23 +85,13 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         ViewGroup.LayoutParams layoutParams = new  ViewGroup.LayoutParams(width, height);
         taskItemDialog.setContentView(viewDialog, layoutParams);
         taskItemDialog.InitViews();
-
-
-
-
     }
 
     @Override
-    public void UpdateViews(Task task_edited){
+    public void UpdateViews(Data.Task task_edited){
         Log.d("myActivity",task_edited.getTask_name());
         mSelectorBranchAdapter.UpdateItem(mPosition,task_edited);
-        this.InitViews();
-       // this.show();
+        this.InitViews(view);
+        // this.show();
     }
-
-
-
-
-
-
 }

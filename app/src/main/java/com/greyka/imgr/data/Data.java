@@ -200,4 +200,61 @@ public class Data {
             this.task_week_id = task_week_id;
         }
     }
+
+    public static class Plan{
+        public Plan(long plan_id, String plan_name, String plan_description, String plan_date) {
+            this.plan_id = plan_id;
+            this.plan_name = plan_name;
+            this.plan_description = plan_description;
+            this.plan_date = plan_date;
+        }
+
+        private long plan_id;
+        private String plan_name;
+        private String plan_description;
+        private String plan_date;
+
+        public Plan(){}
+        public static Plan plan1 = new Plan(1,"做晨练","一日之计在于晨","2021/5/23");
+        public static Plan plan2 = new Plan(2,"期末复习","风雨过后才有彩虹","2021/5/23");
+        public static Plan plan3 = new Plan(3,"体育打卡","课外活动也很重要","2021/5/23");
+        public static Plan plan4 = new Plan(4,"每天7杯水","水是生命之源","2021/5/23");
+        public static Plan plan5 = new Plan(5,"每天读英语","学好英语走遍天下都不怕","2021/5/23");
+        public static Plan plan6 = new Plan(6,"背书毛概","小心胡航不给你过","2021/5/23");
+        public static Plan plan7 = new Plan(7,"背200个单词","你是想裸考了吗？","2021/5/23");
+
+        public static List<Plan> planList = Arrays.asList(plan1, plan2, plan3, plan4, plan5,plan6, plan7);
+
+        public long getPlan_id() {
+            return plan_id;
+        }
+
+        public void setPlan_id(long plan_id) {
+            this.plan_id = plan_id;
+        }
+
+        public String getPlan_name() {
+            return plan_name;
+        }
+
+        public void setPlan_name(String plan_name) {
+            this.plan_name = plan_name;
+        }
+
+        public String getPlan_description() {
+            return plan_description;
+        }
+
+        public void setPlan_description(String plan_description) {
+            this.plan_description = plan_description;
+        }
+
+        public String getPlan_date() {
+            return plan_date;
+        }
+
+        public void setPlan_date(String plan_date) {
+            this.plan_date = plan_date;
+        }
+    }
 }

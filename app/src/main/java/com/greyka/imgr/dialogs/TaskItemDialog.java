@@ -5,22 +5,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.greyka.imgr.R;
-import com.greyka.imgr.adapters.DialogMemberAdapter;
 import com.greyka.imgr.data.Data.Task;
-import com.greyka.imgr.utilities.myUtils;
 
 public class TaskItemDialog extends Dialog {
     private Task task = new Task();
@@ -30,10 +24,10 @@ public class TaskItemDialog extends Dialog {
     private TextView create_date;
     private ImageView editTitle;
     private EditText editText;
-    private TaskListSelector dialog;
+    private ViewUpdator dialog;
     private TextView submit;
 
-    public TaskItemDialog(@NonNull TaskListSelector dialog, Context context, Task task){
+    public TaskItemDialog(@NonNull ViewUpdator dialog, Context context, Task task){
         super(context);
         this.dialog=dialog;
         this.context = context;
@@ -78,7 +72,7 @@ public class TaskItemDialog extends Dialog {
                 new AlertDialog.Builder(context);
            final View dialogView = LayoutInflater.from(context)
                    .inflate(R.layout.task_edit_dialog,null);
-           TaskListSelector mDialog = this.dialog;
+           ViewUpdator mDialog = this.dialog;
            inputDialog.setTitle(editTarget);
            inputDialog.setView(dialogView);
            EditText edit_text =
