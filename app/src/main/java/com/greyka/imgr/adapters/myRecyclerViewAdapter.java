@@ -64,9 +64,7 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
             taskTime = view.findViewById(R.id.taskTime);
         }
 
-        public TextView getTaskTitle() {
-            return taskTitle;
-        }
+        public TextView getTaskTitle() {return taskTitle;}
         public TextView getTaskTime(){return taskTime;}
     }
 }

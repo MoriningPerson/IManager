@@ -3,22 +3,37 @@ package com.greyka.imgr.utilities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.AppOpsManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
+import android.net.Uri;
+import android.os.Binder;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -29,27 +44,25 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.greyka.imgr.R;
+import com.greyka.imgr.activities.MainActivity;
 import com.greyka.imgr.fragments.FragCalendar;
 import com.greyka.imgr.fragments.FragHome;
-import com.greyka.imgr.fragments.FragList;
 import com.greyka.imgr.fragments.FragMine;
-import com.greyka.imgr.fragments.myLocationPermissionDialogFragment;
+import com.greyka.imgr.fragments.FragList;
+import com.greyka.imgr.fragments.myPermissionDialogFragment;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 public class myUtils {
-    public interface timer_handler {
-        void onTickEvent();
-
-        void onFinishEvent();
-
-        void onCreateEvent(int secInFuture, timer_handler TH);
-    }
-
     public static class myDensityHelper {
-        private final Context context;
+        private Context context;
 
         public myDensityHelper(Context context) {
             this.context = context;
@@ -65,8 +78,8 @@ public class myUtils {
     }
 
     public static class myCalenderHelper {
-        private static final Calendar cal = Calendar.getInstance();
         static String[] ChineseDayOfWeek = {"日", "一", "二", "三", "四", "五", "六"};
+        private static final Calendar cal = Calendar.getInstance();
 
         public static int getYear() {
             return cal.get(Calendar.YEAR);
@@ -104,7 +117,8 @@ public class myUtils {
             String d = String.valueOf(myUtils.myCalenderHelper.getDay());
             String m = String.valueOf(myUtils.myCalenderHelper.getMonth());
             String y = String.valueOf(myUtils.myCalenderHelper.getYear());
-            return y + "年" + m + "月" + d + "日" + "    " + "星期" + myCalenderHelper.getChineseDayOfWeek();
+            String str = y + "年" + m + "月" + d + "日" + "    " + "星期" + myUtils.myCalenderHelper.getChineseDayOfWeek();
+            return str;
         }
 
         public static String getSeason() {
@@ -122,15 +136,47 @@ public class myUtils {
         public myPermissionManager(FragmentActivity main) {
             this.myActivity = main;
         }
-
+        public boolean checkFloatingPermission() {
+            final int version = Build.VERSION.SDK_INT;
+            if (version >= 19) {
+                return checkOp(myActivity, 24);
+            }
+            return true;
+        }
+        @TargetApi(Build.VERSION_CODES.KITKAT)
+        private static boolean checkOp(Context context, int op) {
+            final int version = Build.VERSION.SDK_INT;
+            if (version >= 19) {
+                AppOpsManager manager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+                try {
+                    Class clazz = AppOpsManager.class;
+                    Method method = clazz.getDeclaredMethod("checkOp", int.class, int.class, String.class);
+                    return AppOpsManager.MODE_ALLOWED == (int) method.invoke(manager, op, Binder.getCallingUid(), context.getPackageName());
+                } catch (Exception e) {
+                }
+            } else {
+            }
+            return false;
+        }
         public void applyForLocationPermission(ActivityResultLauncher<String> requestPermissionLauncher) {
             Log.d("this", "mmm");
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
-
+        public void applyForFloatingPermission() {
+            int sdkInt = Build.VERSION.SDK_INT;
+            if (sdkInt >= Build.VERSION_CODES.O) {//8.0以上
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                myActivity.startActivityForResult(intent, 1);
+            } else if (sdkInt >= Build.VERSION_CODES.M) {//6.0-8.0
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                myActivity.startActivityForResult(intent, 1);
+            }
+        }
         public void getPermissionDialog() {
-            if (ContextCompat.checkSelfPermission(myActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                myLocationPermissionDialogFragment mdf = new myLocationPermissionDialogFragment();
+            if (ContextCompat.checkSelfPermission(myActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || !checkFloatingPermission()) {
+                myPermissionDialogFragment mdf = new myPermissionDialogFragment();
                 mdf.show(myActivity.getSupportFragmentManager(), "aa");
             }
         }
@@ -153,11 +199,12 @@ public class myUtils {
     }
 
     public static class myNavigationManagerForMainActivity extends AppCompatActivity {
+        private ArrayList<Fragment> myFragments;
         private final FragHome fragHome = new FragHome();
+        ;
         private final FragList fragList = new FragList();
         private final FragMine fragMine = new FragMine();
         private final FragCalendar fragCalendar = new FragCalendar();
-        private ArrayList<Fragment> myFragments;
         private Fragment now;
 
         public void runNavigation(FragmentActivity myActivity) {
@@ -175,54 +222,58 @@ public class myUtils {
                     .commit();
             now = fragHome;
             BottomNavigationView navigationView = myActivity.findViewById(R.id.navigation_launch);
-            navigationView.setOnNavigationItemSelectedListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.home_bottom_navigation:
-                        if (now != fragHome) {
-                            myFragmentManager
-                                    .beginTransaction()
-                                    .show(fragHome)
-                                    .hide(now)
-                                    .commit();
-                            now = fragHome;
-                        }
-                        break;
-                    case R.id.task_bottom_navigation:
-                        if (now != fragList) {
-                            Log.d("asd", "asd");
-                            myFragmentManager
-                                    .beginTransaction()
-                                    .show(fragList)
-                                    .hide(now)
-                                    .commit();
-                            now = fragList;
-                        }
-                        break;
-                    case R.id.mine_bottom_navigation:
-                        if (now != fragMine) {
-                            myFragmentManager
-                                    .beginTransaction()
-                                    .show(fragMine)
-                                    .hide(now)
-                                    .commit();
-                            now = fragMine;
-                        }
-                        break;
-                    case R.id.calendar_bottom_navigation:
-                        if (now != fragCalendar) {
-                            myFragmentManager
-                                    .beginTransaction()
-                                    .show(fragCalendar)
-                                    .hide(now)
-                                    .commit();
-                            now = fragCalendar;
-                        }
-                        break;
-                }
+            navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @SuppressLint("NonConstantResourceId")
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.home_bottom_navigation:
+                            if (now != fragHome) {
+                                myFragmentManager
+                                        .beginTransaction()
+                                        .show(fragHome)
+                                        .hide(now)
+                                        .commit();
+                                now = fragHome;
+                            }
+                            break;
+                        case R.id.task_bottom_navigation:
+                            if (now != fragList) {
+                                Log.d("asd", "asd");
+                                myFragmentManager
+                                        .beginTransaction()
+                                        .show(fragList)
+                                        .hide(now)
+                                        .commit();
+                                now = fragList;
+                            }
+                            break;
+                        case R.id.mine_bottom_navigation:
+                            if (now != fragMine) {
+                                myFragmentManager
+                                        .beginTransaction()
+                                        .show(fragMine)
+                                        .hide(now)
+                                        .commit();
+                                now = fragMine;
+                            }
+                            break;
+                        case R.id.calendar_bottom_navigation:
+                            if (now != fragCalendar) {
+                                myFragmentManager
+                                        .beginTransaction()
+                                        .show(fragCalendar)
+                                        .hide(now)
+                                        .commit();
+                                now = fragCalendar;
+                            }
+                            break;
+                    }
 
-                // 默认 false
-                // false 的话 下面颜色不会变化
-                return true;
+                    // 默认 false
+                    // false 的话 下面颜色不会变化
+                    return true;
+                }
             });
         }
 
@@ -267,10 +318,10 @@ public class myUtils {
     }
 
     public static class myToastHelper {
-        private static Toast toast = null;
-
         private myToastHelper() {
         }
+
+        private static Toast toast = null;
 
         @SuppressLint("ShowToast")
         public static void showText(Context context, String text, int length) {
@@ -287,11 +338,12 @@ public class myUtils {
         Boolean init = false;
         int Top, Left;
         int height, width;
-        private int lastX, lastY;
 
         public myViewMover(View view) {
             this.v = view;
         }
+
+        private int lastX, lastY;
 
         public void move(MotionEvent event, int upX, int downX, int upY, int downY) {
             int x = (int) event.getX();
@@ -327,15 +379,23 @@ public class myUtils {
     }
 
     public static class myCountDownTimerHelper {
-        private final long mMillisTotal;
-        private final timer_handler TH;
+        private long mMillisTotal;
         private long mMillisRemain;
         private boolean isRunning = false;
         private CountDownTimer CDT;
+        private timer_handler TH;
 
-        public myCountDownTimerHelper(int secInFuture, timer_handler TH) {
+        public interface timer_handler {
+            void onTickEvent();
+
+            void onFinishEvent();
+
+            void onCreateEvent(int secInFuture, timer_handler TH);
+        }
+
+        public myCountDownTimerHelper(int secInFuture,int secRemain, timer_handler TH) {
             mMillisTotal = (long) secInFuture * 1000 + 500;
-            mMillisRemain = mMillisTotal;
+            mMillisRemain = (long) secRemain * 1000 + 500;
             this.TH = TH;
             this.TH.onCreateEvent(secInFuture, TH);
         }
@@ -399,27 +459,127 @@ public class myUtils {
     }
 
     public static class beeper {
+        public static class beepAttributes {
+            beepAttributes(int soundID, int soundLength, float leftVolume, float rightVolume, int priority, int loop, float rate) {
+                this.soundID = soundID;
+                this.soundLength = soundLength;
+                this.leftVolume = leftVolume;
+                this.rightVolume = rightVolume;
+                this.priority = priority;
+                this.loop = loop;
+                this.rate = rate;
+                lastPlayStartTime.put(soundID, 0L);
+            }
+
+            int soundID;
+            int soundLength;
+            float leftVolume;
+            float rightVolume;
+            int priority;
+            int loop;
+            float rate;
+        }
+
         public static final int scrollWheel = 1; // 滚轮
         private static SoundPool soundPool = null;
         private static int nowSound;
-        private final HashMap<Integer, Integer> soundID = new HashMap<>();
+        private static final HashMap<Integer, beepAttributes> mySounds = new HashMap<>();
+        private static HashMap<Integer, Long> lastPlayStartTime = new HashMap<>();
+        private static HashSet<Integer> soundLoaded = new HashSet<>();
 
         public beeper(Context context) {
             if (soundPool == null) {
-                AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
-                soundPool = new SoundPool.Builder().setMaxStreams(16).setAudioAttributes(audioAttributes).build();
-                soundID.put(scrollWheel, soundPool.load(context, R.raw.scroll_wheel, 1));
+                AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
+                soundPool = new SoundPool.Builder().setMaxStreams(4).setAudioAttributes(audioAttributes).build();
+                soundPool.setOnLoadCompleteListener((soundPool, soundID, status) -> {
+                    soundLoaded.add(soundID);
+                });
+                mySounds.put(scrollWheel, new beepAttributes(soundPool.load(context, R.raw.scroll_wheel, 1), 50, 0.3f, 0.3f, 1, 0, 1));
             }
         }
 
         public void play(int sound) {
-            if (soundID.containsKey(sound)) {
-                nowSound = soundPool.play(soundID.get(sound), 1, 1, 1, 0, 1);
-            } else throw new IllegalStateException("Unexpected value: " + sound);
+            if (mySounds.containsKey(sound)) {
+                beepAttributes temp = mySounds.get(sound);
+                if (soundLoaded.contains(temp.soundID)) {
+                    if (System.currentTimeMillis() > lastPlayStartTime.get(temp.soundID) + temp.soundLength) {
+                        nowSound = soundPool.play(temp.soundID, temp.leftVolume, temp.rightVolume, temp.priority, temp.loop, temp.rate);
+                        lastPlayStartTime.put(temp.soundID, System.currentTimeMillis());
+                    }
+                }
+            }
         }
 
         public void stop() {
             soundPool.stop(nowSound);
+        }
+    }
+
+    public static class myForegroundActivityManager {
+        public static boolean isForeground(Activity activity) {
+            return isForeground(activity, activity.getClass().getName());
+        }
+
+        /**
+         * 判断某个界面是否在前台,返回true，为显示,否则不是
+         */
+        public static boolean isForeground(Activity context, String className) {
+            if (context == null || TextUtils.isEmpty(className))
+                return false;
+            ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+            List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
+            if (list != null && list.size() > 0) {
+                ComponentName cpn = list.get(0).topActivity;
+                if (className.equals(cpn.getClassName()))
+                    return true;
+            }
+            return false;
+        }
+
+        /**
+         * 将本应用置顶到最前端
+         * 当本应用位于后台时，则将它切换到最前端
+         *
+         * @param activity
+         */
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        public static void setTopApp(Activity activity, Context from) {
+            if (!isForeground(activity)) {
+                Intent resultIntent = new Intent(from, activity.getClass());
+                resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                PendingIntent pendingIntent =
+                        PendingIntent.getActivity(from, 0, resultIntent, 0);
+                try {
+                    pendingIntent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    from.startActivity(resultIntent);
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public static class NotifyHelper {
+
+        public static void CreateChannel(Context context,String channel_id,CharSequence channel_name,String description){
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel=new NotificationChannel(channel_id,channel_name, NotificationManager.IMPORTANCE_HIGH);
+                notificationChannel.setDescription(description);
+                NotificationManager notificationManager=context.getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+        }
+
+        public static Notification createForeNotification(Context context, String channel_id, RemoteViews remoteViews){
+            Intent i=new Intent(context, MainActivity.class);
+            PendingIntent mainIntent=PendingIntent.getActivity(context,0,i,0);
+            NotificationCompat.Builder builder=new NotificationCompat.Builder(context)
+                    .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                    .setCustomContentView(remoteViews)
+                    .setChannelId(channel_id)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentIntent(mainIntent)
+                    .setPriority(NotificationCompat.PRIORITY_MAX);
+            return builder.build();
         }
     }
 }
