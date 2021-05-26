@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.greyka.imgr.R;
 import com.greyka.imgr.activities.MainActivity;
 import com.greyka.imgr.activities.Timer;
+import com.greyka.imgr.classes.mottoManager;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.dialogs.TaskListSelector;
@@ -56,11 +57,12 @@ public class FragHome extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         motto = (TextView)view.findViewById(R.id.string_motto);
+        motto.setText(mottoManager.getRandomMotto());
         refresh = (ImageButton)view.findViewById(R.id.refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                motto.setText(getRandomMotto());
+                refreshHomeData();
             }
         });
         home_notice_board_title = view.findViewById(R.id.home_notice_board_title);
@@ -87,8 +89,7 @@ public class FragHome extends Fragment {
             startActivity(intent);
         });*/
     }
-    String getRandomMotto(){
-
-        return "";
+    void refreshHomeData(){
+        motto.setText(mottoManager.getRandomMotto());
     }
 }
