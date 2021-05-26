@@ -5,28 +5,13 @@
     android:id="@+id/task_dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <LinearLayout
-        android:id="@+id/task_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal"
-        android:background="@color/grey">
-    </LinearLayout>
+
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/task_recycle"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
-        android:layout_marginTop="50dp" />
-    <LinearLayout
-        android:id="@+id/task_bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="530dp"
-        android:orientation="horizontal"
-        android:background="@color/grey">
-    </LinearLayout>
+        android:layout_height="match_parent" />
+
 
 </RelativeLayout>
