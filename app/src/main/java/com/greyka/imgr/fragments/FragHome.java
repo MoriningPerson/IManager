@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,8 @@ public class FragHome extends Fragment {
     private CardView timer;
     private CardView button2;
     private TextView total_complete_percent;
+    private TextView motto;
+    private ImageButton refresh;
     private TodayTaskDialog todayTaskDialog;
     private TaskListSelector taskListSelector;
     private List<Task> taskList=Task.taskList;
@@ -51,6 +55,14 @@ public class FragHome extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        motto = (TextView)view.findViewById(R.id.string_motto);
+        refresh = (ImageButton)view.findViewById(R.id.refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                motto.setText(getRandomMotto());
+            }
+        });
         home_notice_board_title = view.findViewById(R.id.home_notice_board_title);
         home_notice_board_title.setText(myUtils.myCalenderHelper.getChineseTotal());
         timer = view.findViewById(R.id.home_timer_button);
@@ -74,5 +86,9 @@ public class FragHome extends Fragment {
             Intent intent = new Intent(getContext(), MapDisplayActivity.class);
             startActivity(intent);
         });*/
+    }
+    String getRandomMotto(){
+
+        return "";
     }
 }
