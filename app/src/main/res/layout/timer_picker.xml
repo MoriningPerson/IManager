@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+        android:layout_height="320dp"
+        android:backgroundTint="@color/calendar_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/myThemeDeep"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="设置计时器"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+            <Button
+                android:id="@+id/timerpicker_cancel"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="取消"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/timerpicker_submit"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="提交"
+                android:textColor="@color/white" />
+        </androidx.cardview.widget.CardView>
+
+    <com.greyka.imgr.classes.PickerView
+        android:id="@+id/timerpickerview_hour"
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="5dp"
+        app:fastSlideSpeed="500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:maxTextAlpha="255"
+        app:maxTextSizeRate="4"
+        app:minTextAlpha="100"
+        app:minTextSizeRate="2"
+        app:textColor="@color/black" />
+
+    <com.greyka.imgr.classes.PickerView
+        android:id="@+id/timerpickerview_minute"
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        app:fastSlideSpeed="500"
+        app:layout_constraintBottom_toBottomOf="@+id/timerpickerview_hour"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timerpickerview_hour"
+        app:maxTextAlpha="255"
+        app:maxTextSizeRate="4"
+        app:minTextAlpha="100"
+        app:minTextSizeRate="2"
+        app:textColor="@color/black" />
+
+    <com.greyka.imgr.classes.PickerView
+        android:id="@+id/timerpickerview_second"
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        app:fastSlideSpeed="500"
+        app:layout_constraintBottom_toBottomOf="@+id/timerpickerview_minute"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timerpickerview_minute"
+        app:maxTextAlpha="255"
+        app:maxTextSizeRate="4"
+        app:minTextAlpha="100"
+        app:minTextSizeRate="2"
+        app:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="时"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/timerpickerview_hour"
+        app:layout_constraintStart_toEndOf="@id/timerpickerview_hour"
+        app:layout_constraintTop_toTopOf="@+id/timerpickerview_hour" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="秒"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/timerpickerview_second"
+        app:layout_constraintStart_toEndOf="@id/timerpickerview_second"
+        app:layout_constraintTop_toTopOf="@+id/timerpickerview_second" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="分"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/timerpickerview_minute"
+        app:layout_constraintStart_toEndOf="@id/timerpickerview_minute"
+        app:layout_constraintTop_toTopOf="@+id/timerpickerview_minute" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置锁机"
+        app:layout_constraintStart_toStartOf="@+id/timerpickerview_hour"
+        app:layout_constraintTop_toTopOf="@+id/lock_option" />
+
+    <Switch
+        android:id="@+id/lock_option"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="4dp"
+        android:thumb="@drawable/switch_white_circle_selector"
+        android:track="@drawable/switch_selector"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/timerpickerview_hour"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <SeekBar
+        android:id="@+id/lock_percent"
+        style="@style/CustomSeekbarStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
+        android:progress="0"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lock_option" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="锁机时长:"
+        android:layout_marginEnd="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lock_option" />
+    <TextView
+        android:id="@+id/lock_percnet_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0%"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lock_option" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
