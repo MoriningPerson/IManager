@@ -9,18 +9,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.greyka.imgr.R;
 
+import java.util.ArrayList;
+
 public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAdapter.ViewHolder> {
 
-    private final String[] localDataSet;
+    private final String[] taskTitleList;
+    private final String[] taskTimeList;
 
-    /**
-     * Initialize the dataset of the Adapter.
-     *
-     * @param dataSet String[] containing the data to populate views to be used
-     *                by RecyclerView.
-     */
-    public myRecyclerViewAdapter(String[] dataSet) {
-        localDataSet = dataSet;
+
+    public myRecyclerViewAdapter(ArrayList<String> taskTitleList, ArrayList<String> taskTimeList) {
+        this.taskTitleList = taskTitleList.toArray(new String[taskTitleList.size()]);
+        this.taskTimeList = taskTimeList.toArray(new String[taskTimeList.size()]);
     }
 
     // Create new views (invoked by the layout manager)
@@ -39,13 +38,14 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTextView().setText(localDataSet[position]);
+        viewHolder.getTaskTitle().setText(taskTitleList[position]);
+        viewHolder.getTaskTime().setText(taskTimeList[position]);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return localDataSet.length;
+        return taskTitleList.length;
     }
 
     /**
@@ -53,17 +53,20 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
      * (custom ViewHolder).
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final TextView taskTitle;
+        private final TextView taskTime;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
 
-            textView = view.findViewById(R.id.recyclerViewItem);
+            taskTitle = view.findViewById(R.id.taskTitle);
+            taskTime = view.findViewById(R.id.taskTime);
         }
 
-        public TextView getTextView() {
-            return textView;
+        public TextView getTaskTitle() {
+            return taskTitle;
         }
+        public TextView getTaskTime(){return taskTime;}
     }
 }
