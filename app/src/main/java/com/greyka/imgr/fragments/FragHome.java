@@ -39,6 +39,7 @@ public class FragHome extends Fragment {
     private TodayTaskDialog todayTaskDialog;
     private TaskListSelector taskListSelector;
     private List<Task> taskList=Task.taskList;
+    private ImageView add_task;
 
 
     @Nullable
@@ -79,6 +80,17 @@ public class FragHome extends Fragment {
             public void onClick(View v) {
                 Log.d("MainActivity","click");
              showSelectorDialog();
+
+
+            }
+        });
+        add_task = view.findViewById(R.id.home_add);
+
+        add_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("MainActivity","clickAdd");
+                new BaseFullBottomSheetFragment().show(getFragmentManager(), "dialog");
 
 
             }

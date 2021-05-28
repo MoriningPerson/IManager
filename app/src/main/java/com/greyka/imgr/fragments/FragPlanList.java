@@ -20,6 +20,7 @@ import com.greyka.imgr.adapters.PlanDialogMemberAdapter;
 import com.greyka.imgr.adapters.TaskDialogMemberAdapter;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.dialogs.TaskItemDialog;
+import com.greyka.imgr.dialogs.TaskListSelector;
 import com.greyka.imgr.dialogs.TodayTaskDialog;
 
 import java.util.List;
@@ -32,6 +33,9 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
     private PlanDialogMemberAdapter mSelectorBranchAdapter;
     private static int mPosition;
     private View view;
+    private Data.Plan plan;
+    private List<Data.Task> taskList= Data.Task.taskList;
+    private TaskListSelector taskListSelector;
 
     public FragPlanList(Context context, List<Data.Plan> mSimpleListItemEntity) {
         super();
@@ -67,11 +71,19 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
         InitViews(view);
     }
 
+    public void showSelectorDialog() {
+        taskListSelector = new TaskListSelector(getActivity(),taskList);
+        taskListSelector.setCancelable(false);
+        taskListSelector.show();
+    }
+
     @Override
     public void onItemClick(int position) {
         mPosition=position;
-        TodayTaskDialog demo = new TodayTaskDialog();
-        demo.show(getActivity().getSupportFragmentManager(), null);
+        plan=planList.get(mPosition);
+        Long plan_id=plan.getPlan_id();
+        //请求plan_id的不重复的taskList
+        showSelectorDialog();
     }
 
 
