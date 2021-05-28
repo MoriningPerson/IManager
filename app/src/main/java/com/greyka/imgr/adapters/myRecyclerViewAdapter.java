@@ -23,8 +23,8 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
 
         @Override
         public int compare(Object t1, Object t2) {
-            String str1 = ((Data.Task)(t1)).getStart_Time();
-            String str2 = ((Data.Task)(t2)).getStart_Time();
+            String str1 = ((Data.Task)(t1)).getStart_date();
+            String str2 = ((Data.Task)(t2)).getStart_date();
             return str1.compareTo(str2);
         }
     }
@@ -35,7 +35,7 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
         ArrayList<String> time = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             title.add(list.get(i).getTask_name());
-            time.add(list.get(i).getStart_Time() + " ~ " + list.get(i).getEnd_Time());
+            time.add(list.get(i).getStart_date() + " ~ " + list.get(i).getEnd_date());
         }
         this.taskTitleList = title.toArray(new String[title.size()]);
         this.taskTimeList = time.toArray(new String[time.size()]);
