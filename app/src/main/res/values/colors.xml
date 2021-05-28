@@ -21,4 +21,8 @@
     <color name="snow">#FFFFFAFA</color>
     <color name="floralwhite">#FFFFFAF0</color>
     <color name="dimgrey">#FF696969</color>
+    <color name="LimeGreen">#FF32CD32</color>
+    <color name="blue">#FF1296db</color>
+    <color name="red">#FFd81e06</color>
+
 </resources>

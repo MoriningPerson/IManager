@@ -8,18 +8,37 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.greyka.imgr.R;
+import com.greyka.imgr.data.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAdapter.ViewHolder> {
 
     private final String[] taskTitleList;
     private final String[] taskTimeList;
+    public class myComparator implements Comparator {
 
-
-    public myRecyclerViewAdapter(ArrayList<String> taskTitleList, ArrayList<String> taskTimeList) {
-        this.taskTitleList = taskTitleList.toArray(new String[taskTitleList.size()]);
-        this.taskTimeList = taskTimeList.toArray(new String[taskTimeList.size()]);
+        @Override
+        public int compare(Object t1, Object t2) {
+            String str1 = ((Data.Task)(t1)).getStart_Time();
+            String str2 = ((Data.Task)(t2)).getStart_Time();
+            return str1.compareTo(str2);
+        }
+    }
+    public myRecyclerViewAdapter(List<Data.Task> list) {
+        myComparator cmp = new myComparator();
+        Collections.sort(list,cmp);
+        ArrayList<String> title = new ArrayList<>();
+        ArrayList<String> time = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            title.add(list.get(i).getTask_name());
+            time.add(list.get(i).getStart_Time() + " ~ " + list.get(i).getEnd_Time());
+        }
+        this.taskTitleList = title.toArray(new String[title.size()]);
+        this.taskTimeList = time.toArray(new String[time.size()]);
     }
 
     // Create new views (invoked by the layout manager)

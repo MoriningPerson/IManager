@@ -52,7 +52,7 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
         rv_selector_branch = (RecyclerView)view.findViewById(R.id.task_recycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rv_selector_branch.setLayoutManager(layoutManager);
-        mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList);
+        mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList,getContext());
         mSelectorBranchAdapter.setOnItemClickListener(this);
         rv_selector_branch.setAdapter(mSelectorBranchAdapter);
     }

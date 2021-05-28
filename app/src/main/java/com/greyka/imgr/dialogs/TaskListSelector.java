@@ -59,7 +59,7 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         rv_selector_branch = (RecyclerView) findViewById(R.id.task_selector);
         LinearLayoutManager layoutmanager = new LinearLayoutManager(getContext());
         rv_selector_branch.setLayoutManager(layoutmanager);
-        mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList);
+        mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList,getContext());
         mSelectorBranchAdapter.setOnItemClickListener(this);
         rv_selector_branch.setAdapter(mSelectorBranchAdapter);
     }

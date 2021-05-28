@@ -17,14 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.myRecyclerViewAdapter;
+import com.greyka.imgr.data.Data;
 import com.greyka.imgr.utilities.myUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FragCalendar extends Fragment {
 
-    ArrayList<String> taskTitleList = new ArrayList<>();
-    ArrayList<String> taskTimeList = new ArrayList<>();
+    List<Data.Task> task;
 
     @Nullable
     @Override
@@ -43,7 +44,7 @@ public class FragCalendar extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.requireContext()));
         refreshTodayTask(myUtils.myCalenderHelper.getYear(), myUtils.myCalenderHelper.getMonth(), myUtils.myCalenderHelper.getDay());
-        recyclerView.setAdapter(new myRecyclerViewAdapter(taskTitleList, taskTimeList));
+        recyclerView.setAdapter(new myRecyclerViewAdapter(task));
         calenderCard.setOnTouchListener((v, event) -> {
             calenderCardMover.move(event, 0, 0, -v.getHeight() + density.dp2px(90), 0);
             memo.layout(memo.getLeft(), calenderCard.getBottom() + density.dp2px(10), memo.getRight(), memo.getBottom());
@@ -56,18 +57,12 @@ public class FragCalendar extends Fragment {
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 myUtils.myToastHelper.showText(view.getContext(), +year + "年" + (month+1) + "月" + dayOfMonth + "日", Toast.LENGTH_SHORT);
                 refreshTodayTask(year, month+1 , dayOfMonth);
-                recyclerView.setAdapter(new myRecyclerViewAdapter(taskTitleList, taskTimeList));
+                recyclerView.setAdapter(new myRecyclerViewAdapter(task));
             }
         });
         super.onViewCreated(view, savedInstanceState);
     }
     void refreshTodayTask(int year, int month, int day){
-        taskTitleList.clear();
-        taskTimeList.clear();
-
-        for(int i=0;i<10;i++){
-            taskTitleList.add(year+" "+month+" "+day);
-            taskTimeList.add("00:00");
-        }
+        task = Data.Task.taskList;
     }
 }

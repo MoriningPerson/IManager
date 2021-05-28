@@ -1,10 +1,12 @@
 package com.greyka.imgr.adapters;
 
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,11 +27,12 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
     private List<Task> list;
     private OnItemClickListener mOnItemClickListener;
     private static ViewHolder holder;
+    private final Context mcontext;
 
     static public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView description;
-        TextView status;
+        ImageView status;
         LinearLayout item_selected;
 
         public ViewHolder(View itemView) {
@@ -41,8 +44,9 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         }
     }
 
-    public TaskDialogMemberAdapter(List<Task> list) {
+    public TaskDialogMemberAdapter(List<Task> list,Context mcontext) {
         this.list = list;
+        this.mcontext = mcontext;
     }
 
     @NonNull
@@ -61,12 +65,19 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         holder.description.setText(lock.getTask_description());
         int task_status=lock.getCompleted();
         String status_string;
-        if(task_status==0)
-        status_string="已完成";
-        else if (task_status==1)
-            status_string="未完成";
-        else status_string="完成失败";
-        holder.status.setText(status_string);
+        if(task_status==0){
+            holder.status.setImageResource(R.drawable.ic_task_completed);
+            holder.status.setColorFilter(mcontext.getColor(R.color.dimgrey));
+        }
+
+        else if (task_status==1){
+            holder.status.setImageResource(R.drawable.ic_task_uncompleted);
+            holder.status.setColorFilter(mcontext.getColor(R.color.myThemeShallow));
+        }
+        else {
+            holder.status.setImageResource(R.drawable.ic_task_failed);
+            holder.status.setColorFilter(mcontext.getColor(R.color.dimgrey));
+        }
 
         holder.item_selected.setOnClickListener(new View.OnClickListener() {
             @Override
