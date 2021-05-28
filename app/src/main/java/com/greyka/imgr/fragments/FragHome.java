@@ -39,10 +39,5 @@ public class FragHome extends Fragment {
             Intent intent = new Intent(getContext(), Timer.class);
             startActivity(intent);
         });
-        /*button2 = view.findViewById(R.id.home_button2);
-        button2.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), MapDisplayActivity.class);
-            startActivity(intent);
-        });*/
     }
 }
