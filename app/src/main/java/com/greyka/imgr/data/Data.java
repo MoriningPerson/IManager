@@ -201,15 +201,15 @@ public class Data {
             this.task_week_id = task_week_id;
         }
 
-        public String getStart_Time() {
+        public String getStart_time() {
             return start_time;
         }
 
-        public void setStart_Time(String start_time) {
+        public void setStart_time(String start_time) {
             this.start_time = start_time;
         }
 
-        public String getEnd_Time() {
+        public String getEnd_time() {
             return end_time;
         }
 
