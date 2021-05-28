@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.greyka.imgr.R;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.greyka.imgr.data.Data.Task;
@@ -33,6 +34,7 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         TextView name;
         TextView description;
         ImageView status;
+        CardView colorBar;
         LinearLayout item_selected;
 
         public ViewHolder(View itemView) {
@@ -41,6 +43,7 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
             description = itemView.findViewById(R.id.task_desc);
             status =itemView.findViewById(R.id.task_status);
             item_selected = itemView.findViewById(R.id.rl_branch_item_root);
+            colorBar = itemView.findViewById(R.id.color_bar);
         }
     }
 
@@ -67,16 +70,25 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         String status_string;
         if(task_status==0){
             holder.status.setImageResource(R.drawable.ic_task_completed);
-            holder.status.setColorFilter(mcontext.getColor(R.color.dimgrey));
+            holder.status.setColorFilter(mcontext.getColor(R.color.grey));
+            holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.grey));
+            holder.name.setTextColor(mcontext.getColor(R.color.grey));
+            holder.description.setTextColor(mcontext.getColor(R.color.grey));
         }
 
         else if (task_status==1){
             holder.status.setImageResource(R.drawable.ic_task_uncompleted);
             holder.status.setColorFilter(mcontext.getColor(R.color.myThemeShallow));
+            holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.myThemeShallow));
+            holder.name.setTextColor(mcontext.getColor(R.color.black));
+            holder.description.setTextColor(mcontext.getColor(R.color.dimgrey));
         }
         else {
             holder.status.setImageResource(R.drawable.ic_task_failed);
             holder.status.setColorFilter(mcontext.getColor(R.color.dimgrey));
+            holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.dimgrey));
+            holder.name.setTextColor(mcontext.getColor(R.color.dimgrey));
+            holder.description.setTextColor(mcontext.getColor(R.color.dimgrey));
         }
 
         holder.item_selected.setOnClickListener(new View.OnClickListener() {

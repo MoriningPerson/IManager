@@ -24,5 +24,8 @@
     <color name="LimeGreen">#FF32CD32</color>
     <color name="blue">#FF1296db</color>
     <color name="red">#FFd81e06</color>
+    <color name="ForestGreen">#FF228B22</color>
+    <color name="Red4">#FF8B0000</color>
+    <color name="Red3">#FFCD0000</color>
 
 </resources>

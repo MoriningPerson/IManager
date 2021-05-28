@@ -24,6 +24,17 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/color_bar"
+            android:layout_width="2dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/task_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/myThemeShallow"/>
         <ImageView
             android:id="@+id/task_status"
             android:layout_width="20dp"
@@ -42,7 +53,7 @@
             android:id="@+id/task_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="12dp"
             android:text="title"
             android:textColor="@color/black"
