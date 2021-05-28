@@ -15,8 +15,6 @@ import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.myCollectionPagerAdapter;
 
 public class FragList extends Fragment {
-    // When requested, this adapter returns a DemoObjectFragment,
-    // representing an object in the collection.
     myCollectionPagerAdapter demoCollectionPagerAdapter;
     ViewPager viewPager;
 
@@ -28,11 +26,10 @@ public class FragList extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        demoCollectionPagerAdapter = new myCollectionPagerAdapter(getChildFragmentManager());
+        demoCollectionPagerAdapter = new myCollectionPagerAdapter(getChildFragmentManager(),getActivity());
         viewPager = view.findViewById(R.id.pager);
         viewPager.setAdapter(demoCollectionPagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 }

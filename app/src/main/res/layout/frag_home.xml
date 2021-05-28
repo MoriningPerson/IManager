@@ -64,7 +64,7 @@
                     android:textColor="@color/white" />
 
                 <ImageButton
-                    android:id="@+id/add_calendar"
+                    android:id="@+id/refresh"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:layout_gravity="end"
@@ -316,14 +316,16 @@
                     app:layout_constraintGuide_percent="0.65" />
 
                 <TextView
+                    android:gravity="center_vertical"
                     android:id="@+id/string_motto"
                     android:layout_width="200dp"
-                    android:layout_height="60dp"
+                    android:layout_height="100dp"
                     android:layout_marginStart="10dp"
 
-                    android:height="30dp"
-                    android:text="      生活就像海洋，只有意志坚强的人才能到达彼岸。\n                              ————马克思"
 
+                    android:text="我要扼住命运的咽喉"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/home_string_motto"
                     app:layout_constraintEnd_toStartOf="@+id/vertical_0.95"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/vertical_0.3"

@@ -17,11 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.myRecyclerViewAdapter;
+import com.greyka.imgr.data.Data;
 import com.greyka.imgr.utilities.myUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragCalendar extends Fragment {
 
-    String[] memos = {"asd", "bds", "a", "bds", "a", "bds", "a", "bds", "a", "bds", "a", "bds", "a", "bds", "a", "bds", "a", "bds", "a", "bds", "a", "bds", "a", "bds", "a", "bds", "a"};
+    List<Data.Task> task;
 
     @Nullable
     @Override
@@ -39,7 +43,8 @@ public class FragCalendar extends Fragment {
         myUtils.myDensityHelper density = new myUtils.myDensityHelper(this.requireContext());
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.requireContext()));
-        recyclerView.setAdapter(new myRecyclerViewAdapter(memos));
+        refreshTodayTask(myUtils.myCalenderHelper.getYear(), myUtils.myCalenderHelper.getMonth(), myUtils.myCalenderHelper.getDay());
+        recyclerView.setAdapter(new myRecyclerViewAdapter(task));
         calenderCard.setOnTouchListener((v, event) -> {
             calenderCardMover.move(event, 0, 0, -v.getHeight() + density.dp2px(90), 0);
             memo.layout(memo.getLeft(), calenderCard.getBottom() + density.dp2px(10), memo.getRight(), memo.getBottom());
@@ -47,8 +52,17 @@ public class FragCalendar extends Fragment {
             return true;
         });
         CalendarView calendarView = view.findViewById(R.id.calendarView);
-        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> myUtils.myToastHelper.showText(view1.getContext(), +year + "年" + month + "月" + dayOfMonth + "日", Toast.LENGTH_SHORT));
-
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                myUtils.myToastHelper.showText(view.getContext(), +year + "年" + (month+1) + "月" + dayOfMonth + "日", Toast.LENGTH_SHORT);
+                refreshTodayTask(year, month+1 , dayOfMonth);
+                recyclerView.setAdapter(new myRecyclerViewAdapter(task));
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
+    }
+    void refreshTodayTask(int year, int month, int day){
+        task = Data.Task.taskList;
     }
 }
