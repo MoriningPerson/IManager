@@ -348,7 +348,7 @@
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/home_notice_board"
-            app:layout_constraintRight_toLeftOf="@id/home_button2"
+            app:layout_constraintRight_toLeftOf="@id/home_add_button"
             app:layout_constraintTop_toBottomOf="@+id/home_notice_board">
 
             <ImageView
@@ -361,7 +361,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/home_button2"
+            android:id="@+id/home_add_button"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"

@@ -54,6 +54,7 @@ import com.greyka.imgr.fragments.myPermissionDialogFragment;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -111,6 +112,25 @@ public class myUtils {
 
         public static String getChineseDayOfWeek() {
             return ChineseDayOfWeek[getDayOfWeek() - 1];
+        }
+
+        public static int getYearAfterDays(int n){
+            Calendar TimeCalendar = Calendar.getInstance();
+            TimeCalendar.setTime(new Date());
+            TimeCalendar.add(Calendar.DAY_OF_MONTH,n);
+            return TimeCalendar.get(Calendar.YEAR);
+        }
+        public static int getMonthAfterDays(int n){
+            Calendar TimeCalendar = Calendar.getInstance();
+            TimeCalendar.setTime(new Date());
+            TimeCalendar.add(Calendar.DAY_OF_MONTH,n);
+            return (TimeCalendar.get(Calendar.MONTH)+1);
+        }
+        public static int getDayAfterDays(int n){
+            Calendar TimeCalendar = Calendar.getInstance();
+            TimeCalendar.setTime(new Date());
+            TimeCalendar.add(Calendar.DAY_OF_MONTH,n);
+            return TimeCalendar.get(Calendar.DATE);
         }
 
         public static String getChineseTotal() {

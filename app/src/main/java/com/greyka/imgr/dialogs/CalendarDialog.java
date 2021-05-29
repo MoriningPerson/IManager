@@ -19,10 +19,14 @@ import java.util.List;
 
 public class CalendarDialog extends Dialog {
     private Context context;
-    private int Year;
-    private int Month;
-    private int Day;
 
+    private dateSetter ds;
+    public interface dateSetter{
+        void setDate(int year, int month, int day);
+    }
+    public void setDateSetter(dateSetter ds){
+        this.ds = ds;
+    }
     public CalendarDialog(Context context) {
         super(context);
         this.context = context;
@@ -35,11 +39,7 @@ public class CalendarDialog extends Dialog {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                Year=year;
-                Month=month;
-                Day=dayOfMonth;
-                myUtils.myToastHelper.showText(view.getContext(), +year + "年" + (month+1) + "月" + dayOfMonth + "日", Toast.LENGTH_SHORT);
-
+                ds.setDate(year, month+1, dayOfMonth);
             }
         });
     }

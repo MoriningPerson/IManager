@@ -11,9 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,6 +30,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.greyka.imgr.dialogs.CalendarDialog;
 import com.greyka.imgr.dialogs.TaskListSelector;
+import com.greyka.imgr.utilities.myUtils;
 
 import org.w3c.dom.Text;
 
@@ -34,41 +38,82 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
     private Context mContext;
     private View view;
+    private ImageView detail;
     private TextView tv_today;
     private TextView tv_tomorrow;
     private TextView tv_select;
     private RelativeLayout rl_today;
     private RelativeLayout rl_tomorrow;
     private RelativeLayout rl_select;
-    private int position;
+    private RadioButton signUp;
+    private int position = 1;
     private CalendarDialog calendarDialog;
+    TextView date_selected;
 
+
+    private int Year, Month, Day;
+    private boolean Signup = false;
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         //返回BottomSheetDialog的实例
-        return new BottomSheetDialog(this.getContext());
+        return new BottomSheetDialog(this.getContext(),R.style.BottomSheetStyle); //设置软键盘弹出时向上移动
     }
     private void initButton(RelativeLayout rl,TextView tv){
+        if(rl == rl_select){
+            detail.setColorFilter(getContext().getColor(R.color.dimgrey));
+            date_selected.setText("");
+            Year = myUtils.myCalenderHelper.getYear();
+            Month = myUtils.myCalenderHelper.getMonth();
+            Day = myUtils.myCalenderHelper.getDay();
+        }
         GradientDrawable gradientDrawable1 = (GradientDrawable) rl.getBackground();
-        gradientDrawable1 .setColor(getResources().getColor(R.color.grey));
+        gradientDrawable1 .setColor(getResources().getColor(R.color.grey91));
         tv.setTextColor(getResources().getColor(R.color.dimgrey));
     }
     private void clickButton(RelativeLayout rl,TextView tv){
+        if(rl == rl_select){
+            detail.setColorFilter(getContext().getColor(R.color.white));
+            date_selected.setText(Year+"年"+Month+"月"+Day+"日");
+        }
+        if(rl == rl_today){
+            Year = myUtils.myCalenderHelper.getYear();
+            Month = myUtils.myCalenderHelper.getMonth();
+            Day = myUtils.myCalenderHelper.getDay();
+        }
+        if(rl == rl_tomorrow){
+            Year = myUtils.myCalenderHelper.getYearAfterDays(1);
+            Month = myUtils.myCalenderHelper.getMonthAfterDays(1);
+            Day = myUtils.myCalenderHelper.getDayAfterDays(1);
+        }
+        Log.d("click","bbbbbbbbbb");
         GradientDrawable gradientDrawable2 = (GradientDrawable) rl.getBackground();
-        gradientDrawable2 .setColor(getResources().getColor(R.color.myThemeDeep));
+        gradientDrawable2 .setColor(getResources().getColor(R.color.myThemeShallow));
         tv.setTextColor(getResources().getColor(R.color.white));
     }
     private void  init(){
-        position=0;
+        Year = myUtils.myCalenderHelper.getYear();
+        Month = myUtils.myCalenderHelper.getMonth();
+        Day = myUtils.myCalenderHelper.getDay();
+        position=1;
+        signUp = view.findViewById(R.id.sign_up);
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signUp.setChecked(!Signup);
+                Signup = !Signup;
+            }
+        });
+        date_selected = view.findViewById(R.id.date_selected);
         tv_today=view.findViewById(R.id.today);
         rl_today=view.findViewById(R.id.today_button);
         tv_tomorrow=view.findViewById(R.id.tomorrow);
         rl_tomorrow=view.findViewById(R.id.tomorrow_button);
         tv_select=view.findViewById(R.id.select);
         rl_select=view.findViewById(R.id.select_button);
+        detail = view.findViewById(R.id.date_detail);
 
-        initButton(rl_today,tv_today);
+        clickButton(rl_today,tv_today);
         initButton(rl_tomorrow,tv_tomorrow);
         initButton(rl_select,tv_select);
 
@@ -109,58 +154,46 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
             });
 
             rl_today.setOnClickListener(v -> {
-                if(position!=0&&position!=1)
+                if(position!=1)
                 {
                     initButton(rl_tomorrow,tv_tomorrow);
                     initButton(rl_select,tv_select);
                     clickButton(rl_today,tv_today);
                 }
-                else if(position==1)
-                    initButton(rl_today,tv_today);
-                else
-                clickButton(rl_today,tv_today);
-
                 position=1;
 
             });
 
             rl_tomorrow.setOnClickListener(v -> {
-                if(position!=0&&position!=2)
+                if(position!=2)
                 {
                     initButton(rl_today,tv_today);
                     initButton(rl_select,tv_select);
                     clickButton(rl_tomorrow,tv_tomorrow);
                 }
-                else if(position==2)
-                    initButton(rl_tomorrow,tv_tomorrow);
-                else
-                clickButton(rl_tomorrow,tv_tomorrow);
-
                 position=2;
 
             });
 
             rl_select.setOnClickListener(v -> {
-                if(position!=0&&position!=3)
+                if(position!=3)
                 {
                     initButton(rl_today,tv_today);
                     initButton(rl_tomorrow,tv_tomorrow);
                     clickButton(rl_select,tv_select);
-                    calendarDialog = new CalendarDialog(mContext);
-                    calendarDialog.setCancelable(false);
-                    calendarDialog.show();
                 }
-                else if(position==2)
-                    initButton(rl_select,tv_select);
-                else
-                {
-                    clickButton(rl_select,tv_select);
-                    calendarDialog = new CalendarDialog(mContext);
-                    calendarDialog.setCancelable(false);
-                    calendarDialog.show();
-                }
-
-
+                calendarDialog = new CalendarDialog(mContext);
+                calendarDialog.setCancelable(false);
+                calendarDialog.setDateSetter(new CalendarDialog.dateSetter() {
+                    @Override
+                    public void setDate(int year, int month, int day) {
+                        Year = year;
+                        Month = month;
+                        Day = day;
+                        date_selected.setText(Year+"年"+Month+"月"+Day+"日");
+                    }
+                });
+                calendarDialog.show();
                 position=3;
 
             });
@@ -175,9 +208,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
      * @return height
      */
     protected int getPeekHeight() {
-        int peekHeight = getResources().getDisplayMetrics().heightPixels;
-        //设置弹窗高度为屏幕高度的3/4
-        return peekHeight - peekHeight / 3;
+        return new myUtils.myDensityHelper(getContext()).dp2px(320);
     }
 
 

@@ -39,7 +39,7 @@ public class FragHome extends Fragment {
     private TodayTaskDialog todayTaskDialog;
     private TaskListSelector taskListSelector;
     private List<Task> taskList=Task.taskList;
-    private ImageView add_task;
+    private CardView add_task;
 
 
     @Nullable
@@ -84,7 +84,7 @@ public class FragHome extends Fragment {
 
             }
         });
-        add_task = view.findViewById(R.id.home_add);
+        add_task = view.findViewById(R.id.home_add_button);
 
         add_task.setOnClickListener(new View.OnClickListener() {
             @Override
