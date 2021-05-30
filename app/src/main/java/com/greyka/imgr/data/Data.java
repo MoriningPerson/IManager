@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Data {
-    public static class Task{
+    public class Task{
 
         public Task(long task_id, String task_name, String task_description, String create_date, String start_date, int duration, int cycle, int repeat_count, String end_date, String place_name, double longitude, double latitude, int remind, int allowed, int clock, int completed, int task_week_id, String start_time, String end_time) {
             this.task_id = task_id;
@@ -30,19 +30,6 @@ public class Data {
         }
 
         public Task(){}
-
-        public static Task task1 = new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
-                "长风公园",0,0,1,1,0,1,1,"06:00:00","07:00:00");
-        public static Task task2 = new Task(2,"UML","太难了","2021/5/10","2021/5/10 10:00:00",60,7,2,"2021/5/24",
-                "田家炳",0,0,1,1,0,1,2,"10:00:00","11:00:00");
-        public static Task task3 = new Task(3,"数据库","考太差了","2021/4/9","2021/4/9 14:00:00",120,7,3,"2021/4/30",
-                "图书馆",0,0,1,1,0,0,3,"14:00:00","16:00:00");
-        public static Task task4 = new Task(4,"打网球","体育不能挂科","2021/5/23","2021/5/23 18:00:00",40,7,2,"2021/6/6",
-                "网球场",0,0,1,1,0,0,4,"18:00:00","18:40:00");
-        public static Task task5 = new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
-                "共青场",0,0,1,1,0,0,5,"20:00:00","20:30:00");
-
-        public static List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
 
 
         private long task_id;
@@ -219,26 +206,28 @@ public class Data {
     }
 
     public static class Plan{
-        public Plan(long plan_id, String plan_name, String plan_description, String plan_date) {
+        public Plan(long plan_id, String plan_name, String plan_description, String plan_date, int completed) {
             this.plan_id = plan_id;
             this.plan_name = plan_name;
             this.plan_description = plan_description;
             this.plan_date = plan_date;
+            this.completed= completed;
         }
 
         private long plan_id;
         private String plan_name;
         private String plan_description;
         private String plan_date;
+        private int completed;
 
         public Plan(){}
-        public static Plan plan1 = new Plan(1,"做晨练","一日之计在于晨","2021/5/23");
-        public static Plan plan2 = new Plan(2,"期末复习","风雨过后才有彩虹","2021/5/23");
-        public static Plan plan3 = new Plan(3,"体育打卡","课外活动也很重要","2021/5/23");
-        public static Plan plan4 = new Plan(4,"每天7杯水","水是生命之源","2021/5/23");
-        public static Plan plan5 = new Plan(5,"每天读英语","学好英语走遍天下都不怕","2021/5/23");
-        public static Plan plan6 = new Plan(6,"背书毛概","小心胡航不给你过","2021/5/23");
-        public static Plan plan7 = new Plan(7,"背200个单词","你是想裸考了吗？","2021/5/23");
+        public static Plan plan1 = new Plan(1,"做晨练","一日之计在于晨","2021/5/23",0);
+        public static Plan plan2 = new Plan(2,"期末复习","风雨过后才有彩虹","2021/5/23",0);
+        public static Plan plan3 = new Plan(3,"体育打卡","课外活动也很重要","2021/5/23",0);
+        public static Plan plan4 = new Plan(4,"每天7杯水","水是生命之源","2021/5/23",0);
+        public static Plan plan5 = new Plan(5,"每天读英语","学好英语走遍天下都不怕","2021/5/23",0);
+        public static Plan plan6 = new Plan(6,"背书毛概","小心胡航不给你过","2021/5/23",0);
+        public static Plan plan7 = new Plan(7,"背200个单词","你是想裸考了吗？","2021/5/23",0);
 
         public static List<Plan> planList = Arrays.asList(plan1, plan2, plan3, plan4, plan5,plan6, plan7);
 
@@ -272,6 +261,14 @@ public class Data {
 
         public void setPlan_date(String plan_date) {
             this.plan_date = plan_date;
+        }
+
+        public int getCompleted() {
+            return completed;
+        }
+
+        public void setCompleted(int completed) {
+            this.completed = completed;
         }
     }
 }

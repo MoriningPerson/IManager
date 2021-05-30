@@ -14,10 +14,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.greyka.imgr.R;
+import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
 
 public class TaskItemDialog extends Dialog {
-    private Task task = new Task();
+    Data data= new Data();
+    private Task task = data.new Task();
     private Context context;
     private TextView title;
     private TextView description;

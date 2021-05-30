@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.greyka.imgr.adapters.TaskDialogMemberAdapter;
+import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ import java.util.List;
 
 public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.OnItemClickListener,ViewUpdator{
     private List<Task> taskList = new ArrayList<>();    //选择列表的数据
-    private Task task = new Task();
+    Data data= new Data();
+    private Task task = data.new Task();
     private Context context;
     private static int mPosition;
 

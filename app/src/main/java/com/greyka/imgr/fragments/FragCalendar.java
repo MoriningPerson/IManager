@@ -18,14 +18,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.myRecyclerViewAdapter;
 import com.greyka.imgr.data.Data;
+import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.utilities.myUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class FragCalendar extends Fragment {
+
+
+    Data data = new Data();
+    Task taskExample= data.new Task();
+    public Task task1 = data.new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
+            "长风公园",0,0,1,1,0,1,1,"06:00:00","07:00:00");
+    public Task task2 = data.new Task(2,"UML","太难了","2021/5/10","2021/5/10 10:00:00",60,7,2,"2021/5/24",
+            "田家炳",0,0,1,1,0,1,2,"10:00:00","11:00:00");
+    public Task task3 = data.new Task(3,"数据库","考太差了","2021/4/9","2021/4/9 14:00:00",120,7,3,"2021/4/30",
+            "图书馆",0,0,1,1,0,0,3,"14:00:00","16:00:00");
+    public Task task4 = data.new Task(4,"打网球","体育不能挂科","2021/5/23","2021/5/23 18:00:00",40,7,2,"2021/6/6",
+            "网球场",0,0,1,1,0,0,4,"18:00:00","18:40:00");
+    public Task task5 = data.new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
+            "共青场",0,0,1,1,0,0,5,"20:00:00","20:30:00");
+
+    public List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
 
     List<Data.Task> task;
     View memo;
@@ -74,10 +92,12 @@ public class FragCalendar extends Fragment {
         });
     }
     void refreshTodayTask(int year, int month, int day){
-        task = Data.Task.taskList; //获取今日任务列表
+        //Data data= new Data();
+        //Data.Task task=data.new Task();
+        //List<Data.Task> tasks=task.taskList; //获取今日任务列表
         myComparator_memo cmp = new myComparator_memo();
-        Collections.sort(task,cmp);
-        recyclerView.setAdapter(new myRecyclerViewAdapter(task));
+        Collections.sort(taskList,cmp);
+        recyclerView.setAdapter(new myRecyclerViewAdapter(taskList));
     }
 }
 class myComparator_memo implements Comparator {
