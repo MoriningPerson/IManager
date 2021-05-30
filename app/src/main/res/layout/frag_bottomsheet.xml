@@ -11,7 +11,7 @@
         android:layout_height="60dp">
 
         <EditText
-            android:id="@+id/title"
+            android:id="@+id/task_title_add"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -20,12 +20,12 @@
             android:hint="准备做什么？"
             android:maxLength="20"
             android:singleLine="true"
-            app:layout_constraintEnd_toStartOf="@+id/submit"
+            app:layout_constraintEnd_toStartOf="@+id/submit_add"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/submit"
+            android:id="@+id/submit_add"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="60dp"
             android:layout_height="40dp"
@@ -36,9 +36,9 @@
             android:text="添加"
             android:textColor="@color/myThemeShallow"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/title"
+            app:layout_constraintBottom_toBottomOf="@+id/task_title_add"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title">
+            app:layout_constraintTop_toTopOf="@+id/task_title_add">
 
         </Button>
 
@@ -50,6 +50,7 @@
         android:backgroundTint="@color/transparent">
 
         <EditText
+            android:id="@+id/task_desc_add"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -146,7 +147,7 @@
         android:gravity="center_vertical">
 
         <RelativeLayout
-            android:id="@+id/time_start"
+            android:id="@+id/time_selector"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="15dp"
@@ -200,7 +201,7 @@
             android:layout_height="25dp"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/time_start"
+            app:layout_constraintStart_toEndOf="@+id/time_selector"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_location"
             app:tint="@color/grey"/>
@@ -253,7 +254,7 @@
             android:buttonTint="@color/myThemeShallow"
             android:text="提醒" />
         <Switch
-            android:id="@+id/lock_option"
+            android:id="@+id/strong_alarm_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:thumb="@drawable/switch_white_circle_selector"
@@ -320,12 +321,12 @@
             android:layout_marginStart="10dp"
             android:progress="0"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/lock_percnet_now_add"
+            app:layout_constraintEnd_toStartOf="@+id/lock_percent_now_add"
             app:layout_constraintStart_toEndOf="@+id/lock_option_add"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/lock_percnet_now_add"
+            android:id="@+id/lock_percent_now_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"

@@ -1,4 +1,4 @@
-package com.greyka.imgr.fragments;
+package com.greyka.imgr.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;

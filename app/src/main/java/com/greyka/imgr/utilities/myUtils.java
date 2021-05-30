@@ -49,7 +49,7 @@ import com.greyka.imgr.fragments.FragCalendar;
 import com.greyka.imgr.fragments.FragHome;
 import com.greyka.imgr.fragments.FragMine;
 import com.greyka.imgr.fragments.FragList;
-import com.greyka.imgr.fragments.myPermissionDialogFragment;
+import com.greyka.imgr.dialogs.myPermissionDialogFragment;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

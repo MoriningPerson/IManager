@@ -8,21 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.greyka.imgr.R;
-import com.greyka.imgr.activities.MainActivity;
 import com.greyka.imgr.activities.Timer;
 import com.greyka.imgr.classes.mottoManager;
-import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
+import com.greyka.imgr.dialogs.BaseFullBottomSheetFragment;
 import com.greyka.imgr.dialogs.TaskListSelector;
 import com.greyka.imgr.dialogs.TodayTaskDialog;
 import com.greyka.imgr.utilities.myUtils;

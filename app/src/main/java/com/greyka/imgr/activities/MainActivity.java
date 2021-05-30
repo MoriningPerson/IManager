@@ -10,27 +10,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AppOpsManager;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Binder;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.fragment.app.DialogFragment;
 
 import com.greyka.imgr.R;
-import com.greyka.imgr.fragments.myPermissionDialogFragment;
+import com.greyka.imgr.dialogs.myPermissionDialogFragment;
 import com.greyka.imgr.utilities.myUtils;
-
-import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity implements myPermissionDialogFragment.NoticeDialogListener {
 

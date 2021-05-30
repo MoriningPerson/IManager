@@ -1,4 +1,4 @@
-package com.greyka.imgr.fragments;
+package com.greyka.imgr.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

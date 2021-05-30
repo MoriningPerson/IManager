@@ -21,8 +21,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.classes.CirclePgBar;
-import com.greyka.imgr.fragments.myTimerCancelFragment;
-import com.greyka.imgr.fragments.myTimerPickerDialogFragment;
+import com.greyka.imgr.dialogs.myTimerCancelFragment;
+import com.greyka.imgr.dialogs.myTimerPickerDialogFragment;
 import com.greyka.imgr.services.MyService;
 import com.greyka.imgr.utilities.myUtils;
 
