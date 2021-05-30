@@ -24,16 +24,32 @@ import com.greyka.imgr.dialogs.TaskListSelector;
 import com.greyka.imgr.dialogs.TodayTaskDialog;
 import com.greyka.imgr.utilities.myUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class FragHome extends Fragment {
+
+    Data data = new Data();
+    Task taskExample= data.new Task();
+    public Task task1 = data.new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
+            "长风公园",0,0,1,1,0,1,1,"06:00:00","07:00:00");
+    public Task task2 = data.new Task(2,"UML","太难了","2021/5/10","2021/5/10 10:00:00",60,7,2,"2021/5/24",
+            "田家炳",0,0,1,1,0,1,2,"10:00:00","11:00:00");
+    public Task task3 = data.new Task(3,"数据库","考太差了","2021/4/9","2021/4/9 14:00:00",120,7,3,"2021/4/30",
+            "图书馆",0,0,1,1,0,0,3,"14:00:00","16:00:00");
+    public Task task4 = data.new Task(4,"打网球","体育不能挂科","2021/5/23","2021/5/23 18:00:00",40,7,2,"2021/6/6",
+            "网球场",0,0,1,1,0,0,4,"18:00:00","18:40:00");
+    public Task task5 = data.new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
+            "共青场",0,0,1,1,0,0,5,"20:00:00","20:30:00");
+
+    private List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
+
 
     private CardView timer;
     private CardView button2;
     private ImageButton refresh;
     private TodayTaskDialog todayTaskDialog;
     private TaskListSelector taskListSelector;
-    private List<Task> taskList=Task.taskList;
     private CardView add_task;
     private TextView home_string_next;
     private TextView home_string_next_tasktitle;
