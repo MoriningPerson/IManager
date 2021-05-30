@@ -22,23 +22,24 @@ import com.greyka.imgr.data.Data;
 import com.greyka.imgr.dialogs.TaskItemDialog;
 import com.greyka.imgr.dialogs.ViewUpdator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.OnItemClickListener, ViewUpdator {
     public static final String ARG_OBJECT = "object";
     private Context context;
-    private List<Data.Task> taskList;
+    private static List<Data.Task> taskList;
     private RecyclerView rv_selector_branch;
     private TaskDialogMemberAdapter mSelectorBranchAdapter;
     private static int mPosition;
     private TaskItemDialog taskItemDialog;
     private View view;
 
-    public FragTaskList(Context context, List<Data.Task> mSimpleListItemEntity) {
+    public FragTaskList(Context context) {
         super();
         this.context = context;
-        this.taskList = mSimpleListItemEntity;
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -65,6 +66,8 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         this.view=view;
+        refreshTaskList();
+        Log.d("aaa","revc");
         InitViews(view);
     }
 
@@ -93,5 +96,23 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
         mSelectorBranchAdapter.UpdateItem(mPosition,task_edited);
         this.InitViews(view);
         // this.show();
+    }
+    public static void refreshTaskList(){
+        taskList = new ArrayList<>();//获取任务
+        myComparator_task cmp = new myComparator_task();
+        Collections.sort(taskList,cmp);
+        Log.d("ref","task");
+    }
+}
+class myComparator_task implements Comparator {
+
+    @Override
+    public int compare(Object t1, Object t2) {
+        Data.Task T1 = (Data.Task)t1;
+        Data.Task T2 = (Data.Task)t2;
+        if(T1.getCompleted() != T2.getCompleted()){
+            return T1.getCompleted() - T2.getCompleted();
+        }
+        return T1.getStart_time().compareTo(T2.getStart_time());
     }
 }

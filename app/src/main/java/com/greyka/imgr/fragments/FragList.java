@@ -1,9 +1,12 @@
 package com.greyka.imgr.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +20,7 @@ import com.greyka.imgr.adapters.myCollectionPagerAdapter;
 public class FragList extends Fragment {
     myCollectionPagerAdapter demoCollectionPagerAdapter;
     ViewPager viewPager;
+    ImageButton refresh;
 
     @Nullable
     @Override
@@ -28,6 +32,15 @@ public class FragList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         demoCollectionPagerAdapter = new myCollectionPagerAdapter(getChildFragmentManager(),getActivity());
         viewPager = view.findViewById(R.id.pager);
+        refresh = view.findViewById(R.id.refresh_list);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("onclick","ref");
+                FragPlanList.refreshPlanList();
+                FragTaskList.refreshTaskList();
+            }
+        });
         viewPager.setAdapter(demoCollectionPagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);

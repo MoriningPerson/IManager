@@ -19,8 +19,6 @@ import java.util.List;
 // 划了直线的代码就不要用  直接替换   这些代码工具类已经被弃用了。会有风险。
 public class myCollectionPagerAdapter extends FragmentStatePagerAdapter {
     private Context context;
-    private List<Data.Task> taskList= Data.Task.taskList;
-    private List<Data.Plan> planList= Data.Plan.planList;
     public myCollectionPagerAdapter(FragmentManager fm, Context context) {
 
         super(fm);
@@ -31,10 +29,10 @@ public class myCollectionPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int i) {
         Fragment fragment;
         if(i==0){
-            fragment = new FragPlanList(this.context,planList);
+            fragment = new FragPlanList(this.context);
         }
         else{
-            fragment = new FragTaskList(this.context,taskList);
+            fragment = new FragTaskList(this.context);
         }
         return fragment;
 

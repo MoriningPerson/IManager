@@ -99,7 +99,7 @@
                     tools:ignore="MissingConstraints" />
 
                 <TextView
-                    android:id="@+id/homne_string_next_tasktitle"
+                    android:id="@+id/home_string_next_tasktitle"
                     android:layout_width="115dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -183,8 +183,8 @@
                     android:textColor="@color/dimgrey"
                     android:textSize="12sp"
 
-                    app:layout_constraintStart_toStartOf="@+id/homne_string_next_tasktitle"
-                    app:layout_constraintTop_toBottomOf="@+id/homne_string_next_tasktitle"
+                    app:layout_constraintStart_toStartOf="@+id/home_string_next_tasktitle"
+                    app:layout_constraintTop_toBottomOf="@+id/home_string_next_tasktitle"
                     tools:ignore="MissingConstraints" />
 
                 <ImageView

@@ -19,18 +19,8 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
 
     private final String[] taskTitleList;
     private final String[] taskTimeList;
-    public class myComparator implements Comparator {
 
-        @Override
-        public int compare(Object t1, Object t2) {
-            String str1 = ((Data.Task)(t1)).getStart_time();
-            String str2 = ((Data.Task)(t2)).getStart_time();
-            return str1.compareTo(str2);
-        }
-    }
     public myRecyclerViewAdapter(List<Data.Task> list) {
-        myComparator cmp = new myComparator();
-        Collections.sort(list,cmp);
         ArrayList<String> title = new ArrayList<>();
         ArrayList<String> time = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){

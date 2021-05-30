@@ -16,8 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -29,7 +32,6 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
     private OnItemClickListener mOnItemClickListener;
     private static ViewHolder holder;
     private final Context mcontext;
-
     static public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView description;
@@ -67,7 +69,6 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         holder.name.setText(lock.getTask_name());
         holder.description.setText(lock.getTask_description());
         int task_status=lock.getCompleted();
-        String status_string;
         if(task_status==0){
             holder.status.setImageResource(R.drawable.ic_task_completed);
             holder.status.setColorFilter(mcontext.getColor(R.color.grey));
