@@ -68,6 +68,10 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     TextView date_selected;
     private TextView startTime;
     private TextView lengthTime;
+    private ImageView addLocation;
+    private ImageView ic_addRecycle;
+    private TextView recycleInfo;
+    private LinearLayout addRecycle;
 
     private int Year, Month, Day;
     private boolean Signup = false;
@@ -75,12 +79,15 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     private boolean StrongAlarm = false;
     private boolean lockEnabled = false;
     private int lockPercent;
-    private String Title = "No Title";
-    private String Description = "No Description";
+    private String Title = "无标题";
+    private String Description = "无任务描述";
     private int startHour = 0;
     private int startMinute = 0;
     private int lenHour = 0;
     private int lenMinute = 1;
+    private int RecycleType = 0;
+    private int Cycle = 0;
+    private boolean[] DayOfWeek = new boolean[]{false,false,false,false,false,false,false};
 
 
     @NonNull
@@ -225,6 +232,10 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void bindViews(){
+        recycleInfo = view.findViewById(R.id.recycle_info);
+        ic_addRecycle = view.findViewById(R.id.ic_recycle);
+        addLocation = view.findViewById(R.id.ic_location);
+        addRecycle = view.findViewById(R.id.cycle_add);
         startTime = view.findViewById(R.id.start_time);
         lengthTime = view.findViewById(R.id.duraion);
         timer_select = view.findViewById(R.id.time_selector);
@@ -247,6 +258,28 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         signUp = view.findViewById(R.id.sign_up);
     }
     private void initViews(){
+        addRecycle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddRecyclePickerDialog recycleDialog = new AddRecyclePickerDialog();
+                recycleDialog.setCallback(new AddRecyclePickerDialog.Callback() {
+                    @Override
+                    public void getCycleSelected(int recycleType, int cycle, boolean[] dayOfWeak) {
+                        RecycleType = recycleType;
+                        Cycle = cycle;
+                        DayOfWeek = dayOfWeak;
+                        refreshCycleInfo();
+                    }
+                });
+                recycleDialog.show(getActivity().getSupportFragmentManager(),"recycleDialog");
+            }
+        });
+        addLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         timer_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,8 +292,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
                         startMinute = minute;
                         lenHour = lhour;
                         lenMinute = lminute;
-                        startTime.setText(String.format("%02d:%02d", hour, minute));
-                        lengthTime.setText(String.format("%02d:%02d", lhour, lminute));
+                        refreshTimeInfo();
                     }
                 });
                 timeDialog.show(getActivity().getSupportFragmentManager(), "timeDialog");
@@ -370,6 +402,25 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         mContext = getContext();
         view = inflater.inflate(R.layout.frag_bottomsheet, container, false);
         return view;
+    }
+    private void refreshTimeInfo(){
+        startTime.setText(String.format("%02d:%02d", startHour, startMinute));
+        lengthTime.setText(String.format("%02d:%02d", lenHour, lenMinute));
+    }
+    private void refreshCycleInfo(){
+        if(RecycleType == 0){
+            ic_addRecycle.setColorFilter(getActivity().getColor(R.color.grey));
+            recycleInfo.setText("单次 无循环");
+            recycleInfo.setTextColor(getActivity().getColor(R.color.defaultgrey));
+        }else if(RecycleType == 1){
+            ic_addRecycle.setColorFilter(getActivity().getColor(R.color.dimgrey));
+            recycleInfo.setText("按天  " + Cycle + "周期");
+            recycleInfo.setTextColor(getActivity().getColor(R.color.dimgrey));
+        }else{
+            ic_addRecycle.setColorFilter(getActivity().getColor(R.color.dimgrey));
+            recycleInfo.setText("按周  " + Cycle + "周期");
+            recycleInfo.setTextColor(getActivity().getColor(R.color.dimgrey));
+        }
     }
     //提交给数据给后端
     private void submitTask(){

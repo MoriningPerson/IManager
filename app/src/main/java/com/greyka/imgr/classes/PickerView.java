@@ -24,6 +24,7 @@ import java.util.TimerTask;
 public class PickerView extends View {
 
 
+    private boolean enabled = true;
     private final VelocityTracker myVelocityTracker = VelocityTracker.obtain();
     private float mSpeed = 0;
     private float mSlowDownRate = 0.95f;
@@ -56,6 +57,7 @@ public class PickerView extends View {
     private float mMinTextSizeRate =2;
 
 
+    private float mMaxTextAlpha_backup = 255;
     private float mMaxTextAlpha = 255;
     private float mMinTextAlpha = 100;
 
@@ -286,6 +288,7 @@ public class PickerView extends View {
     }
 
     private void doMove(MotionEvent event) {
+        if(!enabled) return;
         Log.d("domove","domoveeeeee");
         mMoveLen += (event.getY() - mLastDownY);
         if (mMoveLen > MARGIN_ALPHA * mMinTextSize / 2) {
@@ -312,7 +315,6 @@ public class PickerView extends View {
         invalidate();
     }
     private void doMove(float moveY) {
-
         mMoveLen += moveY;
         Log.d("move",moveY+"");
         if (mMoveLen > MARGIN_ALPHA * mMinTextSize / 2) {
@@ -353,6 +355,21 @@ public class PickerView extends View {
         }
         mTask = new MyTimerTask(updateHandler);
         timer.schedule(mTask, 0, 10);
+    }
+    public void setEnabled(boolean enabled){
+        if(this.enabled == enabled) return;
+        this.enabled = enabled;
+        if(enabled){
+            mMaxTextAlpha = mMaxTextAlpha_backup;
+
+        }else{
+            mMaxTextAlpha_backup = mMaxTextAlpha;
+            mMaxTextAlpha = mMinTextAlpha;
+        }
+        invalidate();
+    }
+    public boolean isEnabled(){
+        return enabled;
     }
 
     class MyTimerTask extends TimerTask {

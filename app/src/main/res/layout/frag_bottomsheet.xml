@@ -266,6 +266,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="强提醒"/>
+        <LinearLayout
+            android:id="@+id/cycle_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
         <ImageView
             android:id="@+id/ic_recycle"
             android:layout_width="25dp"
@@ -277,10 +282,12 @@
             app:srcCompat="@drawable/ic_recycle"
             app:tint="@color/grey"/>
         <TextView
+            android:id="@+id/recycle_info"
             android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="不重复" />
+            android:text="单次 无循环" />
+        </LinearLayout>
 
 
     </LinearLayout>

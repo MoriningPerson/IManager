@@ -27,5 +27,5 @@
     <color name="ForestGreen">#FF228B22</color>
     <color name="Red4">#FF8B0000</color>
     <color name="Red3">#FFCD0000</color>
-
+    <color name="defaultgrey">#FF888888</color>
 </resources>
