@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.TaskDialogMemberAdapter;
 import com.greyka.imgr.data.Data;
+import com.greyka.imgr.dialogs.BaseFullBottomSheetFragment;
 import com.greyka.imgr.dialogs.TaskItemDialog;
 import com.greyka.imgr.dialogs.ViewUpdator;
 
@@ -30,20 +32,20 @@ import java.util.List;
 
 public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.OnItemClickListener, ViewUpdator {
 
-    static Data data = new Data();
-    Data.Task taskExample= data.new Task();
-    public static Data.Task task1 = data.new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
-            "长风公园",0,0,1,1,0,0,1,"06:00:00","07:00:00");
-    public static Data.Task task2 = data.new Task(2,"UML","太难了","2021/5/10","2021/5/10 10:00:00",60,7,2,"2021/5/24",
-            "田家炳",0,0,1,1,0,0,2,"10:00:00","11:00:00");
-    public static Data.Task task3 = data.new Task(3,"数据库","考太差了","2021/4/9","2021/4/9 14:00:00",120,7,3,"2021/4/30",
-            "图书馆",0,0,1,1,0,1,3,"14:00:00","16:00:00");
-    public static Data.Task task4 = data.new Task(4,"打网球","体育不能挂科","2021/5/23","2021/5/23 18:00:00",40,7,2,"2021/6/6",
-            "网球场",0,0,1,1,0,2,4,"18:00:00","18:40:00");
-    public static Data.Task task5 = data.new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
-            "共青场",0,0,1,1,0,2,5,"20:00:00","20:30:00");
 
-    private static List<Data.Task> demoTaskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
+    Data data = new Data();
+    Data.Task taskExample= data.new Task();
+    public Data.Task task1 = data.new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
+            "长风公园",0,0,1,1,0,1,"06:00:00","07:00:00",0,0,0,0,0,0,0,0);
+    public Data.Task task2 = data.new Task(2,"UML","太难了","2021/5/10","2021/5/10 10:00:00",60,7,2,"2021/5/24",
+            "田家炳",0,0,1,1,0,2,"10:00:00","11:00:00",0,0,0,0,0,0,0,0);
+    public Data.Task task3 = data.new Task(3,"数据库","考太差了","2021/4/9","2021/4/9 14:00:00",120,7,3,"2021/4/30",
+            "图书馆",0,0,1,1,0,0,"14:00:00","16:00:00",0,0,0,0,0,0,0,0);
+    public Data.Task task4 = data.new Task(4,"打网球","体育不能挂科","2021/5/23","2021/5/23 18:00:00",40,7,2,"2021/6/6",
+            "网球场",0,0,1,1,0,1,"18:00:00","18:40:00",0,0,0,0,0,0,0,0);
+    public Data.Task task5 = data.new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
+            "共青场",0,0,1,1,0,2,"20:00:00","20:30:00",0,0,0,0,0,0,0,0);
+
 
 
     public static final String ARG_OBJECT = "object";
@@ -52,7 +54,7 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
     private RecyclerView rv_selector_branch;
     private TaskDialogMemberAdapter mSelectorBranchAdapter;
     private static int mPosition;
-    private TaskItemDialog taskItemDialog;
+    private BaseFullBottomSheetFragment taskItemDialog;
     private View view;
 
     public FragTaskList(Context context) {
@@ -69,7 +71,7 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
         rv_selector_branch = (RecyclerView)view.findViewById(R.id.task_recycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rv_selector_branch.setLayoutManager(layoutManager);
-        mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList,getContext());
+        mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList,getContext(),false);
         mSelectorBranchAdapter.setOnItemClickListener(this);
         rv_selector_branch.setAdapter(mSelectorBranchAdapter);
     }
@@ -90,20 +92,11 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
     @Override
     public void onItemClick(int position) {
         mPosition=position;
-        taskItemDialog = new TaskItemDialog(this,context,taskList.get(position));
-        taskItemDialog.setCancelable(false);
-        taskItemDialog.show();
-        Activity myActivity=(Activity)context;
-        LayoutInflater inflater = LayoutInflater.from(myActivity);
-        View viewDialog = inflater.inflate(R.layout.task_info, null);
-
-        Display display = myActivity.getWindowManager().getDefaultDisplay();
-        int width = display.getWidth();
-        int height = display.getHeight();
-//设置dialog的宽高为屏幕的宽高
-        ViewGroup.LayoutParams layoutParams = new  ViewGroup.LayoutParams(width, height);
-        taskItemDialog.setContentView(viewDialog, layoutParams);
-        taskItemDialog.InitViews();
+        taskItemDialog = new BaseFullBottomSheetFragment();
+        taskItemDialog.setEditable(false);
+        taskItemDialog.setOnce(false);
+        taskItemDialog.setValues(taskList.get(position));
+        taskItemDialog.show(getFragmentManager(),"taskItemDialog");
     }
 
     @Override
@@ -115,22 +108,22 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
         // this.show();
     }
 
-    public static void refreshTaskList(){
-        taskList = demoTaskList;//获取任务
+    public void refreshTaskList(){
+        taskList =  Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);//获取任务
         myComparator_task cmp = new myComparator_task();
         Collections.sort(taskList,cmp);
         Log.d("ref","task");
     }
-}
-class myComparator_task implements Comparator {
+    class myComparator_task implements Comparator {
 
-    @Override
-    public int compare(Object t1, Object t2) {
-        Data.Task T1 = (Data.Task)t1;
-        Data.Task T2 = (Data.Task)t2;
-        if(T1.getCompleted() != T2.getCompleted()){
-            return T1.getCompleted() - T2.getCompleted();
+        @Override
+        public int compare(Object t1, Object t2) {
+            Data.Task T1 = (Data.Task) t1;
+            Data.Task T2 = (Data.Task) t2;
+            if (T1.getCompleted() != T2.getCompleted()) {
+                return T1.getCompleted() - T2.getCompleted();
+            }
+            return T1.getStart_date().compareTo(T2.getStart_date());
         }
-        return T1.getStart_time().compareTo(T2.getStart_time());
     }
 }

@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,16 +38,17 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
 
     private TaskDialogMemberAdapter mSelectorBranchAdapter;
     private RecyclerView rv_selector_branch;
-    private TodayTaskDialog todayTaskDialog;
-    private TaskItemDialog taskItemDialog;
+    //private TodayTaskDialog todayTaskDialog;
+    //private TaskItemDialog taskItemDialog;
     private ImageView editTitle;
 
+    private FragmentManager fm;
 
-    public TaskListSelector(Context context, List<Task> mSimpleListItemEntity) {
+    public TaskListSelector(Context context, FragmentManager fm, List<Task> mSimpleListItemEntity) {
         super(context);
+        this.fm = fm;
         this.context = context;
         this.taskList = mSimpleListItemEntity;
-        
     }
 
     @Override
@@ -60,7 +63,7 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         rv_selector_branch = (RecyclerView) findViewById(R.id.task_selector);
         LinearLayoutManager layoutmanager = new LinearLayoutManager(getContext());
         rv_selector_branch.setLayoutManager(layoutmanager);
-        mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList,getContext());
+        mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList,getContext(),true);
         mSelectorBranchAdapter.setOnItemClickListener(this);
         rv_selector_branch.setAdapter(mSelectorBranchAdapter);
     }
@@ -77,24 +80,12 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
        // final FragmentActivity myActivity=(FragmentActivity) context;
         //todayTaskDialog.show(myActivity.getSupportFragmentManager(), "TaskDialog"); ;
         mPosition=position;
-        taskItemDialog = new TaskItemDialog(this,context,taskList.get(position));
+        BaseFullBottomSheetFragment taskItemDialog = new BaseFullBottomSheetFragment();
         //taskItemDialog.setCancelable(false);
-        taskItemDialog.show();
-        Activity myActivity=(Activity)context;
-        LayoutInflater inflater = LayoutInflater.from(myActivity);
-        View viewDialog = inflater.inflate(R.layout.task_info, null);
-
-        Display display = myActivity.getWindowManager().getDefaultDisplay();
-        int width = display.getWidth();
-        int height = display.getHeight();
-//设置dialog的宽高为屏幕的宽高
-        ViewGroup.LayoutParams layoutParams = new  ViewGroup.LayoutParams(width, height);
-        taskItemDialog.setContentView(viewDialog, layoutParams);
-        taskItemDialog.InitViews();
-
-
-
-
+        taskItemDialog.setEditable(false);
+        taskItemDialog.setOnce(true);
+        taskItemDialog.setValues(taskList.get(position));
+        taskItemDialog.show(fm, "aa");
     }
 
     @Override

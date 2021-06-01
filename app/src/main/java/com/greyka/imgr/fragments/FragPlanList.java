@@ -74,7 +74,7 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
 
     public void showSelectorDialog(long plan_id) {
         List<Task> taskList = getTaskInPlan(plan_id);
-        taskListSelector = new TaskListSelector(getActivity(),taskList);
+        taskListSelector = new TaskListSelector(getActivity(),getFragmentManager(),taskList);
         taskListSelector.setCancelable(true);
         taskListSelector.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         taskListSelector.show();
@@ -87,7 +87,7 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
         //请求plan_id的不重复的taskList
         showSelectorDialog(planList.get(position).getPlan_id());
     }
-    public static void refreshPlanList(){
+    public void refreshPlanList(){
         planList = Data.Plan.planList;//new ArrayList<>();//获取任务
         myComparator_plan cmp = new myComparator_plan();
         Collections.sort(planList,cmp);
@@ -96,16 +96,17 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
     private List<Task> getTaskInPlan(long plan_id){//根据id获取任务
         return new ArrayList<>();
     }
-}
-class myComparator_plan implements Comparator {
+    class myComparator_plan implements Comparator {
 
-    @Override
-    public int compare(Object t1, Object t2) {
-        Data.Plan T1 = (Data.Plan)t1;
-        Data.Plan T2 = (Data.Plan)t2;
-        if(T1.getCompleted() != T2.getCompleted()){
-            return T1.getCompleted() - T2.getCompleted();
+        @Override
+        public int compare(Object t1, Object t2) {
+            Data.Plan T1 = (Data.Plan)t1;
+            Data.Plan T2 = (Data.Plan)t2;
+            if(T1.getCompleted() != T2.getCompleted()){
+                return T1.getCompleted() - T2.getCompleted();
+            }
+            return T1.getPlan_date().compareTo(T2.getPlan_date());
         }
-        return T1.getPlan_date().compareTo(T2.getPlan_date());
     }
 }
+

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,26 +28,31 @@ import com.greyka.imgr.dialogs.TaskListSelector;
 import com.greyka.imgr.dialogs.TodayTaskDialog;
 import com.greyka.imgr.utilities.myUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FragHome extends Fragment {
 
     Data data = new Data();
     Task taskExample= data.new Task();
+
     public Task task1 = data.new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
-            "长风公园",0,0,1,1,0,1,1,"06:00:00","07:00:00");
+            "长风公园",0,0,1,1,0,1,"06:00:00","07:00:00",0,0,0,0,0,0,0,0);
     public Task task2 = data.new Task(2,"UML","太难了","2021/5/10","2021/5/10 10:00:00",60,7,2,"2021/5/24",
-            "田家炳",0,0,1,1,0,1,2,"10:00:00","11:00:00");
+            "田家炳",0,0,1,1,0,2,"10:00:00","11:00:00",0,0,0,0,0,0,0,0);
     public Task task3 = data.new Task(3,"数据库","考太差了","2021/4/9","2021/4/9 14:00:00",120,7,3,"2021/4/30",
-            "图书馆",0,0,1,1,0,0,3,"14:00:00","16:00:00");
+            "图书馆",0,0,1,1,0,0,"14:00:00","16:00:00",0,0,0,0,0,0,0,0);
     public Task task4 = data.new Task(4,"打网球","体育不能挂科","2021/5/23","2021/5/23 18:00:00",40,7,2,"2021/6/6",
-            "网球场",0,0,1,1,0,0,4,"18:00:00","18:40:00");
+            "网球场",0,0,1,1,0,1,"18:00:00","18:40:00",0,0,0,0,0,0,0,0);
     public Task task5 = data.new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
-            "共青场",0,0,1,1,0,0,5,"20:00:00","20:30:00");
+            "共青场",0,0,1,1,0,2,"20:00:00","20:30:00",0,0,0,0,0,0,0,0);
 
-    private List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
 
+
+    private List<Task> taskCompleted[] = new List[2];
 
     private CardView timer;
     private CardView button2;
@@ -62,6 +68,8 @@ public class FragHome extends Fragment {
     private TextView total_complete_percent;
     private TextView motto;
     private TextView home_notice_board_title;
+    private ImageView todayTaskCompleted;
+    private ImageView todayTaskUncompleted;
 
 
     @Nullable
@@ -69,9 +77,10 @@ public class FragHome extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.frag_home, container, false);
     }
-    public void showSelectorDialog() {
-        taskListSelector = new TaskListSelector(getActivity(),taskList);
-        taskListSelector.setCancelable(false);
+    public void showSelectorDialog(int completed) {
+        refreshTaskList();
+        taskListSelector = new TaskListSelector(getActivity(),getFragmentManager(),taskCompleted[completed]);
+        //taskListSelector.setCancelable(true);
         taskListSelector.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         taskListSelector.show();
     }
@@ -90,6 +99,8 @@ public class FragHome extends Fragment {
         });*/
     }
     private void bindViews(View view){
+        todayTaskCompleted = view.findViewById(R.id.home_complete);
+        todayTaskUncompleted = view.findViewById(R.id.home_uncomplete);
         add_task = view.findViewById(R.id.home_add_button);
         total_complete_percent = view.findViewById(R.id.total_complete_percent);
         timer = view.findViewById(R.id.home_timer_button);
@@ -114,13 +125,16 @@ public class FragHome extends Fragment {
             Intent intent = new Intent(getContext(), Timer.class);
             startActivity(intent);
         });
-        total_complete_percent.setOnClickListener(new View.OnClickListener() {
+        todayTaskCompleted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("MainActivity","click");
-                showSelectorDialog();
-
-
+                showSelectorDialog(1);
+            }
+        });
+        todayTaskUncompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSelectorDialog(0);
             }
         });
         add_task.setOnClickListener(new View.OnClickListener() {
@@ -142,4 +156,24 @@ public class FragHome extends Fragment {
         uncomplete_percent.setText("2/5");//未完成/总
         complete_percent.setText("1/5");//完成/总
     }
+    private void refreshTaskList(){
+        taskCompleted[0] =  Arrays.asList(task3, task3);
+        taskCompleted[1] =  Arrays.asList(task1, task2, task4, task5,task1, task2, task4, task5);
+        myComparator_task cmp = new myComparator_task();
+        Collections.sort(taskCompleted[0],cmp);
+        Collections.sort(taskCompleted[1],cmp);
+    }
+    class myComparator_task implements Comparator {
+
+        @Override
+        public int compare(Object t1, Object t2) {
+            Data.Task T1 = (Data.Task) t1;
+            Data.Task T2 = (Data.Task) t2;
+            if (T1.getTodayCompleted() != T2.getTodayCompleted()) {
+                return T1.getTodayCompleted() - T2.getTodayCompleted();
+            }
+            return T1.getStart_time().compareTo(T2.getStart_time());
+        }
+    }
 }
+

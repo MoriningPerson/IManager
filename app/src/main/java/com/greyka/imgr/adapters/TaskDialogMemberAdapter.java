@@ -32,6 +32,7 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
     private OnItemClickListener mOnItemClickListener;
     private static ViewHolder holder;
     private final Context mcontext;
+    private boolean once;
     static public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView description;
@@ -49,7 +50,8 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         }
     }
 
-    public TaskDialogMemberAdapter(List<Task> list,Context mcontext) {
+    public TaskDialogMemberAdapter(List<Task> list,Context mcontext,boolean once) {
+        this.once = once;
         this.list = list;
         Log.d("len",list.size()+"");
         this.mcontext = mcontext;
@@ -62,14 +64,18 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
        holder = new ViewHolder(view);
         return holder;
     }
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final int mPosition = position;
         Task lock = list.get(mPosition);
         holder.name.setText(lock.getTask_name());
         holder.description.setText(lock.getTask_description());
-        int task_status=lock.getCompleted();
+        int task_status;
+        if(once){
+            task_status = lock.getTodayCompleted();
+        }else {
+            task_status = lock.getCompleted();
+        }
         if(task_status==0){
             holder.status.setImageResource(R.drawable.ic_task_uncompleted);
             holder.status.setColorFilter(mcontext.getColor(R.color.myThemeShallow));

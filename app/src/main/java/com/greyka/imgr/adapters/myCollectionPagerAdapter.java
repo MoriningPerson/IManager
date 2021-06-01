@@ -17,20 +17,20 @@ public class myCollectionPagerAdapter extends FragmentStatePagerAdapter {
 
         super(fm);
         this.context=context;
+        fragPlanList = new FragPlanList(context);
+        fragTaskList = new FragTaskList(context);
     }
+    FragPlanList fragPlanList;
+    FragTaskList fragTaskList;
 
     @Override
     public Fragment getItem(int i) {
-        Fragment fragment;
         if(i==0){
-            fragment = new FragPlanList(this.context);
+            return fragPlanList;
         }
         else{
-            fragment = new FragTaskList(this.context);
+            return fragTaskList;
         }
-        return fragment;
-
-
     }
 
     @Override
@@ -47,6 +47,10 @@ public class myCollectionPagerAdapter extends FragmentStatePagerAdapter {
             return "我的任务";
         }
         return "null";
+    }
+    public void refreshData(){
+        fragTaskList.refreshTaskList();
+        fragPlanList.refreshPlanList();
     }
 }
 

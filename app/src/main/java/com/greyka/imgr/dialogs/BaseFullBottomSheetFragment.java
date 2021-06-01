@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,11 +49,19 @@ import java.util.Date;
 
 public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
+    private int completed;
+    private long taskId;
     private boolean editable = true;
+    private boolean once = false;
     public void setEditable(boolean editable){
         this.editable = editable;
     }
+    public void setOnce(boolean once){
+        this.once = once;
+    }
     public void setValues(Data.Task task)  {
+        taskId = task.getTask_id();
+        completed = task.getCompleted();
         String str=task.getStart_date();
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date=new Date();
@@ -97,7 +106,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         DayOfWeek[5]=((task.getSelected() & (1 << 4)) > 0);
         DayOfWeek[6]=((task.getSelected() & (1 << 5)) > 0);
     }
-    public void setStaticPage(){
+    private void setStaticPage(){
         clickButton(rl_select,tv_select);
         date_selected.setText(Year + "年" + Month + "月" + Day + "日");
         refreshTimeInfo();
@@ -116,14 +125,18 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         title.setHintTextColor(getActivity().getColor(R.color.black));
         title.setEnabled(false);
         description.setHint((CharSequence)Description);
-        description.setHintTextColor(getActivity().getColor(R.color.black));
+        description.setHintTextColor(getActivity().getColor(R.color.dimgrey));
         description.setEnabled(false);
-        submit.setText("确认");
+        String submitInfo[][] = new String[][]{
+                {"终止","删除","删除"},
+                {"放弃","确定","确定"}
+        };
+        submit.setText(submitInfo[(once)?1:0][completed]);
     }
     private BottomSheetBehavior<FrameLayout> behavior;
 
     Data mdata = new Data();
-    private TextView mReBack;
+    //private TextView mReBack;
     private Context mContext;
     private View view;
     private ImageView detail;
@@ -217,7 +230,11 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         position=1;
         bindViews();
         initViews();
-        clickButton(rl_today,tv_today);
+        if(!editable){
+            setStaticPage();
+        }else {
+            clickButton(rl_today, tv_today);
+        }
     }
 
 
@@ -258,7 +275,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void bindViews(){
-        mReBack = view.findViewById(R.id.submit_add);
+        //mReBack = view.findViewById(R.id.submit_add);
         recycleInfo = view.findViewById(R.id.recycle_info);
         ic_addRecycle = view.findViewById(R.id.ic_recycle);
         addLocation = view.findViewById(R.id.ic_location);
@@ -312,20 +329,27 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editable) {
+                behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                if(editable && !once) {
                     submitTask();
+                }else{
+                    if(completed == 0 && !once){
+                        cancelTask();
+                    }else if(!once) {
+                        deleteTask();
+                    }
                 }
             }
         });
         if(editable) {
             //设置监听
-            mReBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //关闭弹窗
-                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                }
-            });
+//            mReBack.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    //关闭弹窗
+//                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+//                }
+//            });
 
             rl_today.setOnClickListener(v -> {
                 if (position != 1) {
@@ -470,8 +494,6 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
                     Signup = !Signup;
                 }
             });
-        }else{
-            setStaticPage();
         }
     }
     @Nullable
@@ -502,6 +524,12 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     }
     //提交给数据给后端
     private void submitTask(){
-
+        myUtils.myToastHelper.showText(getContext(),"添加任务中", Toast.LENGTH_SHORT);
+    }
+    private void deleteTask(){
+        myUtils.myToastHelper.showText(getContext(),"删除任务中",Toast.LENGTH_SHORT);
+    }
+    private void cancelTask(){
+        myUtils.myToastHelper.showText(getContext(),"取消任务中",Toast.LENGTH_SHORT);
     }
 }

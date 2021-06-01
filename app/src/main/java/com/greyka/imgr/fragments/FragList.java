@@ -37,8 +37,7 @@ public class FragList extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("onclick","ref");
-                FragPlanList.refreshPlanList();
-                FragTaskList.refreshTaskList();
+                demoCollectionPagerAdapter.refreshData();
             }
         });
         viewPager.setAdapter(demoCollectionPagerAdapter);
