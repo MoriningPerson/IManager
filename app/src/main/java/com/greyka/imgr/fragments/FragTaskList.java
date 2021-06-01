@@ -23,11 +23,29 @@ import com.greyka.imgr.dialogs.TaskItemDialog;
 import com.greyka.imgr.dialogs.ViewUpdator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.OnItemClickListener, ViewUpdator {
+
+    static Data data = new Data();
+    Data.Task taskExample= data.new Task();
+    public static Data.Task task1 = data.new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
+            "长风公园",0,0,1,1,0,0,1,"06:00:00","07:00:00");
+    public static Data.Task task2 = data.new Task(2,"UML","太难了","2021/5/10","2021/5/10 10:00:00",60,7,2,"2021/5/24",
+            "田家炳",0,0,1,1,0,0,2,"10:00:00","11:00:00");
+    public static Data.Task task3 = data.new Task(3,"数据库","考太差了","2021/4/9","2021/4/9 14:00:00",120,7,3,"2021/4/30",
+            "图书馆",0,0,1,1,0,1,3,"14:00:00","16:00:00");
+    public static Data.Task task4 = data.new Task(4,"打网球","体育不能挂科","2021/5/23","2021/5/23 18:00:00",40,7,2,"2021/6/6",
+            "网球场",0,0,1,1,0,2,4,"18:00:00","18:40:00");
+    public static Data.Task task5 = data.new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
+            "共青场",0,0,1,1,0,2,5,"20:00:00","20:30:00");
+
+    private static List<Data.Task> demoTaskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
+
+
     public static final String ARG_OBJECT = "object";
     private Context context;
     private static List<Data.Task> taskList;
@@ -45,11 +63,9 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.frag_task_list, container, false);
-
     }
 
     private void InitViews(View view) {
-
         rv_selector_branch = (RecyclerView)view.findViewById(R.id.task_recycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rv_selector_branch.setLayoutManager(layoutManager);
@@ -95,10 +111,12 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
         Log.d("myActivity",task_edited.getTask_name());
         mSelectorBranchAdapter.UpdateItem(mPosition,task_edited);
         this.InitViews(view);
+
         // this.show();
     }
+
     public static void refreshTaskList(){
-        taskList = new ArrayList<>();//获取任务
+        taskList = demoTaskList;//获取任务
         myComparator_task cmp = new myComparator_task();
         Collections.sort(taskList,cmp);
         Log.d("ref","task");

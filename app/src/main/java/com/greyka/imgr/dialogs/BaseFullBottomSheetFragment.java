@@ -43,7 +43,40 @@ import org.w3c.dom.Text;
 
 public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
+    private boolean editable = true;
+    public void setEditable(boolean editable){
+        this.editable = editable;
+    }
+    public void setValues(){
+        //need implementation
+    }
+    public void setStaticPage(){
+        clickButton(rl_select,tv_select);
+        date_selected.setText(Year + "年" + Month + "月" + Day + "日");
+        refreshTimeInfo();
+        refreshCycleInfo();
+        signUp.setChecked(Signup);
+        signUp.setEnabled(false);
+        alarm.setChecked(Alarm);
+        alarm.setEnabled(false);
+        strongAlarm.setChecked(StrongAlarm);
+        strongAlarm.setEnabled(false);
+        lock.setChecked(lockEnabled);
+        lock.setEnabled(false);
+        lockPercentSeekBar.setProgress(lockPercent);
+        lockPercentSeekBar.setEnabled(false);
+        title.setHint((CharSequence)Title);
+        title.setHintTextColor(getActivity().getColor(R.color.black));
+        title.setEnabled(false);
+        description.setHint((CharSequence)Description);
+        description.setHintTextColor(getActivity().getColor(R.color.black));
+        description.setEnabled(false);
+        submit.setText("确认");
+    }
+    private BottomSheetBehavior<FrameLayout> behavior;
+
     Data mdata = new Data();
+    private TextView mReBack;
     private Context mContext;
     private View view;
     private ImageView detail;
@@ -89,7 +122,6 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     private int Cycle = 0;
     private boolean[] DayOfWeek = new boolean[]{false,false,false,false,false,false,false};
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -109,6 +141,9 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         tv.setTextColor(getResources().getColor(R.color.dimgrey));
     }
     private void clickButton(RelativeLayout rl,TextView tv){
+        initButton(rl_today,tv_today);
+        initButton(rl_tomorrow,tv_tomorrow);
+        initButton(rl_select,tv_select);
         if(rl == rl_select){
             detail.setColorFilter(getContext().getColor(R.color.white));
             date_selected.setText(Year+"年"+Month+"月"+Day+"日");
@@ -136,15 +171,12 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         bindViews();
         initViews();
         clickButton(rl_today,tv_today);
-        initButton(rl_tomorrow,tv_tomorrow);
-        initButton(rl_select,tv_select);
     }
 
 
     @Override
     public void onStart() {
         super.onStart();
-        init();
         BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
         //把windowsd的默认背景颜色去掉，不然圆角显示不见
         dialog.getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -157,67 +189,14 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
             //修改弹窗的最大高度，不允许上滑（默认可以上滑）
             bottomSheet.setLayoutParams(layoutParams);
 
-            final BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+            behavior = BottomSheetBehavior.from(bottomSheet);
             //peekHeight即弹窗的最大高度
             behavior.setPeekHeight(getPeekHeight());
             // 初始为展开状态
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-            TextView mReBack = view.findViewById(R.id.submit_add);
-            //设置监听
-            mReBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //关闭弹窗
-                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                }
-            });
-
-            rl_today.setOnClickListener(v -> {
-                if(position!=1)
-                {
-                    initButton(rl_tomorrow,tv_tomorrow);
-                    initButton(rl_select,tv_select);
-                    clickButton(rl_today,tv_today);
-                }
-                position=1;
-
-            });
-
-            rl_tomorrow.setOnClickListener(v -> {
-                if(position!=2)
-                {
-                    initButton(rl_today,tv_today);
-                    initButton(rl_select,tv_select);
-                    clickButton(rl_tomorrow,tv_tomorrow);
-                }
-                position=2;
-
-            });
-
-            rl_select.setOnClickListener(v -> {
-                if(position!=3)
-                {
-                    initButton(rl_today,tv_today);
-                    initButton(rl_tomorrow,tv_tomorrow);
-                    clickButton(rl_select,tv_select);
-                }
-                calendarDialog = new CalendarDialog(mContext);
-                calendarDialog.setCancelable(false);
-                calendarDialog.setDateSetter(new CalendarDialog.dateSetter() {
-                    @Override
-                    public void setDate(int year, int month, int day) {
-                        Year = year;
-                        Month = month;
-                        Day = day;
-                        date_selected.setText(Year+"年"+Month+"月"+Day+"日");
-                    }
-                });
-                calendarDialog.show();
-                position=3;
-
-            });
         }
+        init();
 
     }
 
@@ -232,6 +211,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void bindViews(){
+        mReBack = view.findViewById(R.id.submit_add);
         recycleInfo = view.findViewById(R.id.recycle_info);
         ic_addRecycle = view.findViewById(R.id.ic_recycle);
         addLocation = view.findViewById(R.id.ic_location);
@@ -258,6 +238,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         signUp = view.findViewById(R.id.sign_up);
     }
     private void initViews(){
+
         addRecycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -271,6 +252,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
                         refreshCycleInfo();
                     }
                 });
+                recycleDialog.setEditable(editable);
                 recycleDialog.show(getActivity().getSupportFragmentManager(),"recycleDialog");
             }
         });
@@ -280,121 +262,170 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
             }
         });
-        timer_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddTimePickerDialog timeDialog = new AddTimePickerDialog();
-                timeDialog.setCallback(new AddTimePickerDialog.Callback() {
-                    @Override
-                    public void getTimeSelected(int hour, int minute, int lhour, int lminute) {
-                        if(lhour + lminute == 0) lminute++;
-                        startHour = hour;
-                        startMinute = minute;
-                        lenHour = lhour;
-                        lenMinute = lminute;
-                        refreshTimeInfo();
-                    }
-                });
-                timeDialog.show(getActivity().getSupportFragmentManager(), "timeDialog");
-            }
-        });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitTask();
-            }
-        });
-        title.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Title = s.toString();
-            }
-        });
-        description.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Description = s.toString();
-            }
-        });
-        lockPercentSeekBar.setEnabled(false);
-        lockPercentSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                lockPercent = progress / 10 * 10;
-                lockPercentText.setText(lockPercent + "%");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        lock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    lockPercentSeekBar.setEnabled(true);
-                    lockEnabled = true;
-                }
-                else{
-                    lockPercentSeekBar.setProgress(0);
-                    lockPercentSeekBar.setEnabled(false);
-                    lockEnabled = false;
+                if(editable) {
+                    submitTask();
                 }
             }
         });
-        strongAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    StrongAlarm = true;
-                }else{
-                    StrongAlarm = false;
+        if(editable) {
+            //设置监听
+            mReBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //关闭弹窗
+                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 }
-            }
-        });
-        strongAlarm.setEnabled(false);
-        alarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alarm.setChecked(!Alarm);
-                Alarm = !Alarm;
-                strongAlarm.setEnabled(Alarm);
-                if(!Alarm){
-                    strongAlarm.setChecked(false);
+            });
+
+            rl_today.setOnClickListener(v -> {
+                if (position != 1) {
+                    clickButton(rl_today, tv_today);
                 }
-            }
-        });
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signUp.setChecked(!Signup);
-                Signup = !Signup;
-            }
-        });
+                position = 1;
+
+            });
+
+            rl_tomorrow.setOnClickListener(v -> {
+                if (position != 2) {
+                    clickButton(rl_tomorrow, tv_tomorrow);
+                }
+                position = 2;
+
+            });
+
+            rl_select.setOnClickListener(v -> {
+                if (position != 3) {
+                    clickButton(rl_select, tv_select);
+                }
+                calendarDialog = new CalendarDialog(mContext);
+                calendarDialog.setCancelable(false);
+                calendarDialog.setDateSetter(new CalendarDialog.dateSetter() {
+                    @Override
+                    public void setDate(int year, int month, int day) {
+                        Year = year;
+                        Month = month;
+                        Day = day;
+                        date_selected.setText(Year + "年" + Month + "月" + Day + "日");
+                    }
+                });
+                calendarDialog.show();
+                position = 3;
+
+            });
+            timer_select.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AddTimePickerDialog timeDialog = new AddTimePickerDialog();
+                    timeDialog.setCallback(new AddTimePickerDialog.Callback() {
+                        @Override
+                        public void getTimeSelected(int hour, int minute, int lhour, int lminute) {
+                            if (lhour + lminute == 0) lminute++;
+                            startHour = hour;
+                            startMinute = minute;
+                            lenHour = lhour;
+                            lenMinute = lminute;
+                            refreshTimeInfo();
+                        }
+                    });
+                    timeDialog.show(getActivity().getSupportFragmentManager(), "timeDialog");
+                }
+            });
+            title.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Title = s.toString();
+                }
+            });
+            description.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Description = s.toString();
+                }
+            });
+            lockPercentSeekBar.setEnabled(false);
+            lockPercentSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    lockPercent = progress / 10 * 10;
+                    lockPercentText.setText(lockPercent + "%");
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+            lock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        lockPercentSeekBar.setEnabled(true);
+                        lockEnabled = true;
+                    } else {
+                        lockPercentSeekBar.setProgress(0);
+                        lockPercentSeekBar.setEnabled(false);
+                        lockEnabled = false;
+                    }
+                }
+            });
+            strongAlarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        StrongAlarm = true;
+                    } else {
+                        StrongAlarm = false;
+                    }
+                }
+            });
+            strongAlarm.setEnabled(false);
+            alarm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alarm.setChecked(!Alarm);
+                    Alarm = !Alarm;
+                    strongAlarm.setEnabled(Alarm);
+                    if (!Alarm) {
+                        strongAlarm.setChecked(false);
+                    }
+                }
+            });
+            signUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signUp.setChecked(!Signup);
+                    Signup = !Signup;
+                }
+            });
+        }else{
+            setStaticPage();
+        }
     }
     @Nullable
     @Override

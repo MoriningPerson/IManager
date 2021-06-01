@@ -2,6 +2,8 @@ package com.greyka.imgr.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,6 +72,7 @@ public class FragHome extends Fragment {
     public void showSelectorDialog() {
         taskListSelector = new TaskListSelector(getActivity(),taskList);
         taskListSelector.setCancelable(false);
+        taskListSelector.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         taskListSelector.show();
     }
 
@@ -124,9 +127,8 @@ public class FragHome extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("MainActivity","clickAdd");
-                new BaseFullBottomSheetFragment().show(getFragmentManager(), "dialog");
-
-
+                BaseFullBottomSheetFragment bfbsf = new BaseFullBottomSheetFragment();
+                bfbsf.show(getFragmentManager(), "dialog");
             }
         });
     }

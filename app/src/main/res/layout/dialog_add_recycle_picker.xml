@@ -34,7 +34,7 @@
         android:layout_centerVertical="true"
         android:backgroundTint="@color/transparent"
         android:foreground="?android:attr/selectableItemBackground"
-        android:text="添加"
+        android:text="确认"
         android:textColor="@color/myThemeShallow"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,14 +87,14 @@
     </RadioGroup>
 
     <LinearLayout
+        android:id="@+id/bbb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
         android:layout_marginStart="2dp"
         app:layout_constraintStart_toStartOf="@+id/radioGroup2"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup2"
-        android:background="@drawable/date_button_shape">
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup2">
             <TextView
                 android:id="@+id/seven"
                 android:layout_width="30dp"

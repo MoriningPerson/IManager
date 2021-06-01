@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -37,19 +38,44 @@ import java.util.ArrayList;
 
 public class AddRecyclePickerDialog extends DialogFragment {
 
+    private boolean editable = true;
+    public void setEditable(boolean editable){
+        this.editable = editable;
+    }
+    public void setValues(){
+       // need implementation
+    }
+    public void setStaticPage(){
+        if(recycleType == 0){
+            cycleSingle.setChecked(true);
+        }else if(recycleType == 1){
+            cycleDay.setChecked(true);
+        }else if(recycleType == 2){
+            cycleWeek.setChecked(true);
+        }
+        for(int i = 0; i < 7; i ++){
+            setDayChecked(i,dayOfWeek[i]);
+        }
+        cyclePicker.setEnabled(false);
+        cyclePicker.setSelected(String.format("%02d",cycle));
+        cycleSingle.setEnabled(false);
+        cycleDay.setEnabled(false);
+        cycleWeek.setEnabled(false);
+    }
+
     private Vibrator vb;
     private myUtils.beeper scrollerBeep;
-    private int recycleType = 0;
-    private int cycle = 0;
-    private int lastDaySelected = 1;
-    private boolean[] dayOfWeek = new boolean[]{false,false,false,false,false,false,false};
-
     private Button submit;
     private PickerView cyclePicker;
     private RadioButton cycleSingle;
     private RadioButton cycleDay;
     private RadioButton cycleWeek;
     private TextView[] daySelector = new TextView[7];
+
+    private int recycleType = 0;
+    private int cycle = 0;
+    private int lastDaySelected = 1;
+    private boolean[] dayOfWeek = new boolean[]{false,false,false,false,false,false,false};
 
     Callback mCallback;
     interface Callback{
@@ -87,6 +113,9 @@ public class AddRecyclePickerDialog extends DialogFragment {
         builder.setView(view);
         bindViews(view);
         initViews();
+        if(!editable){
+            setStaticPage();
+        }
         Dialog dialog = builder.create();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setGravity(Gravity.CENTER);
@@ -110,58 +139,74 @@ public class AddRecyclePickerDialog extends DialogFragment {
     }
     @SuppressLint("DefaultLocale")
     private void initViews(){
-        for(int i = 0; i < 7; i++){
-            Log.d("init","inti");
-            daySelector[i].setOnClickListener(new View.OnClickListener() {
+        if(editable) {
+            for (int i = 0; i < 7; i++) {
+                Log.d("init", "inti");
+                daySelector[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("aaa", "aaaa");
+                        performSelect(v);
+                    }
+                });
+            }
+            cycleSingle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    Log.d("aaa","aaaa");
-                    performSelect(v);
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        recycleType = 0;
+                        cyclePicker.setEnabled(false);
+                        clearDaySelected();
+                    }
                 }
             });
+            cycleSingle.setChecked(true);
+            cycleDay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        recycleType = 1;
+                        clearDaySelected();
+                        setDayChecked(0, true);
+                        if (!cyclePicker.isEnabled()) {
+                            cyclePicker.setEnabled(true);
+                            Log.d("click", "day");
+                        }
+                    }
+                }
+            });
+            cycleWeek.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        recycleType = 2;
+                        clearDaySelected();
+                        setDayChecked(0, true);
+                        if (!cyclePicker.isEnabled()) {
+                            cyclePicker.setEnabled(true);
+                        }
+                    }
+                }
+            });
+            cyclePicker.setOnSelectListener(new PickerView.onSelectListener() {
+                @Override
+                public void onSelect(String text) {
+                    cycle = Integer.parseInt(text);
+                }
+
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onSelectedChange() {
+                    scrollerBeep.play(1);
+                    vb.vibrate(VibrationEffect.createOneShot(25, 75));
+                }
+            });
+
         }
-        cycleSingle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    recycleType = 0;
-                    cyclePicker.setEnabled(false);
-                    clearDaySelected();
-                }
-            }
-        });
-        cycleSingle.setChecked(true);
-        cycleDay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    recycleType = 1;
-                    clearDaySelected();
-                    setDayChecked(0, true);
-                    if(!cyclePicker.isEnabled()) {
-                        cyclePicker.setEnabled(true);
-                        Log.d("click","day");
-                    }
-                }
-            }
-        });
-        cycleWeek.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    recycleType = 2;
-                    clearDaySelected();
-                    setDayChecked(0, true);
-                    if(!cyclePicker.isEnabled()) {
-                        cyclePicker.setEnabled(true);
-                    }
-                }
-            }
-        });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.getCycleSelected(recycleType,cycle,dayOfWeek);
+                mCallback.getCycleSelected(recycleType, cycle, dayOfWeek);
                 dismiss();
             }
         });
@@ -173,19 +218,6 @@ public class AddRecyclePickerDialog extends DialogFragment {
         cyclePicker.setSelected("02");
         cycle = 2;
         cyclePicker.setEnabled(false);
-        cyclePicker.setOnSelectListener(new PickerView.onSelectListener() {
-            @Override
-            public void onSelect(String text) {
-                cycle = Integer.parseInt(text);
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onSelectedChange() {
-                scrollerBeep.play(1);
-                vb.vibrate(VibrationEffect.createOneShot(25,75));
-            }
-        });
     }
     public void setCallback(Callback callback){
         mCallback = callback;
@@ -218,6 +250,7 @@ public class AddRecyclePickerDialog extends DialogFragment {
         setDayChecked(id, true);
     }
     private void setDayChecked(int id, boolean checked){
+        Log.d("check",id+""+checked);
         dayOfWeek[id] = checked;
         if(checked){
             lastDaySelected = id;

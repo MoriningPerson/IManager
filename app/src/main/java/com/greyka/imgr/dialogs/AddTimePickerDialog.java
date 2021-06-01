@@ -35,6 +35,26 @@ import java.util.ArrayList;
 
 public class AddTimePickerDialog extends DialogFragment {
 
+    private boolean editable = true;
+
+    private void setEditable(boolean editable){
+        this.editable = editable;
+    }
+    private void setValues(){
+        //need implementation
+    }
+    @SuppressLint("DefaultLocale")
+    private void setStaticPage(){
+        startHourPicker.setEnabled(false);
+        startMinutePicker.setEnabled(false);
+        lengthMinutePicker.setEnabled(false);
+        lengthHourPicker.setEnabled(false);
+        startMinutePicker.setSelected(String.format("%02d",startMinute));
+        startHourPicker.setSelected(String.format("%02d",startHour));
+        lengthMinutePicker.setSelected(String.format("%02d",lengthMinute));
+        lengthHourPicker.setSelected(String.format("%02d",lengthHour));
+    }
+
     private Vibrator vb;
     private myUtils.beeper scrollerBeep;
     private PickerView startHourPicker;
@@ -47,6 +67,7 @@ public class AddTimePickerDialog extends DialogFragment {
     private int startMinute;
     private int lengthHour;
     private int lengthMinute;
+
 
     Callback mCallback;
     interface Callback{
@@ -84,6 +105,9 @@ public class AddTimePickerDialog extends DialogFragment {
         builder.setView(view);
         bindViews(view);
         initViews();
+        if(!editable){
+            setStaticPage();
+        }
         Dialog dialog = builder.create();
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setGravity(Gravity.CENTER);

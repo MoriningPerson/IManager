@@ -45,14 +45,13 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         super(context);
         this.context = context;
         this.taskList = mSimpleListItemEntity;
-
+        
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.task_dialog);
-        this.setCanceledOnTouchOutside(true); // 点击外部会消失
         InitViews();
     }
 
@@ -79,7 +78,7 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         //todayTaskDialog.show(myActivity.getSupportFragmentManager(), "TaskDialog"); ;
         mPosition=position;
         taskItemDialog = new TaskItemDialog(this,context,taskList.get(position));
-        taskItemDialog.setCancelable(false);
+        //taskItemDialog.setCancelable(false);
         taskItemDialog.show();
         Activity myActivity=(Activity)context;
         LayoutInflater inflater = LayoutInflater.from(myActivity);
