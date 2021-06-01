@@ -33,6 +33,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:backgroundTint="@color/grey101"
         android:id="@+id/task_selector"
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
