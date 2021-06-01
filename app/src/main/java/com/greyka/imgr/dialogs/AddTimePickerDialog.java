@@ -29,9 +29,14 @@ import androidx.fragment.app.DialogFragment;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.classes.PickerView;
+import com.greyka.imgr.data.Data;
 import com.greyka.imgr.utilities.myUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AddTimePickerDialog extends DialogFragment {
 
@@ -40,8 +45,19 @@ public class AddTimePickerDialog extends DialogFragment {
     private void setEditable(boolean editable){
         this.editable = editable;
     }
-    private void setValues(){
-        //need implementation
+    private void setValues(Data.Task task){
+        String str=task.getStart_date();
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date=new Date();
+        try{
+            date =sdf.parse(str);
+        }catch (ParseException e){}
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        startHour = c.get(Calendar.HOUR_OF_DAY);
+        startMinute = c.get(Calendar.MINUTE);
+        lengthHour=task.getDuration()/60;
+        lengthMinute=task.getDuration()%60;
     }
     @SuppressLint("DefaultLocale")
     private void setStaticPage(){

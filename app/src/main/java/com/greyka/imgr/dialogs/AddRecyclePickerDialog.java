@@ -32,6 +32,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.classes.PickerView;
+import com.greyka.imgr.data.Data;
 import com.greyka.imgr.utilities.myUtils;
 
 import java.util.ArrayList;
@@ -42,8 +43,16 @@ public class AddRecyclePickerDialog extends DialogFragment {
     public void setEditable(boolean editable){
         this.editable = editable;
     }
-    public void setValues(){
-       // need implementation
+    public void setValues(Data.Task task){
+        recycleType=task.getCycleType();
+        cycle=task.getRepeat_count();
+        dayOfWeek[0]=((task.getSelected() & (1 << 6)) > 0);
+        dayOfWeek[1]=((task.getSelected() & 1 ) > 0);
+        dayOfWeek[2]=((task.getSelected() & (1 << 1)) > 0);
+        dayOfWeek[3]=((task.getSelected() & (1 << 2)) > 0);
+        dayOfWeek[4]=((task.getSelected() & (1 << 3)) > 0);
+        dayOfWeek[5]=((task.getSelected() & (1 << 4)) > 0);
+        dayOfWeek[6]=((task.getSelected() & (1 << 5)) > 0);
     }
     public void setStaticPage(){
         if(recycleType == 0){

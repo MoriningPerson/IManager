@@ -41,14 +41,61 @@ import com.greyka.imgr.utilities.myUtils;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
     private boolean editable = true;
     public void setEditable(boolean editable){
         this.editable = editable;
     }
-    public void setValues(){
-        //need implementation
+    public void setValues(Data.Task task)  {
+        String str=task.getStart_date();
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date=new Date();
+        try{
+            date =sdf.parse(str);
+        }catch (ParseException e){}
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        Year = c.get(Calendar.YEAR);
+        Month = c.get(Calendar.MONTH) + 1;
+        Day = c.get(Calendar.DAY_OF_MONTH);
+        startHour = c.get(Calendar.HOUR_OF_DAY);
+        startMinute = c.get(Calendar.MINUTE);
+        Signup=(task.getCompleted()>0);
+        if(task.getRemind()==0){
+            Alarm=false;
+            StrongAlarm=false;
+        }else if(task.getRemind()==1){
+            Alarm=true;
+            StrongAlarm=false;
+        }else if(task.getRemind()==2){
+            Alarm=true;
+            StrongAlarm=false;
+        }
+        if(task.getAllowed()==100)
+            lockEnabled=false;
+        else{
+            lockEnabled=true;
+            lockPercent=task.getAllowed();
+        }
+        Title=task.getTask_name();
+        Description=task.getTask_description();
+        lenHour=task.getDuration()/60;
+        lenMinute=task.getDuration()%60;
+        RecycleType=task.getCycleType();
+        Cycle=task.getRepeat_count();
+        DayOfWeek[0]=((task.getSelected() & (1 << 6)) > 0);
+        DayOfWeek[1]=((task.getSelected() & 1 ) > 0);
+        DayOfWeek[2]=((task.getSelected() & (1 << 1)) > 0);
+        DayOfWeek[3]=((task.getSelected() & (1 << 2)) > 0);
+        DayOfWeek[4]=((task.getSelected() & (1 << 3)) > 0);
+        DayOfWeek[5]=((task.getSelected() & (1 << 4)) > 0);
+        DayOfWeek[6]=((task.getSelected() & (1 << 5)) > 0);
     }
     public void setStaticPage(){
         clickButton(rl_select,tv_select);
