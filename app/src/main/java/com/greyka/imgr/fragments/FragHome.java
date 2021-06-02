@@ -53,6 +53,7 @@ public class FragHome extends Fragment {
 
 
     private List<Task> taskCompleted[] = new List[2];
+    private Task NextTask;
 
     private CardView timer;
     private CardView button2;
@@ -70,6 +71,7 @@ public class FragHome extends Fragment {
     private TextView home_notice_board_title;
     private ImageView todayTaskCompleted;
     private ImageView todayTaskUncompleted;
+    private ImageView nextTask;
 
 
     @Nullable
@@ -77,12 +79,17 @@ public class FragHome extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.frag_home, container, false);
     }
-    public void showSelectorDialog(int completed) {
-        refreshTaskList();
+   private void showSelectorDialog(int completed) {
         taskListSelector = new TaskListSelector(getActivity(),getFragmentManager(),taskCompleted[completed]);
         //taskListSelector.setCancelable(true);
-        taskListSelector.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         taskListSelector.show();
+    }
+    private void showNextTask(){
+        BaseFullBottomSheetFragment next = new BaseFullBottomSheetFragment();
+        next.setOnce(true);
+        next.setEditable(false);
+        next.setValues(NextTask);
+        next.show(getFragmentManager(),"nextTask");
     }
 
     @SuppressLint("SetTextI18n")
@@ -99,6 +106,7 @@ public class FragHome extends Fragment {
         });*/
     }
     private void bindViews(View view){
+        nextTask = view.findViewById(R.id.home_next);
         todayTaskCompleted = view.findViewById(R.id.home_complete);
         todayTaskUncompleted = view.findViewById(R.id.home_uncomplete);
         add_task = view.findViewById(R.id.home_add_button);
@@ -113,8 +121,13 @@ public class FragHome extends Fragment {
         refresh = (ImageButton)view.findViewById(R.id.refresh);
         motto = (TextView)view.findViewById(R.id.string_motto);
     }
-    private void initViews()
-    {
+    private void initViews() {
+        nextTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNextTask();
+            }
+        });
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,21 +160,31 @@ public class FragHome extends Fragment {
         });
     }
     void refreshHomeData(){
+        refreshTaskList();
+        int tc0 = taskCompleted[0].size();
+        int tc1 = taskCompleted[1].size();
+        int tot = tc0 + tc1;
         motto.setText(mottoManager.getRandomMotto());
         home_notice_board_title.setText(myUtils.myCalenderHelper.getChineseTotal());
-        total_complete_percent.setText("0%");//今日任务完成比例
+        total_complete_percent.setText((tc1*100/tot)+"%");//今日任务完成比例
         home_string_next.setText("下一任务");//or 正在执行
-        home_string_next_tasktitle.setText("任务主题任务主题");//任务title
-        task_time_location.setText("00:00:00\n田家炳教育书院");//任务开始时间&地点
-        uncomplete_percent.setText("2/5");//未完成/总
-        complete_percent.setText("1/5");//完成/总
+        home_string_next_tasktitle.setText(NextTask.getTask_name());//任务title
+        task_time_location.setText(NextTask.getStart_time().substring(0,5)+" ~ "+NextTask.getEnd_time().substring(0,5)+"\n"+NextTask.getPlace_name());//任务开始时间&地点
+        uncomplete_percent.setText(tc0+"/"+tot);//未完成/总
+        complete_percent.setText(tc1+"/"+tot);//完成/总
     }
     private void refreshTaskList(){
-        taskCompleted[0] =  Arrays.asList(task3, task3);
-        taskCompleted[1] =  Arrays.asList(task1, task2, task4, task5,task1, task2, task4, task5);
+        refreshTaskList(0);
+        refreshTaskList(1);
+        refreshNextTask();
+    }
+    private void refreshTaskList(int completed){
+        taskCompleted[completed] =  Arrays.asList(task1, task2, task4, task5,task1, task2, task4, task5);
         myComparator_task cmp = new myComparator_task();
-        Collections.sort(taskCompleted[0],cmp);
-        Collections.sort(taskCompleted[1],cmp);
+        Collections.sort(taskCompleted[completed],cmp);
+    }
+    private void refreshNextTask(){
+        NextTask = task1;
     }
     class myComparator_task implements Comparator {
 

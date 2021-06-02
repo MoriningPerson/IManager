@@ -60,7 +60,7 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
         rv_selector_branch = (RecyclerView)view.findViewById(R.id.plan_recycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rv_selector_branch.setLayoutManager(layoutManager);
-        mSelectorBranchAdapter = new PlanDialogMemberAdapter(planList);
+        mSelectorBranchAdapter = new PlanDialogMemberAdapter(planList,getContext());
         mSelectorBranchAdapter.setOnItemClickListener(this);
         rv_selector_branch.setAdapter(mSelectorBranchAdapter);
     }
@@ -81,11 +81,13 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(int position, int itemType) {
         //mPosition=position;
         //planList.get(position).getPlan_id();
         //请求plan_id的不重复的taskList
-        showSelectorDialog(planList.get(position).getPlan_id());
+        if(itemType == 1) {
+            showSelectorDialog(planList.get(position).getPlan_id());
+        }
     }
     public void refreshPlanList(){
         planList = Data.Plan.planList;//new ArrayList<>();//获取任务

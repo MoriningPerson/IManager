@@ -25,9 +25,6 @@ import com.greyka.imgr.data.Data.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jie on 2018/9/9.
- */
 
 public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.OnItemClickListener,ViewUpdator{
     private List<Task> taskList = new ArrayList<>();    //选择列表的数据
@@ -56,6 +53,7 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.task_dialog);
         InitViews();
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     private void InitViews() {
@@ -84,6 +82,7 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         //taskItemDialog.setCancelable(false);
         taskItemDialog.setEditable(false);
         taskItemDialog.setOnce(true);
+        Log.d("here","a");
         taskItemDialog.setValues(taskList.get(position));
         taskItemDialog.show(fm, "aa");
     }
@@ -95,10 +94,4 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         this.InitViews();
        // this.show();
     }
-
-
-
-
-
-
 }

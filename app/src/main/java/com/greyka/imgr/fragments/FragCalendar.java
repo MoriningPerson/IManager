@@ -43,7 +43,7 @@ public class FragCalendar extends Fragment {
     public Task task5 = data.new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
             "共青场",0,0,1,1,0,2,"20:00:00","20:30:00",0,0,0,0,0,0,0,0);
 
-    public List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
+    public List<Task> taskList;
 
     List<Data.Task> task;
     View memo;
@@ -95,17 +95,18 @@ public class FragCalendar extends Fragment {
         //Data data= new Data();
         //Data.Task task=data.new Task();
         //List<Data.Task> tasks=task.taskList; //获取今日任务列表
+        taskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
         myComparator_memo cmp = new myComparator_memo();
         Collections.sort(taskList,cmp);
         recyclerView.setAdapter(new myRecyclerViewAdapter(taskList));
     }
-}
-class myComparator_memo implements Comparator {
+    class myComparator_memo implements Comparator {
 
-    @Override
-    public int compare(Object t1, Object t2) {
-        String str1 = ((Data.Task)(t1)).getStart_time();
-        String str2 = ((Data.Task)(t2)).getStart_time();
-        return str1.compareTo(str2);
+        @Override
+        public int compare(Object t1, Object t2) {
+            String str1 = ((Data.Task)(t1)).getStart_time();
+            String str2 = ((Data.Task)(t2)).getStart_time();
+            return str1.compareTo(str2);
+        }
     }
 }
