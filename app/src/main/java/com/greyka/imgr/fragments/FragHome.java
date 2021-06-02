@@ -1,5 +1,8 @@
 package com.greyka.imgr.fragments;
 
+import static com.greyka.imgr.utilities.GetData.attemptRegister;
+import static com.greyka.imgr.utilities.GetData.attemptLogin;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +22,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.greyka.imgr.R;
+import com.greyka.imgr.activities.MainActivity;
 import com.greyka.imgr.activities.Timer;
 import com.greyka.imgr.classes.mottoManager;
 import com.greyka.imgr.data.Data;
@@ -33,6 +38,7 @@ import java.util.List;
 public class FragHome extends Fragment {
 
     Data data = new Data();
+    private Data.User user= data.new User(0, "StellaDing", "13462057288", "Drx123456");
     Task taskExample= data.new Task();
     public Task task1 = data.new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
             "长风公园",0,0,1,1,0,1,1,"06:00:00","07:00:00");
@@ -62,6 +68,8 @@ public class FragHome extends Fragment {
     private TextView total_complete_percent;
     private TextView motto;
     private TextView home_notice_board_title;
+    private ImageView logo;
+
 
 
     @Nullable
@@ -101,6 +109,7 @@ public class FragHome extends Fragment {
         complete_percent = view.findViewById(R.id.complete_percent);
         refresh = (ImageButton)view.findViewById(R.id.refresh);
         motto = (TextView)view.findViewById(R.id.string_motto);
+        logo=(ImageView) view.findViewById(R.id.imageView2);
     }
     private void initViews()
     {
@@ -131,6 +140,18 @@ public class FragHome extends Fragment {
                 bfbsf.show(getFragmentManager(), "dialog");
             }
         });
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Log.d("MainActivity","clickRegister");
+               // String result=attemptRegister(user);
+               // Log.d("Register",result);
+                Log.d("MainActivity","clickLogin");
+                String result=attemptLogin(getContext(),"StellaDing","Drx123456");
+                Log.d("Login",result);
+            }
+        });
+
     }
     void refreshHomeData(){
         motto.setText(mottoManager.getRandomMotto());
