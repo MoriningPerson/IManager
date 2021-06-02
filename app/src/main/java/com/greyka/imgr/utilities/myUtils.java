@@ -25,14 +25,12 @@ import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -45,11 +43,11 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.greyka.imgr.R;
 import com.greyka.imgr.activities.MainActivity;
+import com.greyka.imgr.dialogs.myPermissionDialogFragment;
 import com.greyka.imgr.fragments.FragCalendar;
 import com.greyka.imgr.fragments.FragHome;
-import com.greyka.imgr.fragments.FragMine;
 import com.greyka.imgr.fragments.FragList;
-import com.greyka.imgr.dialogs.myPermissionDialogFragment;
+import com.greyka.imgr.fragments.FragMine;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -79,8 +77,8 @@ public class myUtils {
     }
 
     public static class myCalenderHelper {
-        static String[] ChineseDayOfWeek = {"日", "一", "二", "三", "四", "五", "六"};
         private static final Calendar cal = Calendar.getInstance();
+        static String[] ChineseDayOfWeek = {"日", "一", "二", "三", "四", "五", "六"};
 
         public static int getYear() {
             return cal.get(Calendar.YEAR);
@@ -114,22 +112,24 @@ public class myUtils {
             return ChineseDayOfWeek[getDayOfWeek() - 1];
         }
 
-        public static int getYearAfterDays(int n){
+        public static int getYearAfterDays(int n) {
             Calendar TimeCalendar = Calendar.getInstance();
             TimeCalendar.setTime(new Date());
-            TimeCalendar.add(Calendar.DAY_OF_MONTH,n);
+            TimeCalendar.add(Calendar.DAY_OF_MONTH, n);
             return TimeCalendar.get(Calendar.YEAR);
         }
-        public static int getMonthAfterDays(int n){
+
+        public static int getMonthAfterDays(int n) {
             Calendar TimeCalendar = Calendar.getInstance();
             TimeCalendar.setTime(new Date());
-            TimeCalendar.add(Calendar.DAY_OF_MONTH,n);
-            return (TimeCalendar.get(Calendar.MONTH)+1);
+            TimeCalendar.add(Calendar.DAY_OF_MONTH, n);
+            return (TimeCalendar.get(Calendar.MONTH) + 1);
         }
-        public static int getDayAfterDays(int n){
+
+        public static int getDayAfterDays(int n) {
             Calendar TimeCalendar = Calendar.getInstance();
             TimeCalendar.setTime(new Date());
-            TimeCalendar.add(Calendar.DAY_OF_MONTH,n);
+            TimeCalendar.add(Calendar.DAY_OF_MONTH, n);
             return TimeCalendar.get(Calendar.DATE);
         }
 
@@ -156,13 +156,7 @@ public class myUtils {
         public myPermissionManager(FragmentActivity main) {
             this.myActivity = main;
         }
-        public boolean checkFloatingPermission() {
-            final int version = Build.VERSION.SDK_INT;
-            if (version >= 19) {
-                return checkOp(myActivity, 24);
-            }
-            return true;
-        }
+
         @TargetApi(Build.VERSION_CODES.KITKAT)
         private static boolean checkOp(Context context, int op) {
             final int version = Build.VERSION.SDK_INT;
@@ -178,10 +172,20 @@ public class myUtils {
             }
             return false;
         }
+
+        public boolean checkFloatingPermission() {
+            final int version = Build.VERSION.SDK_INT;
+            if (version >= 19) {
+                return checkOp(myActivity, 24);
+            }
+            return true;
+        }
+
         public void applyForLocationPermission(ActivityResultLauncher<String> requestPermissionLauncher) {
             Log.d("this", "mmm");
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
+
         public void applyForFloatingPermission() {
             int sdkInt = Build.VERSION.SDK_INT;
             if (sdkInt >= Build.VERSION_CODES.O) {//8.0以上
@@ -193,6 +197,7 @@ public class myUtils {
                 myActivity.startActivityForResult(intent, 1);
             }
         }
+
         public void getPermissionDialog() {
             if (ContextCompat.checkSelfPermission(myActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     || !checkFloatingPermission()) {
@@ -219,12 +224,11 @@ public class myUtils {
     }
 
     public static class myNavigationManagerForMainActivity extends AppCompatActivity {
-        private ArrayList<Fragment> myFragments;
         private final FragHome fragHome = new FragHome();
-        ;
         private final FragList fragList = new FragList();
         private final FragMine fragMine = new FragMine();
         private final FragCalendar fragCalendar = new FragCalendar();
+        private ArrayList<Fragment> myFragments;
         private Fragment now;
 
         public void runNavigation(FragmentActivity myActivity) {
@@ -242,58 +246,54 @@ public class myUtils {
                     .commit();
             now = fragHome;
             BottomNavigationView navigationView = myActivity.findViewById(R.id.navigation_launch);
-            navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @SuppressLint("NonConstantResourceId")
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.home_bottom_navigation:
-                            if (now != fragHome) {
-                                myFragmentManager
-                                        .beginTransaction()
-                                        .show(fragHome)
-                                        .hide(now)
-                                        .commit();
-                                now = fragHome;
-                            }
-                            break;
-                        case R.id.task_bottom_navigation:
-                            if (now != fragList) {
-                                Log.d("asd", "asd");
-                                myFragmentManager
-                                        .beginTransaction()
-                                        .show(fragList)
-                                        .hide(now)
-                                        .commit();
-                                now = fragList;
-                            }
-                            break;
-                        case R.id.mine_bottom_navigation:
-                            if (now != fragMine) {
-                                myFragmentManager
-                                        .beginTransaction()
-                                        .show(fragMine)
-                                        .hide(now)
-                                        .commit();
-                                now = fragMine;
-                            }
-                            break;
-                        case R.id.calendar_bottom_navigation:
-                            if (now != fragCalendar) {
-                                myFragmentManager
-                                        .beginTransaction()
-                                        .show(fragCalendar)
-                                        .hide(now)
-                                        .commit();
-                                now = fragCalendar;
-                            }
-                            break;
-                    }
-
-                    // 默认 false
-                    // false 的话 下面颜色不会变化
-                    return true;
+            navigationView.setOnNavigationItemSelectedListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.home_bottom_navigation:
+                        if (now != fragHome) {
+                            myFragmentManager
+                                    .beginTransaction()
+                                    .show(fragHome)
+                                    .hide(now)
+                                    .commit();
+                            now = fragHome;
+                        }
+                        break;
+                    case R.id.task_bottom_navigation:
+                        if (now != fragList) {
+                            Log.d("asd", "asd");
+                            myFragmentManager
+                                    .beginTransaction()
+                                    .show(fragList)
+                                    .hide(now)
+                                    .commit();
+                            now = fragList;
+                        }
+                        break;
+                    case R.id.mine_bottom_navigation:
+                        if (now != fragMine) {
+                            myFragmentManager
+                                    .beginTransaction()
+                                    .show(fragMine)
+                                    .hide(now)
+                                    .commit();
+                            now = fragMine;
+                        }
+                        break;
+                    case R.id.calendar_bottom_navigation:
+                        if (now != fragCalendar) {
+                            myFragmentManager
+                                    .beginTransaction()
+                                    .show(fragCalendar)
+                                    .hide(now)
+                                    .commit();
+                            now = fragCalendar;
+                        }
+                        break;
                 }
+
+                // 默认 false
+                // false 的话 下面颜色不会变化
+                return true;
             });
         }
 
@@ -338,10 +338,10 @@ public class myUtils {
     }
 
     public static class myToastHelper {
+        private static Toast toast = null;
+
         private myToastHelper() {
         }
-
-        private static Toast toast = null;
 
         @SuppressLint("ShowToast")
         public static void showText(Context context, String text, int length) {
@@ -358,12 +358,11 @@ public class myUtils {
         Boolean init = false;
         int Top, Left;
         int height, width;
+        private int lastX, lastY;
 
         public myViewMover(View view) {
             this.v = view;
         }
-
-        private int lastX, lastY;
 
         public void move(MotionEvent event, int upX, int downX, int upY, int downY) {
             int x = (int) event.getX();
@@ -405,15 +404,7 @@ public class myUtils {
         private CountDownTimer CDT;
         private timer_handler TH;
 
-        public interface timer_handler {
-            void onTickEvent();
-
-            void onFinishEvent();
-
-            void onCreateEvent(int secInFuture, timer_handler TH);
-        }
-
-        public myCountDownTimerHelper(int secInFuture,int secRemain, timer_handler TH) {
+        public myCountDownTimerHelper(int secInFuture, int secRemain, timer_handler TH) {
             mMillisTotal = (long) secInFuture * 1000 + 500;
             mMillisRemain = (long) secRemain * 1000 + 500;
             this.TH = TH;
@@ -476,44 +467,28 @@ public class myUtils {
         public String getTimeTotal() {
             return millisToString(mMillisTotal);
         }
+
+        public interface timer_handler {
+            void onTickEvent();
+
+            void onFinishEvent();
+
+            void onCreateEvent(int secInFuture, timer_handler TH);
+        }
     }
 
     public static class beeper {
-        public static class beepAttributes {
-            beepAttributes(int soundID, int soundLength, float leftVolume, float rightVolume, int priority, int loop, float rate) {
-                this.soundID = soundID;
-                this.soundLength = soundLength;
-                this.leftVolume = leftVolume;
-                this.rightVolume = rightVolume;
-                this.priority = priority;
-                this.loop = loop;
-                this.rate = rate;
-                lastPlayStartTime.put(soundID, 0L);
-            }
-
-            int soundID;
-            int soundLength;
-            float leftVolume;
-            float rightVolume;
-            int priority;
-            int loop;
-            float rate;
-        }
-
         public static final int scrollWheel = 1; // 滚轮
+        private static final HashMap<Integer, beepAttributes> mySounds = new HashMap<>();
         private static SoundPool soundPool = null;
         private static int nowSound;
-        private static final HashMap<Integer, beepAttributes> mySounds = new HashMap<>();
         private static HashMap<Integer, Long> lastPlayStartTime = new HashMap<>();
         private static HashSet<Integer> soundLoaded = new HashSet<>();
-
         public beeper(Context context) {
             if (soundPool == null) {
                 AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
                 soundPool = new SoundPool.Builder().setMaxStreams(4).setAudioAttributes(audioAttributes).build();
-                soundPool.setOnLoadCompleteListener((soundPool, soundID, status) -> {
-                    soundLoaded.add(soundID);
-                });
+                soundPool.setOnLoadCompleteListener((soundPool, soundID, status) -> soundLoaded.add(soundID));
                 mySounds.put(scrollWheel, new beepAttributes(soundPool.load(context, R.raw.scroll_wheel, 1), 50, 0.3f, 0.3f, 1, 0, 1));
             }
         }
@@ -532,6 +507,27 @@ public class myUtils {
 
         public void stop() {
             soundPool.stop(nowSound);
+        }
+
+        public static class beepAttributes {
+            int soundID;
+            int soundLength;
+            float leftVolume;
+            float rightVolume;
+            int priority;
+            int loop;
+            float rate;
+
+            beepAttributes(int soundID, int soundLength, float leftVolume, float rightVolume, int priority, int loop, float rate) {
+                this.soundID = soundID;
+                this.soundLength = soundLength;
+                this.leftVolume = leftVolume;
+                this.rightVolume = rightVolume;
+                this.priority = priority;
+                this.loop = loop;
+                this.rate = rate;
+                lastPlayStartTime.put(soundID, 0L);
+            }
         }
     }
 
@@ -578,21 +574,22 @@ public class myUtils {
             }
         }
     }
+
     public static class NotifyHelper {
 
-        public static void CreateChannel(Context context,String channel_id,CharSequence channel_name,String description){
+        public static void CreateChannel(Context context, String channel_id, CharSequence channel_name, String description) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel=new NotificationChannel(channel_id,channel_name, NotificationManager.IMPORTANCE_HIGH);
+                NotificationChannel notificationChannel = new NotificationChannel(channel_id, channel_name, NotificationManager.IMPORTANCE_HIGH);
                 notificationChannel.setDescription(description);
-                NotificationManager notificationManager=context.getSystemService(NotificationManager.class);
+                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
                 notificationManager.createNotificationChannel(notificationChannel);
             }
         }
 
-        public static Notification createForeNotification(Context context, String channel_id, RemoteViews remoteViews){
-            Intent i=new Intent(context, MainActivity.class);
-            PendingIntent mainIntent=PendingIntent.getActivity(context,0,i,0);
-            NotificationCompat.Builder builder=new NotificationCompat.Builder(context)
+        public static Notification createForeNotification(Context context, String channel_id, RemoteViews remoteViews) {
+            Intent i = new Intent(context, MainActivity.class);
+            PendingIntent mainIntent = PendingIntent.getActivity(context, 0, i, 0);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                     .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                     .setCustomContentView(remoteViews)
                     .setChannelId(channel_id)
