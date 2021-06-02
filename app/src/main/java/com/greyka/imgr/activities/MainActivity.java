@@ -1,5 +1,7 @@
 package com.greyka.imgr.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -8,9 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.dialogs.myPermissionDialogFragment;
@@ -39,10 +38,10 @@ public class MainActivity extends AppCompatActivity implements myPermissionDialo
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         myUtils.myPermissionManager mpm = new myUtils.myPermissionManager(this);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             mpm.applyForLocationPermission(requestLocationPermissionLauncher);
         }
-        if (!mpm.checkFloatingPermission()){
+        if (!mpm.checkFloatingPermission()) {
             mpm.applyForFloatingPermission();
         }
     }

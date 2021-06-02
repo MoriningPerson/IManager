@@ -10,17 +10,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.greyka.imgr.R;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.greyka.imgr.data.Data;
+import com.greyka.imgr.R;
 import com.greyka.imgr.data.Data.Task;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -28,42 +24,27 @@ import java.util.List;
  */
 
 public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemberAdapter.ViewHolder> {
-    private List<Task> list;
-    private OnItemClickListener mOnItemClickListener;
     private static ViewHolder holder;
     private final Context mcontext;
+    private List<Task> list;
+    private OnItemClickListener mOnItemClickListener;
     private boolean once;
-    static public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
-        TextView description;
-        ImageView status;
-        CardView colorBar;
-        LinearLayout item_selected;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            name = itemView.findViewById(R.id.task_name);
-            description = itemView.findViewById(R.id.task_desc);
-            status =itemView.findViewById(R.id.task_status);
-            item_selected = itemView.findViewById(R.id.rl_branch_item_root);
-            colorBar = itemView.findViewById(R.id.color_bar);
-        }
-    }
-
-    public TaskDialogMemberAdapter(List<Task> list,Context mcontext,boolean once) {
+    public TaskDialogMemberAdapter(List<Task> list, Context mcontext, boolean once) {
         this.once = once;
         this.list = list;
-        Log.d("len",list.size()+"");
+        Log.d("len", list.size() + "");
         this.mcontext = mcontext;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item,parent,false);
-       holder = new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item, parent, false);
+        holder = new ViewHolder(view);
         return holder;
     }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final int mPosition = position;
@@ -71,26 +52,24 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         holder.name.setText(lock.getTask_name());
         holder.description.setText(lock.getTask_description());
         int task_status;
-        if(once){
+        if (once) {
             task_status = lock.getTodayCompleted();
-        }else {
+        } else {
             task_status = lock.getCompleted();
         }
-        if(task_status==0){
+        if (task_status == 0) {
             holder.status.setImageResource(R.drawable.ic_task_uncompleted);
             holder.status.setColorFilter(mcontext.getColor(R.color.myThemeShallow));
             holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.myThemeShallow));
             holder.name.setTextColor(mcontext.getColor(R.color.black));
             holder.description.setTextColor(mcontext.getColor(R.color.dimgrey));
-        }
-        else if (task_status==1){
+        } else if (task_status == 1) {
             holder.status.setImageResource(R.drawable.ic_task_failed);
             holder.status.setColorFilter(mcontext.getColor(R.color.dimgrey));
             holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.defaultgrey));
             holder.name.setTextColor(mcontext.getColor(R.color.defaultgrey));
             holder.description.setTextColor(mcontext.getColor(R.color.defaultgrey));
-        }
-        else {
+        } else {
             holder.status.setImageResource(R.drawable.ic_task_completed);
             holder.status.setColorFilter(mcontext.getColor(R.color.grey));
             holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.grey));
@@ -98,14 +77,7 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
             holder.description.setTextColor(mcontext.getColor(R.color.grey));
         }
 
-        holder.item_selected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mOnItemClickListener.onItemClick(mPosition);
-
-            }
-        });
+        holder.item_selected.setOnClickListener(v -> mOnItemClickListener.onItemClick(mPosition));
 
     }
 
@@ -121,11 +93,11 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         mOnItemClickListener = onItemClickListener;
     }
 
-    public void UpdateItem(int pos,Task task_edited){
-      Log.d("myAdapter",task_edited.getTask_name());
+    public void UpdateItem(int pos, Task task_edited) {
+        Log.d("myAdapter", task_edited.getTask_name());
         holder.name.setText(task_edited.getTask_name());
-        String test=(String)holder.name.getText();
-       Log.d("myAdapter",test);
+        String test = (String) holder.name.getText();
+        Log.d("myAdapter", test);
         holder.description.setText(task_edited.getTask_description());
     }
 
@@ -134,5 +106,22 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
      */
     public interface OnItemClickListener {
         void onItemClick(int position);
+    }
+
+    static public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView description;
+        ImageView status;
+        CardView colorBar;
+        LinearLayout item_selected;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            name = itemView.findViewById(R.id.task_name);
+            description = itemView.findViewById(R.id.task_desc);
+            status = itemView.findViewById(R.id.task_status);
+            item_selected = itemView.findViewById(R.id.rl_branch_item_root);
+            colorBar = itemView.findViewById(R.id.color_bar);
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.greyka.imgr.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,9 +16,11 @@ public class PlanDeleteDialog extends DialogFragment {
     PlanDeleteDialog.NoticeDialogListener listener;
 
     private Data.Plan plan;
-    public PlanDeleteDialog(Data.Plan plan){
+
+    public PlanDeleteDialog(Data.Plan plan) {
         this.plan = plan;
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -32,12 +33,10 @@ public class PlanDeleteDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder
                 .setTitle("删除提示")
-                .setMessage("是否删除任务："+ plan.getPlan_name() + " ?")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the positive button event back to the host activity
-                        listener.onDialogPositiveClick(plan.getPlan_id());
-                    }
+                .setMessage("是否删除任务：" + plan.getPlan_name() + " ?")
+                .setPositiveButton("确定", (dialog, id) -> {
+                    // Send the positive button event back to the host activity
+                    listener.onDialogPositiveClick(plan.getPlan_id());
                 })
                 .setNegativeButton("取消", (dialog, id) -> {
                 });
@@ -48,9 +47,10 @@ public class PlanDeleteDialog extends DialogFragment {
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
-    public void setNoticDialogListener(NoticeDialogListener listener){
+    public void setNoticDialogListener(NoticeDialogListener listener) {
         this.listener = listener;
     }
+
     public interface NoticeDialogListener {
         void onDialogPositiveClick(long plan_id);
     }

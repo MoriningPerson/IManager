@@ -14,7 +14,6 @@ import com.greyka.imgr.R;
 public class MapDisplayActivity extends AppCompatActivity {
     MapView mMapView = null;
     AMap aMap = null;
-    LatLng latLng = new LatLng(31.228472, 121.403458);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +21,12 @@ public class MapDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map_display);
         mMapView = findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
+        double latitude = (double) getIntent().getSerializableExtra("latitude");
+        double longitude = (double) getIntent().getSerializableExtra("longitude");
         if (aMap == null) {
             aMap = mMapView.getMap();
         }
+        LatLng latLng = new LatLng(latitude, longitude);
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 19));
     }
 

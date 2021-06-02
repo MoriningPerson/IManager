@@ -10,12 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.greyka.imgr.R;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.greyka.imgr.R;
 import com.greyka.imgr.data.Data.Task;
 
 import java.util.List;
@@ -25,39 +24,23 @@ import java.util.List;
  */
 
 public class TaskDialogSelectAdapter extends RecyclerView.Adapter<TaskDialogSelectAdapter.ViewHolder> {
-    private List<Task> list;
-    private OnItemClickListener mOnItemClickListener;
     private static ViewHolder holder;
     private final Context mcontext;
+    private List<Task> list;
+    private OnItemClickListener mOnItemClickListener;
     private boolean once;
-    static public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
-        TextView description;
-        ImageView status;
-        CardView colorBar;
-        LinearLayout item_selected;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            name = itemView.findViewById(R.id.task_name);
-            description = itemView.findViewById(R.id.task_desc);
-            status =itemView.findViewById(R.id.task_status);
-            item_selected = itemView.findViewById(R.id.rl_branch_item_root);
-            colorBar = itemView.findViewById(R.id.color_bar);
-        }
-    }
-
-    public TaskDialogSelectAdapter(List<Task> list,Context mcontext,boolean once) {
+    public TaskDialogSelectAdapter(List<Task> list, Context mcontext, boolean once) {
         this.once = once;
         this.list = list;
-        Log.d("len",list.size()+"");
+        Log.d("len", list.size() + "");
         this.mcontext = mcontext;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item, parent, false);
         holder = new ViewHolder(view);
         return holder;
     }
@@ -74,19 +57,16 @@ public class TaskDialogSelectAdapter extends RecyclerView.Adapter<TaskDialogSele
         holder.name.setTextColor(mcontext.getColor(R.color.black));
         holder.description.setTextColor(mcontext.getColor(R.color.dimgrey));
 
-        holder.item_selected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean selected = mOnItemClickListener.onItemClick(mPosition);
-                if(selected){
-                    holder.status.setColorFilter(mcontext.getColor(R.color.myThemeShallow));
-                    holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.myThemeShallow));
-                }else{
-                    holder.status.setColorFilter(mcontext.getColor(R.color.grey));
-                    holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.grey));
-                }
-
+        holder.item_selected.setOnClickListener(v -> {
+            boolean selected = mOnItemClickListener.onItemClick(mPosition);
+            if (selected) {
+                holder.status.setColorFilter(mcontext.getColor(R.color.myThemeShallow));
+                holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.myThemeShallow));
+            } else {
+                holder.status.setColorFilter(mcontext.getColor(R.color.grey));
+                holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.grey));
             }
+
         });
 
     }
@@ -103,11 +83,11 @@ public class TaskDialogSelectAdapter extends RecyclerView.Adapter<TaskDialogSele
         mOnItemClickListener = onItemClickListener;
     }
 
-    public void UpdateItem(int pos,Task task_edited){
-        Log.d("myAdapter",task_edited.getTask_name());
+    public void UpdateItem(int pos, Task task_edited) {
+        Log.d("myAdapter", task_edited.getTask_name());
         holder.name.setText(task_edited.getTask_name());
-        String test=(String)holder.name.getText();
-        Log.d("myAdapter",test);
+        String test = (String) holder.name.getText();
+        Log.d("myAdapter", test);
         holder.description.setText(task_edited.getTask_description());
     }
 
@@ -116,5 +96,22 @@ public class TaskDialogSelectAdapter extends RecyclerView.Adapter<TaskDialogSele
      */
     public interface OnItemClickListener {
         boolean onItemClick(int position);
+    }
+
+    static public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView description;
+        ImageView status;
+        CardView colorBar;
+        LinearLayout item_selected;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            name = itemView.findViewById(R.id.task_name);
+            description = itemView.findViewById(R.id.task_desc);
+            status = itemView.findViewById(R.id.task_status);
+            item_selected = itemView.findViewById(R.id.rl_branch_item_root);
+            colorBar = itemView.findViewById(R.id.color_bar);
+        }
     }
 }

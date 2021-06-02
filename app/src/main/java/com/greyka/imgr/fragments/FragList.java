@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,15 +29,12 @@ public class FragList extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        demoCollectionPagerAdapter = new myCollectionPagerAdapter(getChildFragmentManager(),getActivity());
+        demoCollectionPagerAdapter = new myCollectionPagerAdapter(getChildFragmentManager(), getActivity());
         viewPager = view.findViewById(R.id.pager);
         refresh = view.findViewById(R.id.refresh_list);
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("onclick","ref");
-                demoCollectionPagerAdapter.refreshData();
-            }
+        refresh.setOnClickListener(v -> {
+            Log.d("onclick", "ref");
+            demoCollectionPagerAdapter.refreshData();
         });
         viewPager.setAdapter(demoCollectionPagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);

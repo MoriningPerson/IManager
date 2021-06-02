@@ -2,7 +2,6 @@ package com.greyka.imgr.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -36,11 +35,9 @@ public class myPermissionDialogFragment extends DialogFragment {
         builder
                 .setTitle("权限提示")
                 .setMessage("为了更好的体验，请授予本APP显示在其他应用程序之上与位置服务权限")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the positive button event back to the host activity
-                        listener.onDialogPositiveClick(myPermissionDialogFragment.this);
-                    }
+                .setPositiveButton("确定", (dialog, id) -> {
+                    // Send the positive button event back to the host activity
+                    listener.onDialogPositiveClick(myPermissionDialogFragment.this);
                 })
                 .setMessage("为了更好的体验，软件需申请位置权限")
                 .setPositiveButton("确定", (dialog, id) -> {

@@ -12,23 +12,23 @@ import com.greyka.imgr.fragments.FragTaskList;
 
 // 划了直线的代码就不要用  直接替换   这些代码工具类已经被弃用了。会有风险。
 public class myCollectionPagerAdapter extends FragmentStatePagerAdapter {
+    FragPlanList fragPlanList;
+    FragTaskList fragTaskList;
     private Context context;
+
     public myCollectionPagerAdapter(FragmentManager fm, Context context) {
 
         super(fm);
-        this.context=context;
+        this.context = context;
         fragPlanList = new FragPlanList(context);
         fragTaskList = new FragTaskList(context);
     }
-    FragPlanList fragPlanList;
-    FragTaskList fragTaskList;
 
     @Override
     public Fragment getItem(int i) {
-        if(i==0){
+        if (i == 0) {
             return fragPlanList;
-        }
-        else{
+        } else {
             return fragTaskList;
         }
     }
@@ -48,7 +48,8 @@ public class myCollectionPagerAdapter extends FragmentStatePagerAdapter {
         }
         return "null";
     }
-    public void refreshData(){
+
+    public void refreshData() {
         fragTaskList.refreshTaskList();
         fragPlanList.refreshPlanList();
     }

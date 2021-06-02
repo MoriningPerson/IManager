@@ -24,16 +24,6 @@ import java.util.TimerTask;
 public class PickerView extends View {
 
 
-    private boolean enabled = true;
-    private final VelocityTracker myVelocityTracker = VelocityTracker.obtain();
-    private float mSpeed = 0;
-    private float mSlowDownRate = 0.95f;
-    private float fastSlideSpeed = 200;
-    private int textColor = 0XFFFFFFFF;
-
-    private long lastOnSeletedChangeTime = 0;
-    private int onSelectedChangeInterval = 50;
-
     public static final String TAG = "PickerView";
     /**
      * text之间间距和minTextSize之比
@@ -43,7 +33,42 @@ public class PickerView extends View {
      * 自动回滚到中间的速度
      */
     public static final float SPEED = 6;
+    private final VelocityTracker myVelocityTracker = VelocityTracker.obtain();
+    @SuppressLint("HandlerLeak")
+    Handler updateHandler = new Handler() {
 
+        @Override
+        public void handleMessage(Message msg) {
+
+            if (Math.abs(mSpeed) <= 20) {
+                mSpeed = 0;
+            } else {
+                Log.d("speed", mSpeed + "b");
+                mSpeed *= mSlowDownRate;
+                Log.d("speed", mSpeed + "a");
+                doMove(mSpeed * (float) 0.1);
+                return;
+            }
+            if (Math.abs(mMoveLen) < SPEED) {
+                mMoveLen = 0;
+                if (mTask != null) {
+                    mTask.cancel();
+                    mTask = null;
+                    performSelect();
+                }
+            } else
+                // 这里mMoveLen / Math.abs(mMoveLen)是为了保有mMoveLen的正负号，以实现上滚或下滚
+                mMoveLen = mMoveLen - mMoveLen / Math.abs(mMoveLen) * SPEED;
+            invalidate();
+        }
+
+    };
+    private float mSpeed = 0;
+    private float mSlowDownRate = 0.95f;
+    private float fastSlideSpeed = 200;
+    private int textColor = 0XFFFFFFFF;
+    private long lastOnSeletedChangeTime = 0;
+    private int onSelectedChangeInterval = 50;
     private List<String> mDataList;
     /**
      * 选中的位置，这个位置是mDataList的中心位置，一直不变
@@ -54,7 +79,7 @@ public class PickerView extends View {
     private float mMaxTextSize = 30;
     private float mMinTextSize = 15;
     private float mMaxTextSizeRate = 4;
-    private float mMinTextSizeRate =2;
+    private boolean enabled = true;
 
 
     private float mMaxTextAlpha_backup = 255;
@@ -73,38 +98,7 @@ public class PickerView extends View {
     private onSelectListener mSelectListener;
     private Timer timer;
     private MyTimerTask mTask;
-
-
-    @SuppressLint("HandlerLeak")
-    Handler updateHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-
-            if(Math.abs(mSpeed) <= 20){
-                mSpeed = 0;
-            }
-            else{
-                Log.d("speed",mSpeed+"b");
-                mSpeed *= mSlowDownRate;
-                Log.d("speed",mSpeed+"a");
-                doMove(mSpeed * (float)0.1);
-                return;
-            }
-            if (Math.abs(mMoveLen) < SPEED) {
-                mMoveLen = 0;
-                if (mTask != null) {
-                    mTask.cancel();
-                    mTask = null;
-                    performSelect();
-                }
-            } else
-                // 这里mMoveLen / Math.abs(mMoveLen)是为了保有mMoveLen的正负号，以实现上滚或下滚
-                mMoveLen = mMoveLen - mMoveLen / Math.abs(mMoveLen) * SPEED;
-            invalidate();
-        }
-
-    };
+    private float mMinTextSizeRate = 2;
 
     public PickerView(Context context) {
         super(context);
@@ -113,7 +107,7 @@ public class PickerView extends View {
 
     public PickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initAttrs(context,attrs);
+        initAttrs(context, attrs);
         init();
     }
 
@@ -124,7 +118,7 @@ public class PickerView extends View {
     private void performSelect() {
         if (mSelectListener != null)
             mSelectListener.onSelect(mDataList.get(mCurrentSelected));
-        Log.d("select","select");
+        Log.d("select", "select");
     }
 
     public void setData(List<String> datas) {
@@ -193,7 +187,7 @@ public class PickerView extends View {
 
     private void init() {
         timer = new Timer();
-        mDataList = new ArrayList<String>();
+        mDataList = new ArrayList<>();
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setTextAlign(Paint.Align.CENTER);
@@ -220,8 +214,8 @@ public class PickerView extends View {
         float y = (float) (mViewHeight / 2.0 + mMoveLen);
         Paint.FontMetricsInt fmi = mPaint.getFontMetricsInt();
         float baseline = (float) (y - (fmi.bottom / 2.0 + fmi.top / 2.0));
-        if(mDataList.size() > 0)
-        canvas.drawText(mDataList.get(mCurrentSelected), x, baseline, mPaint);
+        if (mDataList.size() > 0)
+            canvas.drawText(mDataList.get(mCurrentSelected), x, baseline, mPaint);
         // 绘制上方data
         for (int i = 1; (mCurrentSelected - i) >= 0; i++) {
             drawOtherText(canvas, i, -1);
@@ -279,6 +273,7 @@ public class PickerView extends View {
         }
         return true;
     }
+
     private void doDown(MotionEvent event) {
         if (mTask != null) {
             mTask.cancel();
@@ -288,13 +283,13 @@ public class PickerView extends View {
     }
 
     private void doMove(MotionEvent event) {
-        if(!enabled) return;
-        Log.d("domove","domoveeeeee");
+        if (!enabled) return;
+        Log.d("domove", "domoveeeeee");
         mMoveLen += (event.getY() - mLastDownY);
         if (mMoveLen > MARGIN_ALPHA * mMinTextSize / 2) {
-            Log.d("domove","domove");
+            Log.d("domove", "domove");
             // 往下滑超过离开距离
-            if(mSelectListener != null && (System.currentTimeMillis() > lastOnSeletedChangeTime + onSelectedChangeInterval)) {
+            if (mSelectListener != null && (System.currentTimeMillis() > lastOnSeletedChangeTime + onSelectedChangeInterval)) {
                 mSelectListener.onSelectedChange();
                 lastOnSeletedChangeTime = System.currentTimeMillis();
             }
@@ -302,7 +297,7 @@ public class PickerView extends View {
             mMoveLen = mMoveLen - MARGIN_ALPHA * mMinTextSize;
         } else if (mMoveLen < -MARGIN_ALPHA * mMinTextSize / 2) {
             // 往上滑超过离开距离
-            if(mSelectListener != null && (System.currentTimeMillis() > lastOnSeletedChangeTime + onSelectedChangeInterval)) {
+            if (mSelectListener != null && (System.currentTimeMillis() > lastOnSeletedChangeTime + onSelectedChangeInterval)) {
                 mSelectListener.onSelectedChange();
                 lastOnSeletedChangeTime = System.currentTimeMillis();
             }
@@ -314,12 +309,13 @@ public class PickerView extends View {
         myVelocityTracker.computeCurrentVelocity(100);
         invalidate();
     }
+
     private void doMove(float moveY) {
         mMoveLen += moveY;
-        Log.d("move",moveY+"");
+        Log.d("move", moveY + "");
         if (mMoveLen > MARGIN_ALPHA * mMinTextSize / 2) {
             // 往下滑超过离开距离
-            if(mSelectListener != null && (System.currentTimeMillis() > lastOnSeletedChangeTime + onSelectedChangeInterval)) {
+            if (mSelectListener != null && (System.currentTimeMillis() > lastOnSeletedChangeTime + onSelectedChangeInterval)) {
                 mSelectListener.onSelectedChange();
                 lastOnSeletedChangeTime = System.currentTimeMillis();
             }
@@ -327,7 +323,7 @@ public class PickerView extends View {
             mMoveLen = mMoveLen - MARGIN_ALPHA * mMinTextSize;
         } else if (mMoveLen < -MARGIN_ALPHA * mMinTextSize / 2) {
             // 往上滑超过离开距离
-            if(mSelectListener != null && (System.currentTimeMillis() > lastOnSeletedChangeTime + onSelectedChangeInterval)) {
+            if (mSelectListener != null && (System.currentTimeMillis() > lastOnSeletedChangeTime + onSelectedChangeInterval)) {
                 mSelectListener.onSelectedChange();
                 lastOnSeletedChangeTime = System.currentTimeMillis();
             }
@@ -336,11 +332,12 @@ public class PickerView extends View {
         }
         invalidate();
     }
+
     private void doUp(MotionEvent event) {
 
         mSpeed = myVelocityTracker.getYVelocity();
-        Log.d("mspeed",mSpeed+"");
-        if(Math.abs(mSpeed) < fastSlideSpeed){
+        Log.d("mspeed", mSpeed + "");
+        if (Math.abs(mSpeed) < fastSlideSpeed) {
             mSpeed = 0;
         }
 
@@ -356,50 +353,55 @@ public class PickerView extends View {
         mTask = new MyTimerTask(updateHandler);
         timer.schedule(mTask, 0, 10);
     }
-    public void setEnabled(boolean enabled){
-        if(this.enabled == enabled) return;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        if (this.enabled == enabled) return;
         this.enabled = enabled;
-        if(enabled){
+        if (enabled) {
             mMaxTextAlpha = mMaxTextAlpha_backup;
 
-        }else{
+        } else {
             mMaxTextAlpha_backup = mMaxTextAlpha;
             mMaxTextAlpha = mMinTextAlpha;
         }
         invalidate();
     }
-    public boolean isEnabled(){
-        return enabled;
+
+    private void initAttrs(Context context, AttributeSet attrs) {
+        TypedArray typeArray = context.getTheme().obtainStyledAttributes(attrs,
+                R.styleable.PickerView, 0, 0);
+        fastSlideSpeed = typeArray.getFloat(R.styleable.PickerView_fastSlideSpeed, 200);
+        mSlowDownRate = typeArray.getFloat(R.styleable.PickerView_slowDownRate, 0.96f);
+        mMaxTextAlpha = typeArray.getFloat(R.styleable.PickerView_maxTextAlpha, 255);
+        mMinTextAlpha = typeArray.getFloat(R.styleable.PickerView_minTextAlpha, 100);
+        mMaxTextSizeRate = typeArray.getFloat(R.styleable.PickerView_maxTextSizeRate, 30);
+        mMinTextSizeRate = typeArray.getFloat(R.styleable.PickerView_minTextSizeRate, 15);
+        textColor = typeArray.getColor(R.styleable.PickerView_textColor, 0xFF000000);
+        onSelectedChangeInterval = typeArray.getInt(R.styleable.PickerView_onSelectedChangeInterval, 50);
+    }
+
+    public interface onSelectListener {
+        void onSelect(String text);
+
+        void onSelectedChange();
     }
 
     class MyTimerTask extends TimerTask {
         Handler handler;
+
         public MyTimerTask(Handler handler) {
             this.handler = handler;
         }
 
         @Override
         public void run() {
-            Log.d("a","aaaaa");
+            Log.d("a", "aaaaa");
             handler.sendMessage(handler.obtainMessage());
         }
 
-    }
-
-    public interface onSelectListener {
-        void onSelect(String text);
-        void onSelectedChange();
-    }
-    private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray typeArray = context.getTheme().obtainStyledAttributes(attrs,
-                R.styleable.PickerView, 0, 0);
-        fastSlideSpeed = typeArray.getFloat(R.styleable.PickerView_fastSlideSpeed,200);
-        mSlowDownRate = typeArray.getFloat(R.styleable.PickerView_slowDownRate,0.96f);
-        mMaxTextAlpha = typeArray.getFloat(R.styleable.PickerView_maxTextAlpha, 255);
-        mMinTextAlpha = typeArray.getFloat(R.styleable.PickerView_minTextAlpha,100);
-        mMaxTextSizeRate = typeArray.getFloat(R.styleable.PickerView_maxTextSizeRate,30);
-        mMinTextSizeRate = typeArray.getFloat(R.styleable.PickerView_minTextSizeRate,15);
-        textColor = typeArray.getColor(R.styleable.PickerView_textColor,0xFF000000);
-        onSelectedChangeInterval = typeArray.getInt(R.styleable.PickerView_onSelectedChangeInterval,50);
     }
 }

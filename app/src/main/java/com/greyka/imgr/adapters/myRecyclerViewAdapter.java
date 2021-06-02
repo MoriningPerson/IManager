@@ -11,8 +11,6 @@ import com.greyka.imgr.R;
 import com.greyka.imgr.data.Data;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAdapter.ViewHolder> {
@@ -23,7 +21,7 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
     public myRecyclerViewAdapter(List<Data.Task> list) {
         ArrayList<String> title = new ArrayList<>();
         ArrayList<String> time = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             title.add(list.get(i).getTask_name());
             time.add(list.get(i).getStart_time() + " ~ " + list.get(i).getEnd_time());
         }
@@ -73,7 +71,12 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
             taskTime = view.findViewById(R.id.taskTime);
         }
 
-        public TextView getTaskTitle() {return taskTitle;}
-        public TextView getTaskTime(){return taskTime;}
+        public TextView getTaskTitle() {
+            return taskTitle;
+        }
+
+        public TextView getTaskTime() {
+            return taskTime;
+        }
     }
 }

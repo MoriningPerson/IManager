@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Binder;
 import android.os.Build;
@@ -18,12 +16,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.utilities.myUtils;
@@ -39,61 +33,60 @@ public class MyService extends Service {
     private myUtils.myDensityHelper mdh;
     private int freeTimeRemain = 0;
     private SharedPreferences mSP;
-    private boolean binded =false;
+    private boolean binded = false;
     private View screenLocker;
     private WindowManager windowManager;
-    public boolean getScreenAlwaysOn(){
+
+    public boolean getScreenAlwaysOn() {
         return screenAlwaysOn;
     }
-    public void changeScreenStatus(){
+
+    public void changeScreenStatus() {
         screenAlwaysOn = !screenAlwaysOn;
     }
-    public boolean getLockEnabled(){
+
+    public boolean getLockEnabled() {
         return lockEnabled;
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         return new MyBinder();
-    }
-    public class MyBinder extends Binder {
-        //向Activity返回MyService实例
-        public MyService getService() {
-            return MyService.this;
-        }
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        myUtils.NotifyHelper.CreateChannel(this,"test_channel","test_channel","测试");
+        myUtils.NotifyHelper.CreateChannel(this, "test_channel", "test_channel", "测试");
     }
+
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
-        if(mdh == null){
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (mdh == null) {
             mdh = new myUtils.myDensityHelper(getApplicationContext());
         }
 
-        Notification notification = myUtils.NotifyHelper.createForeNotification(this,"test_channel",null);
-        startForeground(1,notification);
-        Log.e("on","onStart");
+        Notification notification = myUtils.NotifyHelper.createForeNotification(this, "test_channel", null);
+        startForeground(1, notification);
+        Log.e("on", "onStart");
         return super.onStartCommand(intent, flags, startId);
     }
 
     public void timerSetter(int sec, int remain, int freeTime, boolean lock) {
         this.lockEnabled = lock;
         this.freeTimeRemain = freeTime;
-        mCDT = new myUtils.myCountDownTimerHelper(sec, remain,new myUtils.myCountDownTimerHelper.timer_handler(){
+        mCDT = new myUtils.myCountDownTimerHelper(sec, remain, new myUtils.myCountDownTimerHelper.timer_handler() {
             @Override
             public void onTickEvent() {
-                if(lockEnabled) {
-                    if(myUtils.myForegroundActivityManager.isForeground(timerActivity)){
-                        if(popWindowEnabled){
+                if (lockEnabled) {
+                    if (myUtils.myForegroundActivityManager.isForeground(timerActivity)) {
+                        if (popWindowEnabled) {
                             dismissWindow();
                         }
-                    }else{
-                        if(freeTimeRemain > 0){
-                            freeTimeRemain --;
-                        }else if(!popWindowEnabled){
+                    } else {
+                        if (freeTimeRemain > 0) {
+                            freeTimeRemain--;
+                        } else if (!popWindowEnabled) {
                             popWindow();
                         }
                     }
@@ -107,7 +100,7 @@ public class MyService extends Service {
             }
 
             @Override
-            public void onCreateEvent(int secInFuture, myUtils.myCountDownTimerHelper.timer_handler TH){
+            public void onCreateEvent(int secInFuture, myUtils.myCountDownTimerHelper.timer_handler TH) {
 
             }
         });
@@ -140,6 +133,13 @@ public class MyService extends Service {
             mCDT.mPause();
         }
     }
+
+    public void timerStart() {
+        if (cdtHasInstance()) {
+            mCDT.mStart();
+        }
+    }
+
 //    public void timerCancel() {
 //        if (mSP == null) {
 //            mSP = this.getSharedPreferences("timerData", Context.MODE_PRIVATE);
@@ -148,12 +148,6 @@ public class MyService extends Service {
 //        lockEnabled = false;
 //        screenAlwaysOn = false;
 //    }
-
-    public void timerStart() {
-        if (cdtHasInstance()) {
-            mCDT.mStart();
-        }
-    }
 
     public void timerCancel() {
         clearTime();
@@ -180,30 +174,18 @@ public class MyService extends Service {
         super.onDestroy();
     }
 
-
-    public interface Callback {
-        void onDataChange(String timeRemain, int progress);
-
-        void setTotalTime(boolean opt);
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void popWindow(){
+    public void popWindow() {
         if (!myUtils.myForegroundActivityManager.isForeground(timerActivity)) {
             if (Settings.canDrawOverlays(timerActivity)) {
                 // 获取WindowManager服务
-                if(windowManager == null) {
+                if (windowManager == null) {
                     windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
                 }
                 // 新建悬浮窗控件
-                screenLocker = LayoutInflater.from(getApplicationContext()).inflate(R.layout.pop_up_screen_locker,null);
-                Log.d("aa",String.valueOf(screenLocker == null));
-                screenLocker.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showTimer();
-                    }
-                });
+                screenLocker = LayoutInflater.from(getApplicationContext()).inflate(R.layout.pop_up_screen_locker, null);
+                Log.d("aa", String.valueOf(screenLocker == null));
+                screenLocker.setOnClickListener(v -> showTimer());
                 // 设置LayoutParam
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -221,17 +203,21 @@ public class MyService extends Service {
         }
         popWindowEnabled = true;
     }
-    public void dismissWindow(){
+
+    public void dismissWindow() {
         windowManager.removeView(screenLocker);
         popWindowEnabled = false;
     }
-    public boolean getPopWindowEnabled(){
+
+    public boolean getPopWindowEnabled() {
         return popWindowEnabled;
     }
-    public boolean getLocked(){
+
+    public boolean getLocked() {
         return freeTimeRemain == 0;
     }
-    private void showTimer(){
+
+    private void showTimer() {
         Intent intent = new Intent(getApplicationContext(), com.greyka.imgr.activities.Timer.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent =
@@ -242,7 +228,21 @@ public class MyService extends Service {
             e.printStackTrace();
         }
     }
-    public void activitySetter(Activity activity){
+
+    public void activitySetter(Activity activity) {
         this.timerActivity = activity;
+    }
+
+    public interface Callback {
+        void onDataChange(String timeRemain, int progress);
+
+        void setTotalTime(boolean opt);
+    }
+
+    public class MyBinder extends Binder {
+        //向Activity返回MyService实例
+        public MyService getService() {
+            return MyService.this;
+        }
     }
 }
