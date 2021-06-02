@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -23,7 +22,6 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.PoiItem;
-import com.amap.api.services.core.SuggestionCity;
 import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
@@ -44,10 +42,7 @@ public class MapPoiSearch extends AppCompatActivity
     private MapView mapView;
     private AMap aMap;
     private AutoCompleteTextView searchText;
-    private Button searchButton;
     private PoiSearch.Query query;
-    private PoiSearch poiSearch;
-    private PoiResult poiResult;
     private ProgressDialog progressDialog = null;
     private LatLng latLng;
     private String poiName;
@@ -69,7 +64,7 @@ public class MapPoiSearch extends AppCompatActivity
     }
 
     private void setUpMap() {
-        searchButton = (Button) findViewById(R.id.searchButton);
+        Button searchButton = (Button) findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
         searchText = (AutoCompleteTextView) findViewById(R.id.keyWord);
         searchText.addTextChangedListener(this);
@@ -96,15 +91,12 @@ public class MapPoiSearch extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.searchButton:
-                searchButton();
-                break;
-            case R.id.set_poi_word:
-                setPoiWordButton();
-                break;
-            default:
-                throw new IllegalStateException("Error!");
+        if (v.getId() == R.id.searchButton) {
+            searchButton();
+        } else if (v.getId() == R.id.set_poi_word) {
+            setPoiWordButton();
+        } else {
+            throw new IllegalStateException("Error!");
         }
     }
 
@@ -139,7 +131,7 @@ public class MapPoiSearch extends AppCompatActivity
         query.setPageSize(10);
         query.setPageNum(0);
 
-        poiSearch = new PoiSearch(this, query);
+        PoiSearch poiSearch = new PoiSearch(this, query);
         poiSearch.setOnPoiSearchListener(this);
         poiSearch.searchPOIAsyn();
     }
@@ -150,9 +142,7 @@ public class MapPoiSearch extends AppCompatActivity
         if (rCode == AMapException.CODE_AMAP_SUCCESS) {
             if (result != null && result.getQuery() != null) {
                 if (result.getQuery().equals(query)) {
-                    poiResult = result;
-                    List<PoiItem> poiItems = poiResult.getPois();
-                    List<SuggestionCity> suggestionCities = poiResult.getSearchSuggestionCitys();
+                    List<PoiItem> poiItems = result.getPois();
                     if (poiItems != null && poiItems.size() > 0) {
                         aMap.clear();
                         PoiOverlay poiOverlay = new PoiOverlay(aMap, poiItems);
