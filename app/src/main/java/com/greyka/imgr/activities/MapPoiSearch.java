@@ -1,10 +1,13 @@
 package com.greyka.imgr.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -16,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.PoiItem;
@@ -45,6 +49,8 @@ public class MapPoiSearch extends AppCompatActivity
     private PoiSearch poiSearch;
     private PoiResult poiResult;
     private ProgressDialog progressDialog = null;
+    private LatLng latLng;
+    private String poiName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +100,21 @@ public class MapPoiSearch extends AppCompatActivity
             case R.id.searchButton:
                 searchButton();
                 break;
+            case R.id.set_poi_word:
+                setPoiWordButton();
+                break;
             default:
                 throw new IllegalStateException("Error!");
         }
+    }
+
+    private void setPoiWordButton() {
+        Intent intent = new Intent();
+        intent.putExtra("latitude", latLng.latitude);
+        intent.putExtra("longitude", latLng.longitude);
+        intent.putExtra("name", poiName);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 
     private String checkEditText(AutoCompleteTextView searchText) {
@@ -129,7 +147,6 @@ public class MapPoiSearch extends AppCompatActivity
     @Override
     public void onPoiSearched(PoiResult result, int rCode) {
         dismissProgressDialog();
-        //Log.d("aa", "" + rCode);
         if (rCode == AMapException.CODE_AMAP_SUCCESS) {
             if (result != null && result.getQuery() != null) {
                 if (result.getQuery().equals(query)) {
@@ -200,6 +217,8 @@ public class MapPoiSearch extends AppCompatActivity
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.showInfoWindow();
+        latLng = marker.getPosition();
+        poiName = marker.getTitle();
         return false;
     }
 
@@ -210,6 +229,8 @@ public class MapPoiSearch extends AppCompatActivity
         title.setText(marker.getTitle());
         TextView snippet = (TextView) view.findViewById(R.id.snippet);
         snippet.setText(marker.getSnippet());
+        Button button = (Button) view.findViewById(R.id.set_poi_word);
+        button.setOnClickListener(this);
         return view;
     }
 
