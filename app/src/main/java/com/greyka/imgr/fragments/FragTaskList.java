@@ -123,7 +123,7 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
             if (T1.getCompleted() != T2.getCompleted()) {
                 return T1.getCompleted() - T2.getCompleted();
             }
-            return T1.getStart_date().compareTo(T2.getStart_date());
+            return T1.getTask_name().compareTo(T2.getTask_name());
         }
     }
 }
