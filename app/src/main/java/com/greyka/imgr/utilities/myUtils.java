@@ -484,6 +484,7 @@ public class myUtils {
         private static int nowSound;
         private static HashMap<Integer, Long> lastPlayStartTime = new HashMap<>();
         private static HashSet<Integer> soundLoaded = new HashSet<>();
+
         public beeper(Context context) {
             if (soundPool == null) {
                 AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();

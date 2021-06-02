@@ -1,8 +1,7 @@
 package com.greyka.imgr.classes;
 
-import java.util.ArrayList;
 public class mottoManager {
-    static String str[] = {
+    static String[] str = {
             "    有志者，事竟成，破釜沉舟，百二秦关终属楚。苦心人，天不负，卧薪尝胆，三千越甲可吞吴。——蒲松龄",
             "   人并不是因为美丽才可爱，而是因为可爱才美丽。──托尔斯泰",
             "   老骥伏枥，志在千里；烈士暮年，壮心不已。 —— 曹操",
@@ -103,8 +102,9 @@ public class mottoManager {
             "   天才就是长期劳动的结果。——牛顿",
             "   人不可有傲气，但不可无傲骨。——徐悲鸿",
             "   我要扼住命运的咽喉，它妄想使我屈服，这绝对办不到。生活是这样美好，活他一千辈子吧！——贝多芬"};
-    public static String getRandomMotto(){
-        int randIndex = (int)(Math.random()*100000000) % str.length;
+
+    public static String getRandomMotto() {
+        int randIndex = (int) (Math.random() * 100000000) % str.length;
         return str[randIndex];
     }
 }
