@@ -29,6 +29,11 @@
         android:theme="@style/Theme.imgr">
         <activity android:name=".activities.MapPoiSearch" android:screenOrientation="portrait" android:windowSoftInputMode = "adjustPan"   android:theme="@style/autoCompleteTextViewTheme"/>
         <activity android:name=".activities.MapDisplayActivity" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/LoginActivityTheme"/>
 
         <service
             android:name=".services.MyService"

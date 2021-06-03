@@ -17,6 +17,17 @@
         <item name="android:windowBackground">@drawable/launcher_page</item>
 
     </style>
+    <style name="LoginActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--        <item name="windowActionBar">false</item>-->
+        <!--        <item name="windowNoTitle">true</item>-->
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
+        <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:windowFullscreen">true</item>
+
+    </style>
     <style name="CustomSeekbarStyle" >
         <item name="android:maxHeight">5dp</item>
         <item name="android:indeterminateOnly">false</item>

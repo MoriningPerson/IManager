@@ -158,17 +158,17 @@ public class FragHome extends Fragment {
 //            Intent intent = new Intent(getContext(), MapPoiSearch.class);
 //            activityResultLauncher.launch(intent);
         });
-        logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // Log.d("MainActivity","clickRegister");
-               // String result=attemptRegister(user);
-               // Log.d("Register",result);
-                Log.d("MainActivity","clickLogin");
-                String result=attemptLogin(getContext(),"StellaDing","Drx123456");
-                Log.d("Login",result);
-            }
-        });
+//        logo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//               // Log.d("MainActivity","clickRegister");
+//               // String result=attemptRegister(user);
+//               // Log.d("Register",result);
+//                Log.d("MainActivity","clickLogin");
+//                String result=attemptLogin(getContext(),"StellaDing","Drx123456");
+//                Log.d("Login",result);
+//            }
+//        });
 
     }
 

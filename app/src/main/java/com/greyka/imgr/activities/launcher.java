@@ -16,7 +16,7 @@ import com.greyka.imgr.R;
 import com.greyka.imgr.utilities.myUtils;
 
 public class launcher extends AppCompatActivity {
-    private final int SPLASH_DISPLAY_LENGHT = 1200;
+    private final int SPLASH_DISPLAY_LENGHT = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class launcher extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
         new android.os.Handler().postDelayed(() -> {
-            Intent mainIntent = new Intent(launcher.this, MainActivity.class);
+            Intent mainIntent = new Intent(launcher.this, LoginActivity.class);
             launcher.this.startActivity(mainIntent);
             launcher.this.finish();
         }, SPLASH_DISPLAY_LENGHT);

@@ -5,7 +5,6 @@ import android.util.Log;
 
 
 import com.greyka.imgr.data.Data.User;
-import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.data.Data.Plan;
 
 import java.util.ArrayList;
@@ -14,11 +13,16 @@ import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+import static com.greyka.imgr.utilities.Constants.EXCEPTION;
+import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
 
 
 public class GetData
 {
-    public static String attemptLogin(Context context, String username, String password)
+    public static int attemptLogin(Context context, String username, String password)
     {
         try
         {
@@ -28,33 +32,52 @@ public class GetData
                     .build();
             String response  = RequestUtil.postRequestGetSession(context,new String("http://1.117.107.95:8081/signIn"),requestBody);
             Log.d("response",response);
-            if (response == null || response.equals("1"))
-                return "登录失败";
-            else if (response.equals("0"))
-                return "登陆成功";
-            else return "服务器错误";
+            if (response == null){
+                return NO_RESPONSE;
+            }else if(response.equals("1")) {
+                return NEGATIVE_RESPONSE;
+            }
+            else if (response.equals("0")) {
+                return POSITIVE_RESPONSE;
+            }
+            else{
+                return UNKNOWN_RESPONSE;
+            }
         }
         catch (Exception e)
         {
-            return "登陆失败";
+            return EXCEPTION;
         }
+//            if (response == null || response.equals("1"))
+//                return "登录失败";
+//            else if (response.equals("0"))
+//                return "登陆成功";
+//            else return "服务器错误";
+//        }
+//        catch (Exception e)
+//        {
+//            return "登陆失败";
+//        }
     }
 
-    public static String attemptRegister(User user)
+    public static int attemptRegister(User user)
     {
         try
         {
             MediaType type = MediaType.parse("application/json;charset=utf-8");
             RequestBody requestBody = FormBody.create(type,JsonUtil.userToJson(user));
             String response = RequestUtil.postRequestWithoutSession("http://1.117.107.95:8081/register",requestBody);
-            if (response == null)
-                return "注册失败";
-            else return response;
+            if (response == null) {
+                return NO_RESPONSE;
+            }
+            else {
+                return POSITIVE_RESPONSE;
+            }
         }
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-            return "注册失败";
+            return EXCEPTION;
         }
     }
 
