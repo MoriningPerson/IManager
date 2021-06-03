@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -41,8 +40,6 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
     private MyService.MyBinder binder = null;
     private MyService myService;
     private Activity mActivity;
-    private myTimerPickerDialogFragment pickerDialog;
-
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -77,6 +74,7 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
             myService = null;
         }
     };
+    private myTimerPickerDialogFragment pickerDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -92,22 +90,17 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
         mTimeRemain = (TextView) findViewById(R.id.timer_remain);
         mTimeTotal = (TextView) findViewById(R.id.timer_total);
         mPanel = (ViewGroup) findViewById(R.id.timer_pannel);
-        ic_alwaysOn.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View v) {
-                if (!myService.cdtHasInstance()) {
-                    return;
-                }
-                myService.changeScreenStatus();
-                if (!myService.getScreenAlwaysOn()) {
-                    myUtils.myToastHelper.showText(getApplicationContext(), "屏幕常亮：关闭", Toast.LENGTH_SHORT);
-                    refreshIcons();
-
-                } else {
-                    myUtils.myToastHelper.showText(getApplicationContext(), "屏幕常亮：开启", Toast.LENGTH_SHORT);
-                    refreshIcons();
-                }
+        ic_alwaysOn.setOnClickListener(v -> {
+            if (!myService.cdtHasInstance()) {
+                return;
+            }
+            myService.changeScreenStatus();
+            if (!myService.getScreenAlwaysOn()) {
+                myUtils.myToastHelper.showText(getApplicationContext(), "屏幕常亮：关闭", Toast.LENGTH_SHORT);
+                refreshIcons();
+            } else {
+                myUtils.myToastHelper.showText(getApplicationContext(), "屏幕常亮：开启", Toast.LENGTH_SHORT);
+                refreshIcons();
             }
         });
 
@@ -129,45 +122,36 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
 //            alwaysOn = !alwaysOn;
 //
 //        });
-        mPanel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("click", "click");
-                if (myService == null || myService.getLockEnabled() && myService.getCDTisRunning()) {
-                    return;
-                } else if (!myService.cdtHasInstance()) {
-                    myService.timerCancel();
+        mPanel.setOnClickListener(v -> {
+            Log.d("click", "click");
+            if (myService == null || myService.getLockEnabled() && myService.getCDTisRunning()) {
+                return;
+            } else if (!myService.cdtHasInstance()) {
+                myService.timerCancel();
+                refreshIcons();
+                pickerDialog = new myTimerPickerDialogFragment();
+                pickerDialog.setDialogListener((hour, minute, second, lockPercent, lockEnabled) -> {
+                    int totSec = hour * 3600 + minute * 60 + second;
+                    myService.timerSetter(totSec, totSec, totSec * (100 - lockPercent) / 100, lockEnabled);
+                    myService.setTime();
                     refreshIcons();
-                    pickerDialog = new myTimerPickerDialogFragment();
-                    pickerDialog.setDialogListener(new myTimerPickerDialogFragment.DialogListener() {
-                        @Override
-                        public void onPositiveClick(int hour, int minute, int second, int lockPercent, boolean lockEnabled) {
-                            int totSec = hour * 3600 + minute * 60 + second;
-                            myService.timerSetter(totSec, totSec, totSec * (100 - lockPercent) / 100, lockEnabled);
-                            myService.setTime();
-                            refreshIcons();
-                        }
-                    });
-                    pickerDialog.show(getSupportFragmentManager(), "pickerDialog");
-                    Log.d("aa", "abcde");
-                } else if (binder.getService().getCDTisRunning()) {
-                    myUtils.myToastHelper.showText(getApplicationContext(), "暂停", Toast.LENGTH_SHORT);
-                    myService.timerPause();
-                } else {
-                    myUtils.myToastHelper.showText(getApplicationContext(), "开始", Toast.LENGTH_SHORT);
-                    myService.timerStart();
-                }
+                });
+                pickerDialog.show(getSupportFragmentManager(), "pickerDialog");
+                Log.d("aa", "abcde");
+            } else if (binder.getService().getCDTisRunning()) {
+                myUtils.myToastHelper.showText(getApplicationContext(), "暂停", Toast.LENGTH_SHORT);
+                myService.timerPause();
+            } else {
+                myUtils.myToastHelper.showText(getApplicationContext(), "开始", Toast.LENGTH_SHORT);
+                myService.timerStart();
             }
         });
-        mPanel.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (myService.cdtHasInstance() && !myService.getLockEnabled()) {
-                    myTimerCancelFragment mTCF = new myTimerCancelFragment();
-                    mTCF.show(getSupportFragmentManager(), "aa");
-                }
-                return true;
+        mPanel.setOnLongClickListener(v -> {
+            if (myService.cdtHasInstance() && !myService.getLockEnabled()) {
+                myTimerCancelFragment mTCF = new myTimerCancelFragment();
+                mTCF.show(getSupportFragmentManager(), "aa");
             }
+            return true;
         });
     }
 
@@ -181,25 +165,24 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
         }
     }
 
-    private void refreshIcons(){
-        if(myService.getLockEnabled()){
+    private void refreshIcons() {
+        if (myService.getLockEnabled()) {
             ic_lockEnabled.setColorFilter(getColor(R.color.dimgrey));
-        }
-        else{
+        } else {
             ic_lockEnabled.setColorFilter(getColor(R.color.grey81));
         }
-        if(myService.getScreenAlwaysOn()){
+        if (myService.getScreenAlwaysOn()) {
             ic_alwaysOn.setColorFilter(getColor(R.color.dimgrey));
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
-        else{
+        } else {
             ic_alwaysOn.setColorFilter(getColor(R.color.grey81));
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
+
     @Override
     protected void onDestroy() {
-        if(myService.getLocked() && !myService.getPopWindowEnabled() && myService.getCDTisRunning()){
+        if (myService.getLocked() && !myService.getPopWindowEnabled() && myService.getCDTisRunning()) {
             myService.popWindow();
         }
         if (myService != null && !myService.cdtHasInstance()) {
@@ -208,13 +191,15 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
         }
         super.onDestroy();
     }
+
     @Override
     protected void onPause() {
-        if(myService.getLocked() && !myService.getPopWindowEnabled() && myService.getCDTisRunning()){
+        if (myService.getLocked() && !myService.getPopWindowEnabled() && myService.getCDTisRunning()) {
             myService.popWindow();
         }
         super.onPause();
     }
+
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         myService.timerCancel();

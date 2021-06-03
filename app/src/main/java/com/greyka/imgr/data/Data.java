@@ -1,10 +1,10 @@
 package com.greyka.imgr.data;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Data {
+
     public class User {
         public long getUser_id() {
             return user_id;
@@ -54,32 +54,95 @@ public class Data {
 
 
     }
-    public class Task{
 
-        public Task(long task_id, String task_name, String task_description, String create_date, String start_date, int duration, int cycle, int repeat_count, String end_date, String place_name, double longitude, double latitude, int remind, int allowed, int clock, int completed, int task_week_id, String start_time, String end_time) {
-            this.task_id = task_id;
-            this.task_name = task_name;
-            this.task_description = task_description;
-            this.create_date = create_date;
-            this.start_date = start_date;
-            this.duration = duration;
-            this.cycle = cycle;
-            this.repeat_count = repeat_count;
-            this.end_date = end_date;
-            this.place_name = place_name;
-            this.longitude = longitude;
-            this.latitude = latitude;
-            this.remind = remind;
-            this.allowed = allowed;
-            this.clock = clock;
+
+    public static class Plan {
+        public static Plan plan1 = new Plan(1, "做晨练", "一日之计在于晨", "2021/5/23", 0);
+        public static Plan plan2 = new Plan(2, "期末复习", "风雨过后才有彩虹", "2021/5/23", 0);
+        public static Plan plan3 = new Plan(3, "体育打卡", "课外活动也很重要", "2021/5/23", 0);
+        public static Plan plan4 = new Plan(4, "每天7杯水", "水是生命之源", "2021/5/23", 0);
+        public static Plan plan5 = new Plan(5, "每天读英语", "学好英语走遍天下都不怕", "2021/5/23", 0);
+        public static Plan plan6 = new Plan(6, "背书毛概", "小心胡航不给你过", "2021/5/23", 0);
+        public static Plan plan7 = new Plan(7, "背200个单词", "你是想裸考了吗？", "2021/5/23", 0);
+        public static List<Plan> planList = Arrays.asList(plan1, plan2, plan3, plan4, plan5, plan6, plan7);
+        private long plan_id;
+        private String plan_name;
+        private String plan_description;
+        private String plan_date;
+        private int completed;
+        private int plan_total;
+        private int plan_succeed;
+
+
+        public Plan(long plan_id, String plan_name, String plan_description, String plan_date, int completed) {
+            this.plan_id = plan_id;
+            this.plan_name = plan_name;
+            this.plan_description = plan_description;
+            this.plan_date = plan_date;
             this.completed = completed;
-            this.task_week_id = task_week_id;
-            this.start_time = start_time;
-            this.end_time = end_time;
         }
 
-        public Task(){}
+        public Plan() {
+        }
 
+        public long getPlan_id() {
+            return plan_id;
+        }
+
+        public void setPlan_id(long plan_id) {
+            this.plan_id = plan_id;
+        }
+
+        public String getPlan_name() {
+            return plan_name;
+        }
+
+        public void setPlan_name(String plan_name) {
+            this.plan_name = plan_name;
+        }
+
+        public String getPlan_description() {
+            return plan_description;
+        }
+
+        public void setPlan_description(String plan_description) {
+            this.plan_description = plan_description;
+        }
+
+        public String getPlan_date() {
+            return plan_date;
+        }
+
+        public void setPlan_date(String plan_date) {
+            this.plan_date = plan_date;
+        }
+
+        public int getCompleted() {
+            return completed;
+        }
+
+        public void setCompleted(int completed) {
+            this.completed = completed;
+        }
+
+        public int getPlan_total() {
+            return plan_total;
+        }
+
+        public void setPlan_total(int plan_total) {
+            this.plan_total = plan_total;
+        }
+
+        public int getPlan_succeed() {
+            return plan_succeed;
+        }
+
+        public void setPlan_succeed(int plan_succeed) {
+            this.plan_succeed = plan_succeed;
+        }
+    }
+
+    public class Task {
 
         private long task_id;
         private String task_name;
@@ -98,16 +161,56 @@ public class Data {
         private int allowed;
         private int clock;
         private int completed;
-        private int task_week_id;
         private String start_time;
         private String end_time;
+        private int addAddress;//是否添加地址
+        private int cycleType;//0不循环1日循环2周循环
+        private int selected;//按位选周几循环
+        private int cycle_week;//周循环任务几周循环一次
+        private int todayCompleted;//作为标记，如果是查某一天的任务的时候，用它标志在这一天0未完成 1完成 -1是今日无这个任务
+        private int todayClockedIn;//如果是查某一天的任务的时候，用它标志在这一天0未打卡 1已打卡 -1是今日无这个任务或任务无需打卡
+        private int totalCount;
+        private int succeedCount;
 
+        public Task(long task_id, String task_name, String task_description, String create_date, String start_date, int duration, int cycle, int repeat_count, String end_date, String place_name, double longitude, double latitude, int remind, int allowed, int clock, int completed, String start_time, String end_time, int addAddress, int cycleType, int selected, int cycle_week, int todayCompleted, int todayClockedIn, int totalCount, int succeedCount) {
+            this.task_id = task_id;
+            this.task_name = task_name;
+            this.task_description = task_description;
+            this.create_date = create_date;
+            this.start_date = start_date;
+            this.duration = duration;
+            this.cycle = cycle;
+            this.repeat_count = repeat_count;
+            this.end_date = end_date;
+            this.place_name = place_name;
+            this.longitude = longitude;
+            this.latitude = latitude;
+            this.remind = remind;
+            this.allowed = allowed;
+            this.clock = clock;
+            this.completed = completed;
+            this.start_time = start_time;
+            this.end_time = end_time;
+            this.addAddress = addAddress;
+            this.cycleType = cycleType;
+            this.selected = selected;
+            this.cycle_week = cycle_week;
+            this.todayCompleted = todayCompleted;
+            this.todayClockedIn = todayClockedIn;
+            this.totalCount = totalCount;
+            this.succeedCount = succeedCount;
+        }
+
+        public Task() {
+        }
 
         public long getTask_id() {
             return task_id;
         }
 
-        public void setTask_id(long task_id) { this.task_id = task_id; }
+        public void setTask_id(long task_id) {
+            this.task_id = task_id;
+        }
 
         public String getTask_name() {
             return task_name;
@@ -229,14 +332,6 @@ public class Data {
             this.completed = completed;
         }
 
-        public int getTask_week_id() {
-            return task_week_id;
-        }
-
-        public void setTask_week_id(int task_week_id) {
-            this.task_week_id = task_week_id;
-        }
-
         public String getStart_time() {
             return start_time;
         }
@@ -252,72 +347,69 @@ public class Data {
         public void setEnd_time(String end_time) {
             this.end_time = end_time;
         }
-    }
 
-    public static class Plan{
-        public Plan(long plan_id, String plan_name, String plan_description, String plan_date, int completed) {
-            this.plan_id = plan_id;
-            this.plan_name = plan_name;
-            this.plan_description = plan_description;
-            this.plan_date = plan_date;
-            this.completed= completed;
+        public int getAddAddress() {
+            return addAddress;
         }
 
-        private long plan_id;
-        private String plan_name;
-        private String plan_description;
-        private String plan_date;
-        private int completed;
-
-        public Plan(){}
-        public static Plan plan1 = new Plan(1,"做晨练","一日之计在于晨","2021/5/23",0);
-        public static Plan plan2 = new Plan(2,"期末复习","风雨过后才有彩虹","2021/5/23",0);
-        public static Plan plan3 = new Plan(3,"体育打卡","课外活动也很重要","2021/5/23",0);
-        public static Plan plan4 = new Plan(4,"每天7杯水","水是生命之源","2021/5/23",0);
-        public static Plan plan5 = new Plan(5,"每天读英语","学好英语走遍天下都不怕","2021/5/23",0);
-        public static Plan plan6 = new Plan(6,"背书毛概","小心胡航不给你过","2021/5/23",0);
-        public static Plan plan7 = new Plan(7,"背200个单词","你是想裸考了吗？","2021/5/23",0);
-
-        public static List<Plan> planList = Arrays.asList(plan1, plan2, plan3, plan4, plan5,plan6, plan7);
-
-        public long getPlan_id() {
-            return plan_id;
+        public void setAddAddress(int addAddress) {
+            this.addAddress = addAddress;
         }
 
-        public void setPlan_id(long plan_id) {
-            this.plan_id = plan_id;
+        public int getCycleType() {
+            return cycleType;
         }
 
-        public String getPlan_name() {
-            return plan_name;
+        public void setCycleType(int cycleType) {
+            this.cycleType = cycleType;
         }
 
-        public void setPlan_name(String plan_name) {
-            this.plan_name = plan_name;
+        public int getSelected() {
+            return selected;
         }
 
-        public String getPlan_description() {
-            return plan_description;
+        public void setSelected(int selected) {
+            this.selected = selected;
         }
 
-        public void setPlan_description(String plan_description) {
-            this.plan_description = plan_description;
+        public int getCycle_week() {
+            return cycle_week;
         }
 
-        public String getPlan_date() {
-            return plan_date;
+        public void setCycle_week(int cycle_week) {
+            this.cycle_week = cycle_week;
         }
 
-        public void setPlan_date(String plan_date) {
-            this.plan_date = plan_date;
+        public int getTodayCompleted() {
+            return todayCompleted;
         }
 
-        public int getCompleted() {
-            return completed;
+        public void setTodayCompleted(int todayCompleted) {
+            this.todayCompleted = todayCompleted;
         }
 
-        public void setCompleted(int completed) {
-            this.completed = completed;
+        public int getTodayClockedIn() {
+            return todayClockedIn;
+        }
+
+        public void setTodayClockedIn(int todayClockedIn) {
+            this.todayClockedIn = todayClockedIn;
+        }
+
+        public int getTotalCount() {
+            return totalCount;
+        }
+
+        public void setTotalCount(int totalCount) {
+            this.totalCount = totalCount;
+        }
+
+        public int getSucceedCount() {
+            return succeedCount;
+        }
+
+        public void setSucceedCount(int succeedCount) {
+            this.succeedCount = succeedCount;
         }
     }
 }

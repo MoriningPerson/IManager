@@ -23,14 +23,14 @@ import java.util.List;
  * Created by jie on 2018/9/9.
  */
 
-public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemberAdapter.ViewHolder> {
+public class TaskDialogSelectAdapter extends RecyclerView.Adapter<TaskDialogSelectAdapter.ViewHolder> {
     private static ViewHolder holder;
     private final Context mcontext;
     private List<Task> list;
     private OnItemClickListener mOnItemClickListener;
     private boolean once;
 
-    public TaskDialogMemberAdapter(List<Task> list, Context mcontext, boolean once) {
+    public TaskDialogSelectAdapter(List<Task> list, Context mcontext, boolean once) {
         this.once = once;
         this.list = list;
         Log.d("len", list.size() + "");
@@ -51,33 +51,23 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         Task lock = list.get(mPosition);
         holder.name.setText(lock.getTask_name());
         holder.description.setText(lock.getTask_description());
-        int task_status;
-        if (once) {
-            task_status = lock.getTodayCompleted();
-        } else {
-            task_status = lock.getCompleted();
-        }
-        if (task_status == 0) {
-            holder.status.setImageResource(R.drawable.ic_task_uncompleted);
-            holder.status.setColorFilter(mcontext.getColor(R.color.myThemeShallow));
-            holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.myThemeShallow));
-            holder.name.setTextColor(mcontext.getColor(R.color.black));
-            holder.description.setTextColor(mcontext.getColor(R.color.dimgrey));
-        } else if (task_status == 1) {
-            holder.status.setImageResource(R.drawable.ic_task_failed);
-            holder.status.setColorFilter(mcontext.getColor(R.color.dimgrey));
-            holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.defaultgrey));
-            holder.name.setTextColor(mcontext.getColor(R.color.defaultgrey));
-            holder.description.setTextColor(mcontext.getColor(R.color.defaultgrey));
-        } else {
-            holder.status.setImageResource(R.drawable.ic_task_completed);
-            holder.status.setColorFilter(mcontext.getColor(R.color.grey));
-            holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.grey));
-            holder.name.setTextColor(mcontext.getColor(R.color.grey));
-            holder.description.setTextColor(mcontext.getColor(R.color.grey));
-        }
+        holder.status.setImageResource(R.drawable.ic_task_completed);
+        holder.status.setColorFilter(mcontext.getColor(R.color.grey));
+        holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.grey));
+        holder.name.setTextColor(mcontext.getColor(R.color.black));
+        holder.description.setTextColor(mcontext.getColor(R.color.dimgrey));
 
-        holder.item_selected.setOnClickListener(v -> mOnItemClickListener.onItemClick(mPosition));
+        holder.item_selected.setOnClickListener(v -> {
+            boolean selected = mOnItemClickListener.onItemClick(mPosition);
+            if (selected) {
+                holder.status.setColorFilter(mcontext.getColor(R.color.myThemeShallow));
+                holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.myThemeShallow));
+            } else {
+                holder.status.setColorFilter(mcontext.getColor(R.color.grey));
+                holder.colorBar.setCardBackgroundColor(mcontext.getColor(R.color.grey));
+            }
+
+        });
 
     }
 
@@ -105,7 +95,7 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
      * 监听回调接口
      */
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        boolean onItemClick(int position);
     }
 
     static public class ViewHolder extends RecyclerView.ViewHolder {
