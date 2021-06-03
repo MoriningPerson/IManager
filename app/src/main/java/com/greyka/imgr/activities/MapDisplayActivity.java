@@ -27,7 +27,7 @@ public class MapDisplayActivity extends AppCompatActivity {
             aMap = mMapView.getMap();
         }
         LatLng latLng = new LatLng(latitude, longitude);
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 19));
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
 
     @Override

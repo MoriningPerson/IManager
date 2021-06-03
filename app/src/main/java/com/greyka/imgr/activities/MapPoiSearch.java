@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -77,9 +79,16 @@ public class MapPoiSearch extends AppCompatActivity
         searchText.addTextChangedListener(this);
         aMap.setOnMarkerClickListener(this);
         aMap.setInfoWindowAdapter(this);
+        SharedPreferences sharedPreferences = getSharedPreferences("LatLng", MODE_PRIVATE);
+        LatLng latLng = new LatLng(
+                sharedPreferences.getFloat("Latitude", 0),
+                sharedPreferences.getFloat("Longitude", 0));
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         MyLocationStyle myLocationStyle;
         myLocationStyle = new MyLocationStyle();
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+        myLocationStyle.strokeColor(0);
+        myLocationStyle.radiusFillColor(0);
         aMap.setMyLocationStyle(myLocationStyle);
         aMap.getUiSettings().setMyLocationButtonEnabled(true);
         aMap.setMyLocationEnabled(true);
@@ -92,7 +101,6 @@ public class MapPoiSearch extends AppCompatActivity
             for (int i = 0; i < tipList.size(); i++) {
                 listString.add(tipList.get(i).getName());
             }
-
             ArrayAdapter<String> aAdapter = new ArrayAdapter<>(
                     getApplicationContext(),
                     R.layout.route_inputs, listString);
@@ -248,6 +256,14 @@ public class MapPoiSearch extends AppCompatActivity
     @Override
     public View getInfoContents(Marker marker) {
         return null;
+    }
+
+    public void onMyLocationChange(android.location.Location location) {
+        SharedPreferences sharedPreferences = getSharedPreferences("LatLng", MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putFloat("Latitude", (float) location.getLatitude());
+        edit.putFloat("Longitude", (float) location.getLongitude());
+        edit.apply();
     }
 
     @Override
