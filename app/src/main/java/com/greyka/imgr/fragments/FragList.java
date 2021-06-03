@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+
 import com.google.android.material.tabs.TabLayout;
 import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.myCollectionPagerAdapter;

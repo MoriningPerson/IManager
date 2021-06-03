@@ -1,5 +1,8 @@
 package com.greyka.imgr.fragments;
 
+import static com.greyka.imgr.utilities.GetData.attemptRegister;
+import static com.greyka.imgr.utilities.GetData.attemptLogin;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.greyka.imgr.R;
+import com.greyka.imgr.activities.MainActivity;
 import com.greyka.imgr.activities.Timer;
 import com.greyka.imgr.classes.mottoManager;
 import com.greyka.imgr.data.Data;
@@ -35,19 +39,26 @@ import java.util.List;
 public class FragHome extends Fragment {
 
     Data data = new Data();
-    public Task task1 = data.new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
-            "长风公园", 0, 0, 1, 1, 0, 1, "06:00:00", "07:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task2 = data.new Task(2, "UML", "太难了", "2021/5/10", "2021/5/10 10:00:00", 60, 7, 2, "2021/5/24",
-            "田家炳", 0, 0, 1, 1, 0, 2, "10:00:00", "11:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task3 = data.new Task(3, "数据库", "考太差了", "2021/4/9", "2021/4/9 14:00:00", 120, 7, 3, "2021/4/30",
-            "图书馆", 0, 0, 1, 1, 0, 0, "14:00:00", "16:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task4 = data.new Task(4, "打网球", "体育不能挂科", "2021/5/23", "2021/5/23 18:00:00", 40, 7, 2, "2021/6/6",
-            "网球场", 0, 0, 1, 1, 0, 1, "18:00:00", "18:40:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task5 = data.new Task(5, "健步走", "体育不能挂科", "2021/5/23", "2021/5/23 20:00:00", 30, 7, 2, "2021/6/6",
-            "共青场", 0, 0, 1, 1, 0, 2, "20:00:00", "20:30:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    Task taskExample = data.new Task();
+
+    private Data.User user= data.new User(0, "StellaDing", "13462057288", "Drx123456");
+    Task taskExample= data.new Task();
+    public Task task1 = data.new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
+            "长风公园",0,0,1,1,0,1,"06:00:00","07:00:00",0,0,0,0,0,0,0,0);
+    public Task task2 = data.new Task(2,"UML","太难了","2021/5/10","2021/5/10 10:00:00",60,7,2,"2021/5/24",
+            "田家炳",0,0,1,1,0,2,"10:00:00","11:00:00",0,0,0,0,0,0,0,0);
+    public Task task3 = data.new Task(3,"数据库","考太差了","2021/4/9","2021/4/9 14:00:00",120,7,3,"2021/4/30",
+            "图书馆",0,0,1,1,0,0,"14:00:00","16:00:00",0,0,0,0,0,0,0,0);
+    public Task task4 = data.new Task(4,"打网球","体育不能挂科","2021/5/23","2021/5/23 18:00:00",40,7,2,"2021/6/6",
+            "网球场",0,0,1,1,0,1,"18:00:00","18:40:00",0,0,0,0,0,0,0,0);
+    public Task task5 = data.new Task(5,"健步走","体育不能挂科","2021/5/23","2021/5/23 20:00:00",30,7,2,"2021/6/6",
+            "共青场",0,0,1,1,0,2,"20:00:00","20:30:00",0,0,0,0,0,0,0,0);
+
+    private List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5,task1, task2, task3, task4, task5);
+
+
     private List<Task> taskCompleted[] = new List[2];
     private Task NextTask;
+
 
     private CardView timer;
     private CardView button2;
@@ -63,10 +74,16 @@ public class FragHome extends Fragment {
     private TextView total_complete_percent;
     private TextView motto;
     private TextView home_notice_board_title;
+
+    private ImageView logo;
+
+
+
     private ImageView todayTaskCompleted;
     private ImageView todayTaskUncompleted;
     private ImageView nextTask;
     private ActivityResultLauncher<Intent> activityResultLauncher;
+
 
     @Nullable
     @Override
@@ -118,8 +135,11 @@ public class FragHome extends Fragment {
         task_time_location = view.findViewById(R.id.task_time_location);
         uncomplete_percent = view.findViewById(R.id.uncomplete_percent);
         complete_percent = view.findViewById(R.id.complete_percent);
-        refresh = (ImageButton) view.findViewById(R.id.refresh);
-        motto = (TextView) view.findViewById(R.id.string_motto);
+
+        refresh = (ImageButton)view.findViewById(R.id.refresh);
+        motto = (TextView)view.findViewById(R.id.string_motto);
+        logo=(ImageView) view.findViewById(R.id.imageView2);
+
     }
 
     private void initViews() {
@@ -138,6 +158,18 @@ public class FragHome extends Fragment {
 //            Intent intent = new Intent(getContext(), MapPoiSearch.class);
 //            activityResultLauncher.launch(intent);
         });
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Log.d("MainActivity","clickRegister");
+               // String result=attemptRegister(user);
+               // Log.d("Register",result);
+                Log.d("MainActivity","clickLogin");
+                String result=attemptLogin(getContext(),"StellaDing","Drx123456");
+                Log.d("Login",result);
+            }
+        });
+
     }
 
     void refreshHomeData() {

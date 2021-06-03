@@ -1,5 +1,10 @@
 package com.greyka.imgr.fragments;
 
+
+import static com.greyka.imgr.utilities.GetData.attemptQueryPlans;
+
+import android.app.Activity;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,8 +34,12 @@ import java.util.List;
 public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.OnItemClickListener {
 
     public static final String ARG_OBJECT = "object";
+
+    private static Context context;
+
+
     private static List<Data.Plan> planList;
-    private Context context;
+
     private RecyclerView rv_selector_branch;
     private PlanDialogMemberAdapter mSelectorBranchAdapter;
     //private static int mPosition;
@@ -84,8 +93,8 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
         }
     }
 
-    public void refreshPlanList() {
-        planList = Data.Plan.planList;//new ArrayList<>();//获取任务
+    public static void refreshPlanList(){
+        planList=attemptQueryPlans(context);
         myComparator_plan cmp = new myComparator_plan();
         Collections.sort(planList, cmp);
         Log.d("ref", "plan");
@@ -95,7 +104,7 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
         return new ArrayList<>();
     }
 
-    class myComparator_plan implements Comparator {
+    static class myComparator_plan implements Comparator {
 
         @Override
         public int compare(Object t1, Object t2) {
