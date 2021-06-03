@@ -26,7 +26,7 @@ public class GetData
                     .add("username",username)
                     .add("password",password)
                     .build();
-            String response  = RequestUtil.postRequestGetSession(context,new String("http://10.0.2.2:8080/signIn"),requestBody);
+            String response  = RequestUtil.postRequestGetSession(context,new String("http://1.117.107.95:8081/signIn"),requestBody);
             Log.d("response",response);
             if (response == null || response.equals("1"))
                 return "登录失败";
@@ -46,7 +46,7 @@ public class GetData
         {
             MediaType type = MediaType.parse("application/json;charset=utf-8");
             RequestBody requestBody = FormBody.create(type,JsonUtil.userToJson(user));
-            String response = RequestUtil.postRequestWithoutSession("http://10.0.2.2:8080/register",requestBody);
+            String response = RequestUtil.postRequestWithoutSession("http://1.117.107.95:8081/register",requestBody);
             if (response == null)
                 return "注册失败";
             else return response;
@@ -62,7 +62,7 @@ public class GetData
     {
         try
         {
-            String response = RequestUtil.getWithSession(context,new String("http://10.0.2.2:8080/user/userinfo"));
+            String response = RequestUtil.getWithSession(context,new String("http://1.117.107.95:8081/user/userinfo"));
             Log.d("response",response);
             if (response == null)
             {
@@ -89,7 +89,7 @@ public class GetData
             RequestBody requestBody = new FormBody.Builder()
                     .add("username",name)
                     .build();
-            String response = RequestUtil.postRequestWithSession(context,new String("http://10.0.2.2:8080/user/update/username"),requestBody);
+            String response = RequestUtil.postRequestWithSession(context,new String("http://1.117.107.95:8081/user/update/username"),requestBody);
             if (response == null)
                 return "更新失败";
             else return response;
@@ -105,7 +105,7 @@ public class GetData
     {
         try
         {
-            String url = "http://10.0.2.2:8080/user/my_plan";
+            String url = "http://1.117.107.95:8081/user/my_plan";
             String response = RequestUtil.getWithSession(context,url);
             Log.d("response",response);
             if (response == null)
