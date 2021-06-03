@@ -524,28 +524,30 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
             recycleInfo.setTextColor(getActivity().getColor(R.color.dimgrey));
         }
     }
-    private void refreshLocationInfo(){
-        if(!haveLocation){
+
+    private void refreshLocationInfo() {
+        if (!haveLocation) {
             ic_addLocation.setColorFilter(getActivity().getColor(R.color.grey));
             locationInfo.setText("未设置位置信息");
             locationInfo.setTextColor(getActivity().getColor(R.color.defaultgrey));
-        }else{
+        } else {
             ic_addLocation.setColorFilter(getActivity().getColor(R.color.dimgrey));
             locationInfo.setText(locationNickname);
             locationInfo.setTextColor(getActivity().getColor(R.color.dimgrey));
         }
     }
-    private void initMapLauncher(){
+
+    private void initMapLauncher() {
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        Latitude = data.getDoubleExtra("latitude",0);
-                        Longitude = data.getDoubleExtra("longitude",0);
+                        Latitude = data.getDoubleExtra("latitude", 0);
+                        Longitude = data.getDoubleExtra("longitude", 0);
                         locationNickname = data.getStringExtra("nickname");
                         Log.d("name", data.getStringExtra("name"));
-                        Log.d("name",Latitude+" "+Longitude);
+                        Log.d("name", Latitude + " " + Longitude);
                         haveLocation = true;
                         refreshLocationInfo();
                     }

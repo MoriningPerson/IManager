@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -22,6 +21,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.help.Inputtips;
@@ -56,11 +56,11 @@ public class MapPoiSearch extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_poi_search);
-        mapView = (MapView) findViewById(R.id.mapView2);
+        mapView = findViewById(R.id.mapView2);
         mapView.onCreate(savedInstanceState);
         init();
-        new myUtils.myWindowManager().setWindow(this);
-        Log.d("sha1",myUtils.mySHA1getter.sHA1(getApplicationContext()));
+        new myUtils.myWindowManager();
+        myUtils.myWindowManager.setWindow(this);
     }
 
     private void init() {
@@ -71,12 +71,18 @@ public class MapPoiSearch extends AppCompatActivity
     }
 
     private void setUpMap() {
-        Button searchButton = (Button) findViewById(R.id.searchButton);
+        Button searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(this);
-        searchText = (AutoCompleteTextView) findViewById(R.id.keyWord);
+        searchText = findViewById(R.id.keyWord);
         searchText.addTextChangedListener(this);
         aMap.setOnMarkerClickListener(this);
         aMap.setInfoWindowAdapter(this);
+        MyLocationStyle myLocationStyle;
+        myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+        aMap.setMyLocationStyle(myLocationStyle);
+        aMap.getUiSettings().setMyLocationButtonEnabled(true);
+        aMap.setMyLocationEnabled(true);
     }
 
     @Override
@@ -110,20 +116,17 @@ public class MapPoiSearch extends AppCompatActivity
 
     private void setPoiWordButton() {
         LocationInfoPickerDialog dialog = new LocationInfoPickerDialog();
-        dialog.setCallback(new LocationInfoPickerDialog.Callback() {
-            @Override
-            public void callback(String nickname) {
-                nickName = nickname;
-                Intent intent = new Intent();
-                intent.putExtra("latitude", latLng.latitude);
-                intent.putExtra("longitude", latLng.longitude);
-                intent.putExtra("name", poiName);
-                intent.putExtra("nickname",nickName);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-            }
+        dialog.setCallback(nickname -> {
+            nickName = nickname;
+            Intent intent = new Intent();
+            intent.putExtra("latitude", latLng.latitude);
+            intent.putExtra("longitude", latLng.longitude);
+            intent.putExtra("name", poiName);
+            intent.putExtra("nickname", nickName);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
         });
-        dialog.show(getSupportFragmentManager(),"locationNicknamePicker");
+        dialog.show(getSupportFragmentManager(), "locationNicknamePicker");
     }
 
     private String checkEditText(AutoCompleteTextView searchText) {
@@ -160,13 +163,13 @@ public class MapPoiSearch extends AppCompatActivity
             if (result != null && result.getQuery() != null) {
                 if (result.getQuery().equals(query)) {
                     List<PoiItem> poiItems = result.getPois();
-                    if (poiItems != null ) {
+                    if (poiItems != null) {
                         aMap.clear();
                         PoiOverlay poiOverlay = new PoiOverlay(aMap, poiItems);
                         poiOverlay.removeFromMap();
                         poiOverlay.addToMap();
                         poiOverlay.zoomToSpan();
-                        myUtils.myToastHelper.showText(this,"共搜索到 " +poiItems.size()+" 个地点信息。", Toast.LENGTH_LONG);
+                        myUtils.myToastHelper.showText(this, "共搜索到 " + poiItems.size() + " 个地点信息。", Toast.LENGTH_LONG);
                     } else {
                         throw new IllegalStateException("Error! No result.");
                     }
@@ -233,11 +236,11 @@ public class MapPoiSearch extends AppCompatActivity
     @Override
     public View getInfoWindow(final Marker marker) {
         @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.poikeywordsearch_uri, null);
-        TextView title = (TextView) view.findViewById(R.id.title);
+        TextView title = view.findViewById(R.id.title);
         title.setText(marker.getTitle());
-        TextView snippet = (TextView) view.findViewById(R.id.snippet);
+        TextView snippet = view.findViewById(R.id.snippet);
         snippet.setText(marker.getSnippet());
-        Button button = (Button) view.findViewById(R.id.set_poi_word);
+        Button button = view.findViewById(R.id.set_poi_word);
         button.setOnClickListener(this);
         return view;
     }

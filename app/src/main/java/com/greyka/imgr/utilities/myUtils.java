@@ -38,13 +38,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.greyka.imgr.R;
 import com.greyka.imgr.activities.MainActivity;
 import com.greyka.imgr.dialogs.myPermissionDialogFragment;
@@ -67,8 +65,8 @@ import java.util.Locale;
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public class myUtils {
-    public static class mySHA1getter{
-        public static String sHA1(Context context){
+    public static class mySHA1getter {
+        public static String sHA1(Context context) {
             try {
                 PackageInfo info = context.getPackageManager().getPackageInfo(
                         context.getPackageName(), PackageManager.GET_SIGNATURES);
@@ -85,7 +83,7 @@ public class myUtils {
                     hexString.append(":");
                 }
                 String result = hexString.toString();
-                return result.substring(0, result.length()-1);
+                return result.substring(0, result.length() - 1);
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
@@ -94,6 +92,7 @@ public class myUtils {
             return null;
         }
     }
+
     public static class myDensityHelper {
         private Context context;
 
@@ -255,6 +254,7 @@ public class myUtils {
             myActivity.getWindow().setStatusBarColor(Color.TRANSPARENT);
             //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+
         public static void setWindow(Dialog myDialog) {
             View decorView = myDialog.getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
