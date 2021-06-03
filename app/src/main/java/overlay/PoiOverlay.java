@@ -17,12 +17,10 @@ public class PoiOverlay {
     private AMap mAMap;
     private ArrayList<Marker> mPoiMarks = new ArrayList<>();
 
-
     public PoiOverlay(AMap amap, List<PoiItem> pois) {
         mAMap = amap;
         mPois = pois;
     }
-
 
     public void addToMap() {
         try {
@@ -48,8 +46,9 @@ public class PoiOverlay {
                 if (mAMap == null)
                     return;
                 if (mPois.size() == 1) {
-                    mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPois.get(0).getLatLonPoint().getLatitude(),
-                            mPois.get(0).getLatLonPoint().getLongitude()), 18f));
+                    mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(mPois.get(0).getLatLonPoint().getLatitude(),
+                                    mPois.get(0).getLatLonPoint().getLongitude()), 18f));
                 } else {
                     LatLngBounds bounds = getLatLngBounds();
                     mAMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 5));

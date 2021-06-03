@@ -2,11 +2,7 @@ package com.greyka.imgr.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.Service;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,28 +13,21 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SeekBar;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.greyka.imgr.R;
-import com.greyka.imgr.classes.PickerView;
 import com.greyka.imgr.utilities.myUtils;
-
-import java.util.ArrayList;
 
 public class LocationInfoPickerDialog extends DialogFragment {
 
     // Use this instance of the interface to deliver action events
     Callback mcallback;
+    String nickName;
     private Button sumbit;
     private EditText editText;
-    String nickName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,17 +69,16 @@ public class LocationInfoPickerDialog extends DialogFragment {
     }
 
     @SuppressLint("DefaultLocale")
-
-
     void bindViews(View view) {
         editText = view.findViewById(R.id.input_location_nickname);
         sumbit = view.findViewById(R.id.submit);
     }
-    void initViews(){
+
+    void initViews() {
         sumbit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(nickName == "" || nickName == null){
+                if (nickName == "" || nickName == null) {
                     nickName = "未命名";
                 }
                 mcallback.callback(nickName);
@@ -117,9 +105,10 @@ public class LocationInfoPickerDialog extends DialogFragment {
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
-    public void setCallback(Callback callback){
+    public void setCallback(Callback callback) {
         this.mcallback = callback;
     }
+
     public interface Callback {
         void callback(String nickname);
     }

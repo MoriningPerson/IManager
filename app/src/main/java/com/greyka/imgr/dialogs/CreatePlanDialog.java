@@ -47,21 +47,13 @@ public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.
         super(context);
         this.context = context;
         myComparator_task cmp = new myComparator_task();
-        Collections.sort(mSimpleListItemEntity,cmp);
+        Collections.sort(mSimpleListItemEntity, cmp);
         this.taskList = mSimpleListItemEntity;
         for (int i = 0; i < this.taskList.size(); i++) {
             itemIsSelected.add(false);
         }
     }
-    class myComparator_task implements Comparator {
 
-        @Override
-        public int compare(Object t1, Object t2) {
-            Data.Task T1 = (Data.Task) t1;
-            Data.Task T2 = (Data.Task) t2;
-            return T1.getTask_name().compareTo(T2.getTask_name());
-        }
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +114,6 @@ public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.
         });
     }
 
-
     /**
      * adpter里面的checkbox监听接口
      *
@@ -156,5 +147,15 @@ public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.
 
     private void submitPlan() {
         //提交后端
+    }
+
+    class myComparator_task implements Comparator {
+
+        @Override
+        public int compare(Object t1, Object t2) {
+            Data.Task T1 = (Data.Task) t1;
+            Data.Task T2 = (Data.Task) t2;
+            return T1.getTask_name().compareTo(T2.getTask_name());
+        }
     }
 }
