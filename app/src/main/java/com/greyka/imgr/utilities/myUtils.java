@@ -7,6 +7,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,6 +15,7 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioAttributes;
@@ -36,11 +38,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.greyka.imgr.R;
 import com.greyka.imgr.activities.MainActivity;
 import com.greyka.imgr.dialogs.myPermissionDialogFragment;
@@ -50,16 +54,46 @@ import com.greyka.imgr.fragments.FragList;
 import com.greyka.imgr.fragments.FragMine;
 
 import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public class myUtils {
+    public static class mySHA1getter{
+        public static String sHA1(Context context){
+            try {
+                PackageInfo info = context.getPackageManager().getPackageInfo(
+                        context.getPackageName(), PackageManager.GET_SIGNATURES);
+                byte[] cert = info.signatures[0].toByteArray();
+                MessageDigest md = MessageDigest.getInstance("SHA1");
+                byte[] publicKey = md.digest(cert);
+                StringBuffer hexString = new StringBuffer();
+                for (int i = 0; i < publicKey.length; i++) {
+                    String appendString = Integer.toHexString(0xFF & publicKey[i])
+                            .toUpperCase(Locale.US);
+                    if (appendString.length() == 1)
+                        hexString.append("0");
+                    hexString.append(appendString);
+                    hexString.append(":");
+                }
+                String result = hexString.toString();
+                return result.substring(0, result.length()-1);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
     public static class myDensityHelper {
         private Context context;
 
@@ -208,7 +242,7 @@ public class myUtils {
     }
 
     public static class myWindowManager extends AppCompatActivity {
-        public void setWindow(Activity myActivity) {
+        public static void setWindow(Activity myActivity) {
             View decorView = myActivity.getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -219,6 +253,19 @@ public class myUtils {
             //getWindow().setNavigationBarColor(Color.TRANSPARENT);
             //设置通知栏颜色为透明
             myActivity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+            //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        public static void setWindow(Dialog myDialog) {
+            View decorView = myDialog.getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;      //   MainActivity写了太多的冗杂代码  代码太臃肿了   你是想在MainActivity中写一万行？
+
+            decorView.setSystemUiVisibility(option);
+            //设置导航栏颜色为透明
+            //getWindow().setNavigationBarColor(Color.TRANSPARENT);
+            //设置通知栏颜色为透明
+            myDialog.getWindow().setStatusBarColor(Color.TRANSPARENT);
             //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
     }

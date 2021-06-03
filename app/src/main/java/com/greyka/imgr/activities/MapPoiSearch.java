@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,8 @@ import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.greyka.imgr.R;
+import com.greyka.imgr.dialogs.LocationInfoPickerDialog;
+import com.greyka.imgr.utilities.myUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +50,7 @@ public class MapPoiSearch extends AppCompatActivity
     private ProgressDialog progressDialog = null;
     private LatLng latLng;
     private String poiName;
+    private String nickName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,8 @@ public class MapPoiSearch extends AppCompatActivity
         mapView = (MapView) findViewById(R.id.mapView2);
         mapView.onCreate(savedInstanceState);
         init();
+        new myUtils.myWindowManager().setWindow(this);
+        Log.d("sha1",myUtils.mySHA1getter.sHA1(getApplicationContext()));
     }
 
     private void init() {
@@ -79,6 +86,7 @@ public class MapPoiSearch extends AppCompatActivity
             for (int i = 0; i < tipList.size(); i++) {
                 listString.add(tipList.get(i).getName());
             }
+
             ArrayAdapter<String> aAdapter = new ArrayAdapter<>(
                     getApplicationContext(),
                     R.layout.route_inputs, listString);
@@ -101,12 +109,21 @@ public class MapPoiSearch extends AppCompatActivity
     }
 
     private void setPoiWordButton() {
-        Intent intent = new Intent();
-        intent.putExtra("latitude", latLng.latitude);
-        intent.putExtra("longitude", latLng.longitude);
-        intent.putExtra("name", poiName);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
+        LocationInfoPickerDialog dialog = new LocationInfoPickerDialog();
+        dialog.setCallback(new LocationInfoPickerDialog.Callback() {
+            @Override
+            public void callback(String nickname) {
+                nickName = nickname;
+                Intent intent = new Intent();
+                intent.putExtra("latitude", latLng.latitude);
+                intent.putExtra("longitude", latLng.longitude);
+                intent.putExtra("name", poiName);
+                intent.putExtra("nickname",nickName);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
+        dialog.show(getSupportFragmentManager(),"locationNicknamePicker");
     }
 
     private String checkEditText(AutoCompleteTextView searchText) {
@@ -143,12 +160,13 @@ public class MapPoiSearch extends AppCompatActivity
             if (result != null && result.getQuery() != null) {
                 if (result.getQuery().equals(query)) {
                     List<PoiItem> poiItems = result.getPois();
-                    if (poiItems != null && poiItems.size() > 0) {
+                    if (poiItems != null ) {
                         aMap.clear();
                         PoiOverlay poiOverlay = new PoiOverlay(aMap, poiItems);
                         poiOverlay.removeFromMap();
                         poiOverlay.addToMap();
                         poiOverlay.zoomToSpan();
+                        myUtils.myToastHelper.showText(this,"共搜索到 " +poiItems.size()+" 个地点信息。", Toast.LENGTH_LONG);
                     } else {
                         throw new IllegalStateException("Error! No result.");
                     }
