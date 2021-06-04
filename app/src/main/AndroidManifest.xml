@@ -27,8 +27,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.imgr">
-        <activity android:name=".activities.MapPoiSearch" />
+        <activity android:name=".activities.MapPoiSearch" android:screenOrientation="portrait" android:windowSoftInputMode = "adjustPan"   android:theme="@style/autoCompleteTextViewTheme"/>
         <activity android:name=".activities.MapDisplayActivity" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/LoginActivityTheme"/>
 
         <service
             android:name=".services.MyService"
@@ -37,7 +42,7 @@
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="92c3a4a8cddd18d0c03dfe29a1e132fd" />
+            android:value="e99be680f1c00a2be79e43cb9d276dcb" />
 
         <activity
             android:name=".activities.launcher"

@@ -34,6 +34,36 @@ public class PickerView extends View {
      */
     public static final float SPEED = 6;
     private final VelocityTracker myVelocityTracker = VelocityTracker.obtain();
+    private float mSpeed = 0;
+    private float mSlowDownRate = 0.95f;
+    private float fastSlideSpeed = 200;
+    private int textColor = 0XFFFFFFFF;
+    private long lastOnSeletedChangeTime = 0;
+    private int onSelectedChangeInterval = 50;
+    private List<String> mDataList;
+    /**
+     * 选中的位置，这个位置是mDataList的中心位置，一直不变
+     */
+    private int mCurrentSelected;
+    private Paint mPaint;
+    private float mMaxTextSize = 30;
+    private float mMinTextSize = 15;
+    private float mMaxTextSizeRate = 4;
+    private boolean enabled = true;
+    private float mMaxTextAlpha_backup = 255;
+    private float mMaxTextAlpha = 255;
+    private float mMinTextAlpha = 100;
+    private int mViewHeight;
+    private int mViewWidth;
+    private float mLastDownY;
+    /**
+     * 滑动的距离
+     */
+    private float mMoveLen = 0;
+    private boolean isInit = false;
+    private onSelectListener mSelectListener;
+    private Timer timer;
+    private MyTimerTask mTask;
     @SuppressLint("HandlerLeak")
     Handler updateHandler = new Handler() {
 
@@ -63,41 +93,6 @@ public class PickerView extends View {
         }
 
     };
-    private float mSpeed = 0;
-    private float mSlowDownRate = 0.95f;
-    private float fastSlideSpeed = 200;
-    private int textColor = 0XFFFFFFFF;
-    private long lastOnSeletedChangeTime = 0;
-    private int onSelectedChangeInterval = 50;
-    private List<String> mDataList;
-    /**
-     * 选中的位置，这个位置是mDataList的中心位置，一直不变
-     */
-    private int mCurrentSelected;
-    private Paint mPaint;
-
-    private float mMaxTextSize = 30;
-    private float mMinTextSize = 15;
-    private float mMaxTextSizeRate = 4;
-    private boolean enabled = true;
-
-
-    private float mMaxTextAlpha_backup = 255;
-    private float mMaxTextAlpha = 255;
-    private float mMinTextAlpha = 100;
-
-    private int mViewHeight;
-    private int mViewWidth;
-
-    private float mLastDownY;
-    /**
-     * 滑动的距离
-     */
-    private float mMoveLen = 0;
-    private boolean isInit = false;
-    private onSelectListener mSelectListener;
-    private Timer timer;
-    private MyTimerTask mTask;
     private float mMinTextSizeRate = 2;
 
     public PickerView(Context context) {

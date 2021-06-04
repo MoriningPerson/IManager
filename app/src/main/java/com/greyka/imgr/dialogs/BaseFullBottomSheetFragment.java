@@ -1,7 +1,9 @@
 package com.greyka.imgr.dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -24,6 +26,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -32,6 +36,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.greyka.imgr.R;
+import com.greyka.imgr.activities.MapPoiSearch;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.utilities.myUtils;
 
@@ -49,6 +54,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     private boolean editable = true;
     private boolean once = false;
     private BottomSheetBehavior<FrameLayout> behavior;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
     //private TextView mReBack;
     private Context mContext;
     private View view;
@@ -73,7 +79,9 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     private CalendarDialog calendarDialog;
     private TextView startTime;
     private TextView lengthTime;
-    private ImageView addLocation;
+    private ImageView ic_addLocation;
+    private TextView locationInfo;
+    private LinearLayout addLocation;
     private ImageView ic_addRecycle;
     private TextView recycleInfo;
     private LinearLayout addRecycle;
@@ -92,6 +100,12 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     private int RecycleType = 0;
     private int Cycle = 0;
     private boolean[] DayOfWeek = new boolean[]{false, false, false, false, false, false, false};
+
+    private boolean haveLocation = false;
+    private String locationNickname = "未添加位置信息";
+    private double Latitude;
+    private double Longitude;
+
 
     public void setEditable(boolean editable) {
         this.editable = editable;
@@ -155,6 +169,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         date_selected.setText(Year + "年" + Month + "月" + Day + "日");
         refreshTimeInfo();
         refreshCycleInfo();
+        refreshLocationInfo();
         signUp.setChecked(Signup);
         signUp.setEnabled(false);
         alarm.setChecked(Alarm);
@@ -181,8 +196,11 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        initMapLauncher();
         //返回BottomSheetDialog的实例
-        return new BottomSheetDialog(this.getContext(), R.style.BottomSheetStyle); //设置软键盘弹出时向上移动
+        BottomSheetDialog dialog = new BottomSheetDialog(this.getContext(), R.style.BottomSheetStyle);
+        myUtils.myWindowManager.setWindow(dialog);
+        return dialog;//设置软键盘弹出时向上移动
     }
 
     private void initButton(RelativeLayout rl, TextView tv) {
@@ -277,8 +295,10 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         //mReBack = view.findViewById(R.id.submit_add);
         recycleInfo = view.findViewById(R.id.recycle_info);
         ic_addRecycle = view.findViewById(R.id.ic_recycle);
-        addLocation = view.findViewById(R.id.ic_location);
         addRecycle = view.findViewById(R.id.cycle_add);
+        locationInfo = view.findViewById(R.id.location_info);
+        ic_addLocation = view.findViewById(R.id.ic_location);
+        addLocation = view.findViewById(R.id.location_add);
         startTime = view.findViewById(R.id.start_time);
         lengthTime = view.findViewById(R.id.duraion);
         timer_select = view.findViewById(R.id.time_selector);
@@ -303,6 +323,21 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
     private void initViews() {
 
+        addLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MapPoiSearch.class);
+                activityResultLauncher.launch(intent);
+            }
+        });
+        addLocation.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                haveLocation = false;
+                refreshLocationInfo();
+                return true;
+            }
+        });
         addRecycle.setOnClickListener(v -> {
             AddRecyclePickerDialog recycleDialog = new AddRecyclePickerDialog();
             recycleDialog.setCallback((recycleType, cycle, dayOfWeak) -> {
@@ -313,9 +348,6 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
             });
             recycleDialog.setEditable(editable);
             recycleDialog.show(getActivity().getSupportFragmentManager(), "recycleDialog");
-        });
-        addLocation.setOnClickListener(v -> {
-
         });
         submit.setOnClickListener(v -> {
             behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -493,7 +525,35 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         }
     }
 
-    //提交给数据给后端
+    private void refreshLocationInfo() {
+        if (!haveLocation) {
+            ic_addLocation.setColorFilter(getActivity().getColor(R.color.grey));
+            locationInfo.setText("未设置位置信息");
+            locationInfo.setTextColor(getActivity().getColor(R.color.defaultgrey));
+        } else {
+            ic_addLocation.setColorFilter(getActivity().getColor(R.color.dimgrey));
+            locationInfo.setText(locationNickname);
+            locationInfo.setTextColor(getActivity().getColor(R.color.dimgrey));
+        }
+    }
+
+    private void initMapLauncher() {
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        Latitude = data.getDoubleExtra("latitude", 0);
+                        Longitude = data.getDoubleExtra("longitude", 0);
+                        locationNickname = data.getStringExtra("nickname");
+                        Log.d("name", data.getStringExtra("name"));
+                        Log.d("name", Latitude + " " + Longitude);
+                        haveLocation = true;
+                        refreshLocationInfo();
+                    }
+                });
+    }
+
     private void submitTask() {
         myUtils.myToastHelper.showText(getContext(), "添加任务中", Toast.LENGTH_SHORT);
     }

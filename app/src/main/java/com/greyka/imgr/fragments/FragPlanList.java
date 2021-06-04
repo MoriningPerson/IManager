@@ -1,10 +1,6 @@
 package com.greyka.imgr.fragments;
 
 
-import static com.greyka.imgr.utilities.GetData.attemptQueryPlans;
-
-import android.app.Activity;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -31,6 +27,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.greyka.imgr.utilities.GetData.attemptQueryPlans;
+
 public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.OnItemClickListener {
 
     public static final String ARG_OBJECT = "object";
@@ -51,6 +49,13 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
         Log.d("aaa", "vbreage");
         this.context = context;
 
+    }
+
+    public static void refreshPlanList() {
+        planList = attemptQueryPlans(context);
+        myComparator_plan cmp = new myComparator_plan();
+        Collections.sort(planList, cmp);
+        Log.d("ref", "plan");
     }
 
     @Override
@@ -91,13 +96,6 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
         if (itemType == 1) {
             showSelectorDialog(planList.get(position).getPlan_id());
         }
-    }
-
-    public static void refreshPlanList(){
-        planList=attemptQueryPlans(context);
-        myComparator_plan cmp = new myComparator_plan();
-        Collections.sort(planList, cmp);
-        Log.d("ref", "plan");
     }
 
     private List<Task> getTaskInPlan(long plan_id) {//根据id获取任务

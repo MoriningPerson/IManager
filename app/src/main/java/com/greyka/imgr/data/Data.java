@@ -5,57 +5,6 @@ import java.util.List;
 
 public class Data {
 
-    public class User {
-        public long getUser_id() {
-            return user_id;
-        }
-
-        public void setUser_id(long user_id) {
-            this.user_id = user_id;
-        }
-
-        public String getUser_name() {
-            return user_name;
-        }
-
-        public void setUser_name(String user_name) {
-            this.user_name = user_name;
-        }
-
-        public String getTelephone() {
-            return telephone;
-        }
-
-        public void setTelephone(String telephone) {
-            this.telephone = telephone;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        private long user_id;
-
-        public User(long user_id, String user_name, String telephone, String password) {
-            this.user_id = user_id;
-            this.user_name = user_name;
-            this.telephone = telephone;
-            this.password = password;
-        }
-        public User(){}
-
-        private String user_name;
-        private String telephone;
-        private String password;
-
-
-    }
-
-
     public static class Plan {
         public static Plan plan1 = new Plan(1, "做晨练", "一日之计在于晨", "2021/5/23", 0);
         public static Plan plan2 = new Plan(2, "期末复习", "风雨过后才有彩虹", "2021/5/23", 0);
@@ -140,6 +89,57 @@ public class Data {
         public void setPlan_succeed(int plan_succeed) {
             this.plan_succeed = plan_succeed;
         }
+    }
+
+    public class User {
+        private long user_id;
+        private String user_name;
+        private String telephone;
+        private String password;
+
+        public User(long user_id, String user_name, String telephone, String password) {
+            this.user_id = user_id;
+            this.user_name = user_name;
+            this.telephone = telephone;
+            this.password = password;
+        }
+
+        public User() {
+        }
+
+        public long getUser_id() {
+            return user_id;
+        }
+
+        public void setUser_id(long user_id) {
+            this.user_id = user_id;
+        }
+
+        public String getUser_name() {
+            return user_name;
+        }
+
+        public void setUser_name(String user_name) {
+            this.user_name = user_name;
+        }
+
+        public String getTelephone() {
+            return telephone;
+        }
+
+        public void setTelephone(String telephone) {
+            this.telephone = telephone;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+
     }
 
     public class Task {

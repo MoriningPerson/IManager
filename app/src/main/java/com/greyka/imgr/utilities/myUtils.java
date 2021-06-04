@@ -7,6 +7,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,8 +15,10 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.net.Uri;
@@ -27,6 +30,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -50,16 +55,49 @@ import com.greyka.imgr.fragments.FragList;
 import com.greyka.imgr.fragments.FragMine;
 
 import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public class myUtils {
+    public static NotifyHelper.SoftHideKeyBoardUtil SoftHideKeyBoardUtil;
+
+    public static class mySHA1getter {
+        public static String sHA1(Context context) {
+            try {
+                PackageInfo info = context.getPackageManager().getPackageInfo(
+                        context.getPackageName(), PackageManager.GET_SIGNATURES);
+                byte[] cert = info.signatures[0].toByteArray();
+                MessageDigest md = MessageDigest.getInstance("SHA1");
+                byte[] publicKey = md.digest(cert);
+                StringBuffer hexString = new StringBuffer();
+                for (int i = 0; i < publicKey.length; i++) {
+                    String appendString = Integer.toHexString(0xFF & publicKey[i])
+                            .toUpperCase(Locale.US);
+                    if (appendString.length() == 1)
+                        hexString.append("0");
+                    hexString.append(appendString);
+                    hexString.append(":");
+                }
+                String result = hexString.toString();
+                return result.substring(0, result.length() - 1);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
     public static class myDensityHelper {
         private Context context;
 
@@ -208,7 +246,7 @@ public class myUtils {
     }
 
     public static class myWindowManager extends AppCompatActivity {
-        public void setWindow(Activity myActivity) {
+        public static void setWindow(Activity myActivity) {
             View decorView = myActivity.getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -219,6 +257,20 @@ public class myUtils {
             //getWindow().setNavigationBarColor(Color.TRANSPARENT);
             //设置通知栏颜色为透明
             myActivity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+            //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+
+        public static void setWindow(Dialog myDialog) {
+            View decorView = myDialog.getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;      //   MainActivity写了太多的冗杂代码  代码太臃肿了   你是想在MainActivity中写一万行？
+
+            decorView.setSystemUiVisibility(option);
+            //设置导航栏颜色为透明
+            //getWindow().setNavigationBarColor(Color.TRANSPARENT);
+            //设置通知栏颜色为透明
+            myDialog.getWindow().setStatusBarColor(Color.TRANSPARENT);
             //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
     }
@@ -599,5 +651,71 @@ public class myUtils {
                     .setPriority(NotificationCompat.PRIORITY_MAX);
             return builder.build();
         }
+        public static class SoftHideKeyBoardUtil {
+            public static void assistActivity (Activity activity) {
+                new SoftHideKeyBoardUtil(activity);
+            }
+            private View mChildOfContent;
+            private int usableHeightPrevious;
+            private FrameLayout.LayoutParams frameLayoutParams;
+            //为适应华为小米等手机键盘上方出现黑条或不适配
+            private int contentHeight;//获取setContentView本来view的高度
+            private boolean isfirst = true;//只用获取一次
+            private  int statusBarHeight;//状态栏高度
+            private SoftHideKeyBoardUtil(Activity activity) {
+                //1､找到Activity的最外层布局控件，它其实是一个DecorView,它所用的控件就是FrameLayout
+                FrameLayout content = (FrameLayout) activity.findViewById(android.R.id.content);
+                //2､获取到setContentView放进去的View
+                mChildOfContent = content.getChildAt(0);
+                //3､给Activity的xml布局设置View树监听，当布局有变化，如键盘弹出或收起时，都会回调此监听
+                mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    //4､软键盘弹起会使GlobalLayout发生变化
+                    public void onGlobalLayout() {
+                        if (isfirst) {
+                            contentHeight = mChildOfContent.getHeight();//兼容华为等机型
+                            isfirst = false;
+                        }
+                        //5､当前布局发生变化时，对Activity的xml布局进行重绘
+                        possiblyResizeChildOfContent();
+                    }
+                });
+                //6､获取到Activity的xml布局的放置参数
+                frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
+            }
+
+            // 获取界面可用高度，如果软键盘弹起后，Activity的xml布局可用高度需要减去键盘高度
+            private void possiblyResizeChildOfContent() {
+                //1､获取当前界面可用高度，键盘弹起后，当前界面可用布局会减少键盘的高度
+                int usableHeightNow = computeUsableHeight();
+                //2､如果当前可用高度和原始值不一样
+                if (usableHeightNow != usableHeightPrevious) {
+                    //3､获取Activity中xml中布局在当前界面显示的高度
+                    int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
+                    //4､Activity中xml布局的高度-当前可用高度
+                    int heightDifference = usableHeightSansKeyboard - usableHeightNow;
+                    //5､高度差大于屏幕1/4时，说明键盘弹出
+                    if (heightDifference > (usableHeightSansKeyboard/4)) {
+                        // 6､键盘弹出了，Activity的xml布局高度应当减去键盘高度
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                            frameLayoutParams.height = usableHeightSansKeyboard - heightDifference + statusBarHeight;
+                        } else {
+                            frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
+                        }
+                    } else {
+                        frameLayoutParams.height = contentHeight;
+                    }
+                    //7､ 重绘Activity的xml布局
+                    mChildOfContent.requestLayout();
+                    usableHeightPrevious = usableHeightNow;
+                }
+            }
+            private int computeUsableHeight() {
+                Rect r = new Rect();
+                mChildOfContent.getWindowVisibleDisplayFrame(r);
+                // 全屏模式下：直接返回r.bottom，r.top其实是状态栏的高度
+                return (r.bottom - r.top);
+            }
+        }
+
     }
 }

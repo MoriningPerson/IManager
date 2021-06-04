@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+    <!--opacity="opaque"  activity不透明的-->
+    <item android:drawable="@color/myThemeShallow" />
+    <item
+        android:gravity="center"
+        android:scaleType="center">
+        <!--tilMode属性用于定义背景的显示模式-->
+
+        <shape android:shape="rectangle">
+            <solid android:color="@color/myThemeShallow" />
+        </shape>
+
+    </item>
+    <!-- android:drawable="@drawable/logo"  你的logo-->
+    <item
+        android:width="200dp"
+        android:height="300dp"
+        android:drawable="@drawable/ic_launcher_page"
+        android:gravity="center"
+        />
+
+</layer-list>
