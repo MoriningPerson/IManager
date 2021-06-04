@@ -40,7 +40,7 @@ public class FragHome extends Fragment {
 
     Data data = new Data();
 
-    private Data.User user= data.new User(0, "StellaDing", "13462057288", "Drx123456");
+    private Data.User user= data.new User(0, "Sarah", "13462057288", "Drx123456");
     Task taskExample= data.new Task();
     public Task task1 = data.new Task(1,"打太极拳","一日之计在于晨","2021/5/23","2021/5/23 06:00:00",60,2,20,"2021/7/1",
             "长风公园",0,0,1,1,0,1,"06:00:00","07:00:00",0,0,0,0,0,0,0,0);
@@ -161,9 +161,9 @@ public class FragHome extends Fragment {
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Log.d("MainActivity","clickRegister");
-               // String result=attemptRegister(user);
-               // Log.d("Register",result);
+              //  Log.d("MainActivity","clickRegister");
+              //  String result=attemptRegister(user);
+             //   Log.d("Register",result);
                 Log.d("MainActivity","clickLogin");
                 String result=attemptLogin(getContext(),"StellaDing","Drx123456");
                 Log.d("Login",result);
