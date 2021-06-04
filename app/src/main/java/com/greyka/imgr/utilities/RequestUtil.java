@@ -20,33 +20,28 @@ import okhttp3.Response;
 
 public class RequestUtil
 {
-    public static String postRequestGetSession(Context context, String url, RequestBody requestBody)
+    public static String postRequestGetSession(Context context, String url, RequestBody requestBody) throws Exception
     {
-        try
-        {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(requestBody)
-                    .build();
-            Response response = client.newCall(request).execute();
-            String responseData = response.body().string();
-            Headers headers =response.headers();
-            List cookies = headers.values("Set-Cookie");
-            String session = (String)cookies.get(0);
-            String sessionid = session.substring(0,session.indexOf(";"));
-            SharedPreferences share = context.getSharedPreferences("Session",MODE_PRIVATE);
-            SharedPreferences.Editor edit = share.edit();
-            edit.putString("sessionid",sessionid);
-            edit.commit();
-            return responseData;
-        }
-        catch (Exception e)
-        {
 
-            return null;
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        Response response = client.newCall(request).execute();
+        String responseData = response.body().string();
+        Headers headers =response.headers();
+        List cookies = headers.values("Set-Cookie");
+        if(cookies.size() > 0) {
+            String session = (String) cookies.get(0);
+            String sessionid = session.substring(0, session.indexOf(";"));
+            SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
+            SharedPreferences.Editor edit = share.edit();
+            edit.putString("sessionid", sessionid);
+            edit.commit();
         }
+        return responseData;
     }
 
     public static String postRequestWithSession(Context context, String url, RequestBody requestBody)

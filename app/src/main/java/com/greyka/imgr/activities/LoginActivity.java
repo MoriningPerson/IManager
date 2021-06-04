@@ -39,6 +39,7 @@ import com.greyka.imgr.utilities.myUtils;
 import java.util.Map;
 import java.util.Set;
 
+import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
 import static com.greyka.imgr.utilities.Constants.EXCEPTION;
 import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
 import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
@@ -187,17 +188,21 @@ public class LoginActivity extends AppCompatActivity {
     private void submitRegister(){
         myUtils.myToastHelper.showText(getApplicationContext(),"注册中",Toast.LENGTH_LONG);
         int result = attemptRegister(new Data().new User(0,username,"",password));
+        Log.d("abc",result+"");
         if(result == POSITIVE_RESPONSE) {
             submitLogin();
-        }else if(result == NO_RESPONSE){
-            myUtils.myToastHelper.showText(getApplicationContext(),"注册失败 请重新尝试或更换用户名",Toast.LENGTH_LONG);
-        }else if(result == EXCEPTION){
-            myUtils.myToastHelper.showText(getApplicationContext(),"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
+        }else if(result == NEGATIVE_RESPONSE){
+            myUtils.myToastHelper.showText(getApplicationContext(),"注册失败 用户名已被注册",Toast.LENGTH_LONG);
+        }else if (result == ERROR_RESPONSE){
+            myUtils.myToastHelper.showText(getApplicationContext(),"服务器异常 请稍后再试",Toast.LENGTH_LONG);
+        } else if(result == EXCEPTION){
+            myUtils.myToastHelper.showText(getApplicationContext(),"连接异常 请检查网络",Toast.LENGTH_LONG);
         }
     }
     private void submitLogin(){
         myUtils.myToastHelper.showText(getApplicationContext(),registerMode?"注册成功 登陆中":"登陆中",Toast.LENGTH_LONG);
         int result = attemptLogin(getApplicationContext(), username, password);
+        Log.d("result",result+"");
         if (result == POSITIVE_RESPONSE) {
             myUtils.myToastHelper.showText(getApplicationContext(), "欢迎登录", Toast.LENGTH_LONG);
             SharedPreferences sp = getApplicationContext().getSharedPreferences("UserPassword", Context.MODE_PRIVATE);
@@ -212,9 +217,9 @@ public class LoginActivity extends AppCompatActivity {
         } else if(result == UNKNOWN_RESPONSE){
             myUtils.myToastHelper.showText(getApplicationContext(), "服务器异常 请重试", Toast.LENGTH_LONG);
         } else if(result == NO_RESPONSE){
-            myUtils.myToastHelper.showText(getApplicationContext(), "无法连接服务器 请检查网络", Toast.LENGTH_LONG);
+            myUtils.myToastHelper.showText(getApplicationContext(), "连接异常 请检查网络", Toast.LENGTH_LONG);
         } else if(result == EXCEPTION){
-            myUtils.myToastHelper.showText(getApplicationContext(), "无法连接服务器 请检查网络", Toast.LENGTH_LONG);
+            myUtils.myToastHelper.showText(getApplicationContext(), "连接异常 请检查网络", Toast.LENGTH_LONG);
         }
     }
     private void startMainActivity(){

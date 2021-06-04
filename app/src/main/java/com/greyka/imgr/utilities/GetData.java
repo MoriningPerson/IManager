@@ -13,15 +13,11 @@ import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-import static com.greyka.imgr.utilities.Constants.EXCEPTION;
-import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
-
+import static com.greyka.imgr.utilities.Constants.*;
 
 public class GetData
 {
+
     public static int attemptLogin(Context context, String username, String password)
     {
         try
@@ -31,7 +27,6 @@ public class GetData
                     .add("password",password)
                     .build();
             String response  = RequestUtil.postRequestGetSession(context,new String("http://1.117.107.95:8081/signIn"),requestBody);
-            Log.d("response",response);
             if (response == null){
                 return NO_RESPONSE;
             }else if(response.equals("1")) {
@@ -67,11 +62,15 @@ public class GetData
             MediaType type = MediaType.parse("application/json;charset=utf-8");
             RequestBody requestBody = FormBody.create(type,JsonUtil.userToJson(user));
             String response = RequestUtil.postRequestWithoutSession("http://1.117.107.95:8081/register",requestBody);
-            if (response == null) {
-                return NO_RESPONSE;
-            }
-            else {
+            if (response.equals("创建成功")) {
                 return POSITIVE_RESPONSE;
+            }else if(response.equals("用户名重复")) {
+                return NEGATIVE_RESPONSE;
+            }else if(response.equals("创建失败")) {
+                return ERROR_RESPONSE;
+            }else{
+                Log.d("abc",response);
+                return UNKNOWN_RESPONSE;
             }
         }
         catch (Exception e)
