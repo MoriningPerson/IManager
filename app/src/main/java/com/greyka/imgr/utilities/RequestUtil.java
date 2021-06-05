@@ -20,34 +20,6 @@ import okhttp3.Response;
 
 public class RequestUtil
 {
-<<<<<<< HEAD
-    public static String postRequestGetSession(Context context, String url, RequestBody requestBody) throws Exception
-    {
-
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .build();
-        Response response = client.newCall(request).execute();
-        String responseData = response.body().string();
-        Headers headers =response.headers();
-        List cookies = headers.values("Set-Cookie");
-        if(cookies.size() > 0) {
-            String session = (String) cookies.get(0);
-            String sessionid = session.substring(0, session.indexOf(";"));
-            Log.d("log",sessionid);
-            SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
-            SharedPreferences.Editor edit = share.edit();
-            edit.putString("sessionid", sessionid);
-            edit.commit();
-        }
-        return responseData;
-    }
-
-    public static String postRequestWithSessionWithoutParameter(Context context, String url)
-=======
     public static String postRequestGetSession(Context context, String url, RequestBody requestBody) throws Exception {
         try{
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
@@ -78,7 +50,6 @@ public class RequestUtil
 
 
     public static String postRequestWithSession(Context context, String url, RequestBody requestBody)
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
     {
         try
         {
@@ -92,10 +63,6 @@ public class RequestUtil
                     .build();
             Response response = client.newCall(request).execute();
             String responseData = response.body().string();
-<<<<<<< HEAD
-            Log.d("response",responseData);
-=======
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
             return responseData;
         }
         catch (Exception e)

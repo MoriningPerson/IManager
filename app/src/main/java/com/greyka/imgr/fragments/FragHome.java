@@ -40,12 +40,7 @@ import static com.greyka.imgr.utilities.GetData.attemptLogin;
 public class FragHome extends Fragment {
 
     Data data = new Data();
-<<<<<<< HEAD
-    public Task task1 = data.new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
-=======
-
     public Task task1 = new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
             "长风公园", 0, 0, 1, 1, 0, 1, "06:00:00", "07:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
 //    public Task task2 = new Task(2, "UML", "太难了", "2021/5/10", "2021/5/10 10:00:00", 60, 7, 2, "2021/5/24",
 //            "田家炳", 0, 0, 1, 1, 0, 2, "10:00:00", "11:00:00", 0, 0, 0, 0, 0, 0, 0, 0);

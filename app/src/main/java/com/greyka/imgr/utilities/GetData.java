@@ -18,49 +18,12 @@ import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-<<<<<<< HEAD
 import static android.content.Context.MODE_PRIVATE;
 import static com.greyka.imgr.utilities.Constants.*;
 
 public class GetData
 {
-    public static int attemptTestSessionId(Context context)
-    {
-        try
-        {
-            String response;
-            response = RequestUtil.getWithSession(context, new String("http://1.117.107.95:8081/user/userinfo"));
-            if (response == null)
-            {
-                return NETWORK_UNAVAILABLE;
-            }else{
-                try {
-                    User user = JsonUtil.jsonToUser(response);
-                    return POSITIVE_RESPONSE;
-                }catch (Exception e){
-                    return NEGATIVE_RESPONSE;
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            return EXCEPTION;
-        }
-    }
-
-=======
-import static com.greyka.imgr.utilities.Constants.EXCEPTION;
-import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
-
-public class GetData
-{
     //测过
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
     public static int attemptLogin(Context context, String username, String password)
     {
         try
@@ -93,27 +56,18 @@ public class GetData
         try
         {
             String response  = RequestUtil.postRequestWithSessionWithoutParameter(context,new String("http://1.117.107.95:8081/signOut"));
-<<<<<<< HEAD
-            SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
-            SharedPreferences.Editor edit = share.edit();
-            edit.remove("sessionid");
-            edit.commit();
-            return POSITIVE_RESPONSE;
-=======
             if(response==null)
                 return NETWORK_UNAVAILABLE;
             else {
                 return POSITIVE_RESPONSE;
             }
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
         }
         catch (Exception e)
         {
             return EXCEPTION;
         }
     }
-<<<<<<< HEAD
-=======
+
     public static int attemptTestSessionId(Context context)
     {
         try
@@ -138,7 +92,6 @@ public class GetData
         }
     }
     //测过
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
     public static int attemptRegister(User user)
     {
         try
@@ -146,16 +99,6 @@ public class GetData
             MediaType type = MediaType.parse("application/json;charset=utf-8");
             RequestBody requestBody = FormBody.create(type,JsonUtil.userToJson(user));
             String response = RequestUtil.postRequestWithoutSession("http://1.117.107.95:8081/register",requestBody);
-<<<<<<< HEAD
-            if (response.equals("创建成功")) {
-                return POSITIVE_RESPONSE;
-            }else if(response.equals("用户名重复")) {
-                return NEGATIVE_RESPONSE;
-            }else if(response.equals("创建失败")) {
-                return ERROR_RESPONSE;
-            }else{
-                Log.d("abc",response);
-=======
             //Log.d("okk", response);
             if (response == null) {
                 return NETWORK_UNAVAILABLE;
@@ -167,7 +110,6 @@ public class GetData
             }else if(response.equals("创建失败")){
                 return ERROR_RESPONSE;
             }else {
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
                 return UNKNOWN_RESPONSE;
             }
         }
@@ -675,12 +617,4 @@ public class GetData
             return null;
         }
     }
-
-<<<<<<< HEAD
-
-
-
 }
-=======
-}
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5

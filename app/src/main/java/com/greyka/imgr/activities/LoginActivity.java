@@ -46,14 +46,9 @@ import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
 import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
 import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
 import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
-<<<<<<< HEAD
 import static com.greyka.imgr.utilities.GetData.*;
-=======
-import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
 import static com.greyka.imgr.utilities.GetData.attemptLogin;
-import static com.greyka.imgr.utilities.GetData.attemptQueryUser;
 import static com.greyka.imgr.utilities.GetData.attemptRegister;
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -90,13 +85,10 @@ public class LoginActivity extends AppCompatActivity {
         if(username == null){
         }else{
             Log.d("MainActivity","clickLogin");
-<<<<<<< HEAD
-            int result = attemptTestSessionId(getApplicationContext());
-=======
+
             Data.User temp = attemptQueryUser(getApplicationContext());
 
             int result = attemptLogin(getApplicationContext(),username,password);
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
             if(result == POSITIVE_RESPONSE){
                 myUtils.myToastHelper.showText(getApplicationContext(),"欢迎回来",Toast.LENGTH_SHORT);
                 startMainActivity();
@@ -209,13 +201,6 @@ public class LoginActivity extends AppCompatActivity {
             myUtils.myToastHelper.showText(getApplicationContext(),"注册成功",Toast.LENGTH_LONG);
             submitLogin();
         }else if(result == NEGATIVE_RESPONSE){
-<<<<<<< HEAD
-            myUtils.myToastHelper.showText(getApplicationContext(),"注册失败 用户名已被注册",Toast.LENGTH_LONG);
-        }else if (result == ERROR_RESPONSE){
-            myUtils.myToastHelper.showText(getApplicationContext(),"服务器异常 请稍后再试",Toast.LENGTH_LONG);
-        } else if(result == EXCEPTION){
-            myUtils.myToastHelper.showText(getApplicationContext(),"连接异常 请检查网络",Toast.LENGTH_LONG);
-=======
             myUtils.myToastHelper.showText(getApplicationContext(),"注册失败 请重新尝试或更换用户名",Toast.LENGTH_LONG);
         }else if(result == NETWORK_UNAVAILABLE){
             myUtils.myToastHelper.showText(getApplicationContext(),"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
@@ -225,7 +210,6 @@ public class LoginActivity extends AppCompatActivity {
             myUtils.myToastHelper.showText(getApplicationContext(),"出现异常 请重试",Toast.LENGTH_LONG);
         }else if(result == ERROR_RESPONSE){
             myUtils.myToastHelper.showText(getApplicationContext(),"系统异常 请重试",Toast.LENGTH_LONG);
->>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
         }
     }
     private void submitLogin(){
