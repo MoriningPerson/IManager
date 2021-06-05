@@ -3,6 +3,7 @@ package com.greyka.imgr.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -29,6 +30,7 @@ public class PlanDeleteDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Log.d("jsi","iqodj");
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder
@@ -41,6 +43,7 @@ public class PlanDeleteDialog extends DialogFragment {
                 .setNegativeButton("取消", (dialog, id) -> {
                 });
         // Create the AlertDialog object and return it
+        Log.d("jsi", String.valueOf(plan.getPlan_id()));
         return builder.create();
     }
 
@@ -54,4 +57,5 @@ public class PlanDeleteDialog extends DialogFragment {
     public interface NoticeDialogListener {
         void onDialogPositiveClick(long plan_id);
     }
+
 }

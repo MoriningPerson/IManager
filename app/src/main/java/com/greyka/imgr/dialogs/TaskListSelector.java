@@ -23,7 +23,7 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
     private static int mPosition;
     Data data = new Data();
     private List<Task> taskList;    //选择列表的数据
-    private Task task = data.new Task();
+    private Task task = new Task();
     private Context context;
     private TaskDialogMemberAdapter mSelectorBranchAdapter;
     private RecyclerView rv_selector_branch;

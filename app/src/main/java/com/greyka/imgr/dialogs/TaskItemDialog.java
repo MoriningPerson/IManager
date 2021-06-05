@@ -18,7 +18,7 @@ import com.greyka.imgr.data.Data.Task;
 
 public class TaskItemDialog extends Dialog {
     Data data = new Data();
-    private Task task = data.new Task();
+    private Task task = new Task();
     private Context context;
     private TextView title;
     private TextView description;
