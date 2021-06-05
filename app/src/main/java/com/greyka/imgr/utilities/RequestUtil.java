@@ -55,7 +55,6 @@ public class RequestUtil {
             Request request = new Request.Builder()
                     .addHeader("cookie", sessionid)
                     .url(url)
-                    .post(requestBody)
                     .build();
             Response response = client.newCall(request).execute();
             String responseData = response.body().string();
