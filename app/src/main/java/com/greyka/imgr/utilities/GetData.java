@@ -79,7 +79,8 @@ public class GetData
                 return NETWORK_UNAVAILABLE;
             }else{
                 try {
-                    User user = JsonUtil.jsonToUser(response);
+                    Log.d("resss",response);
+                    JsonUtil.jsonToUser(response);
                     return POSITIVE_RESPONSE;
                 }catch (Exception e){
                     return NEGATIVE_RESPONSE;

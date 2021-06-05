@@ -36,23 +36,26 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.greyka.imgr.R;
+import com.greyka.imgr.activities.MapDisplayActivity;
 import com.greyka.imgr.activities.MapPoiSearch;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
+import com.greyka.imgr.fragments.FragTaskList;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
+
+import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.EXCEPTION;
+import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.EXCEPTION;
-import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
-import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
 
 public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
@@ -125,6 +128,10 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     public void setValues(Data.Task task) {
+        Latitude = task.getLatitude();
+        Longitude = task.getLongitude();
+        locationNickname = task.getPlace_name();
+        haveLocation = (Latitude != 0 || Longitude != 0);
         taskId = task.getTask_id();
         completed = task.getCompleted();
         String str = task.getStart_date();
@@ -141,7 +148,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         Day = c.get(Calendar.DAY_OF_MONTH);
         startHour = c.get(Calendar.HOUR_OF_DAY);
         startMinute = c.get(Calendar.MINUTE);
-        Signup = (task.getClock() > 0);
+        Signup=(task.getClock()>0);
         if (task.getRemind() == 0) {
             Alarm = false;
             StrongAlarm = false;
@@ -164,23 +171,23 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         lenMinute = task.getDuration() % 60;
         RecycleType = task.getCycleType();
         Cycle = task.getRepeat_count();
-        if (RecycleType == 1) {
-            if (task.getCycle() == 1) {
-                DayOfWeek[1] = true;
-            } else if (task.getCycle() == 2) {
-                DayOfWeek[2] = true;
-            } else if (task.getCycle() == 3) {
-                DayOfWeek[1] = true;
-            } else if (task.getCycle() == 4) {
-                DayOfWeek[1] = true;
-            } else if (task.getCycle() == 5) {
-                DayOfWeek[1] = true;
-            } else if (task.getCycle() == 6) {
-                DayOfWeek[1] = true;
-            } else if (task.getCycle() == 7) {
-                DayOfWeek[0] = true;
+        if(RecycleType==1){
+            if(task.getCycle()==1){
+                DayOfWeek[1]=true;
+            }else if(task.getCycle()==2){
+                DayOfWeek[2]=true;
+            }else if(task.getCycle()==3){
+                DayOfWeek[1]=true;
+            }else if(task.getCycle()==4){
+                DayOfWeek[1]=true;
+            }else if(task.getCycle()==5){
+                DayOfWeek[1]=true;
+            }else if(task.getCycle()==6){
+                DayOfWeek[1]=true;
+            }else if(task.getCycle()==7){
+                DayOfWeek[0]=true;
             }
-        } else if (RecycleType == 2) {
+        }else if(RecycleType==2){
             DayOfWeek[0] = ((task.getSelected() & (1 << 6)) > 0);
             DayOfWeek[1] = ((task.getSelected() & 1) > 0);
             DayOfWeek[2] = ((task.getSelected() & (1 << 1)) > 0);
@@ -198,6 +205,24 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         refreshTimeInfo();
         refreshCycleInfo();
         refreshLocationInfo();
+        if(!haveLocation){
+            addLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }else{
+            addLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), MapDisplayActivity.class);
+                    intent.putExtra("latitude", Latitude);
+                    intent.putExtra("longitude", Longitude);
+                    startActivity(intent);
+                }
+            });
+        }
         signUp.setChecked(Signup);
         signUp.setEnabled(false);
         alarm.setChecked(Alarm);
@@ -351,14 +376,20 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
     private void initViews() {
 
-        addLocation.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), MapPoiSearch.class);
-            activityResultLauncher.launch(intent);
+        addLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MapPoiSearch.class);
+                activityResultLauncher.launch(intent);
+            }
         });
-        addLocation.setOnLongClickListener(v -> {
-            haveLocation = false;
-            refreshLocationInfo();
-            return true;
+        addLocation.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                haveLocation = false;
+                refreshLocationInfo();
+                return true;
+            }
         });
         addRecycle.setOnClickListener(v -> {
             AddRecyclePickerDialog recycleDialog = new AddRecyclePickerDialog();
@@ -568,7 +599,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
                         Latitude = data.getDoubleExtra("latitude", 0);
                         Longitude = data.getDoubleExtra("longitude", 0);
                         locationNickname = data.getStringExtra("nickname");
-                        Log.d("name", data.getStringExtra("name"));
+                        Log.d("name", locationNickname);
                         Log.d("name", Latitude + " " + Longitude);
                         haveLocation = true;
                         refreshLocationInfo();
@@ -578,124 +609,134 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
     private void submitTask() {
         myUtils.myToastHelper.showText(getContext(), "添加任务中", Toast.LENGTH_SHORT);
-        Data data = new Data();
-        Data.Task task = new Task();
+        Data data=new Data();
+        Data.Task task=new Task();
         task.setTask_name(Title);
         task.setTask_description(Description);
-        String start_date = Year + "-" + Month + "-" + Day +
-                " " + startHour + ":" + startMinute + ":00";
+        String start_date=String.valueOf(Year)+"-"+String.valueOf(Month)+"-"+String.valueOf(Day)+
+                " "+String.valueOf(startHour)+":"+String.valueOf(startMinute)+":00";
         task.setStart_date(start_date);
-        task.setDuration(lenHour * 60 + lenMinute);
+        task.setDuration(lenHour*60+lenMinute);
         task.setRepeat_count(Cycle);
         Log.d("taskaaa", String.valueOf(Cycle));
         task.setPlace_name(locationNickname);
         int addAddress;
-        if (haveLocation) {
-            addAddress = 1;
+        if(haveLocation){
+            addAddress=1;
             task.setLatitude(Latitude);
             task.setLongitude(Longitude);
-        } else addAddress = 0;
+        }
+        else addAddress=0;
         task.setAddAddress(addAddress);
-        if (Alarm && StrongAlarm) {
+        if(Alarm&&StrongAlarm){
             task.setRemind(2);
-        } else if (Alarm && (!StrongAlarm)) {
+        }else if(Alarm&&(!StrongAlarm)){
             task.setRemind(1);
-        } else if (!Alarm) {
+        }else if(!Alarm){
             task.setRemind(0);
         }
-        if (lockEnabled) {
+        if(lockEnabled){
             task.setAllowed(lockPercent);
-        } else {
+        }else{
             task.setAllowed(100);
         }
-        if (Signup) {
+        if(Signup){
             task.setClock(1);
-        } else {
+        }else{
             task.setClock(0);
         }
         task.setCycleType(RecycleType);
-        if (RecycleType == 1) {
-            if (DayOfWeek[1] = true) {
+        if(RecycleType==1){
+            if(DayOfWeek[1]=true){
                 task.setCycle(1);
-            } else if (DayOfWeek[2] = true) {
+            }else if(DayOfWeek[2]=true){
                 task.setCycle(2);
-            } else if (DayOfWeek[3] = true) {
+            }else if(DayOfWeek[3]=true){
                 task.setCycle(3);
-            } else if (DayOfWeek[4] = true) {
+            }else if(DayOfWeek[4]=true){
                 task.setCycle(4);
-            } else if (DayOfWeek[5] = true) {
+            }else if(DayOfWeek[5]=true){
                 task.setCycle(5);
-            } else if (DayOfWeek[6] = true) {
+            }else if(DayOfWeek[6]=true){
                 task.setCycle(6);
-            } else if (DayOfWeek[0] = true) {
+            }else if(DayOfWeek[0]=true){
                 task.setCycle(7);
             }
-        } else if (RecycleType == 2) {
-            int select = 0;
-            if (DayOfWeek[1] = true) {
-                select += 1;
-            } else if (DayOfWeek[2] = true) {
-                select += 2;
-            } else if (DayOfWeek[3] = true) {
-                select += 4;
-            } else if (DayOfWeek[4] = true) {
-                select += 8;
-            } else if (DayOfWeek[5] = true) {
-                select += 16;
-            } else if (DayOfWeek[6] = true) {
-                select += 32;
-            } else if (DayOfWeek[0] = true) {
-                select += 64;
+        }else if(RecycleType==2){
+            int select=0;
+            if(DayOfWeek[1]=true){
+                select+=1;
+            }
+            if(DayOfWeek[2]=true){
+                select+=2;
+            }
+            if(DayOfWeek[3]=true){
+                select+=4;
+            }
+            if(DayOfWeek[4]=true){
+                select+=8;
+            }
+            if(DayOfWeek[5]=true){
+                select+=16;
+            }
+            if(DayOfWeek[6]=true){
+                select+=32;
+            }
+            if(DayOfWeek[0]=true){
+                select+=64;
             }
             task.setSelected(select);
             task.setCycle_week(1);
         }
-        int result = GetData.attemptCreateTask(mContext, task);
-        if (result == POSITIVE_RESPONSE) {
-            myUtils.myToastHelper.showText(getContext(), "创建成功", Toast.LENGTH_LONG);
-        } else if (result == NEGATIVE_RESPONSE) {
-            Log.d("okkkkk", "ok");
-            myUtils.myToastHelper.showText(getContext(), "有时间冲突 创建失败", Toast.LENGTH_LONG);
-        } else if (result == NETWORK_UNAVAILABLE) {
-            myUtils.myToastHelper.showText(getContext(), "无法连接服务器 请检查网络", Toast.LENGTH_LONG);
-        } else if (result == UNKNOWN_RESPONSE) {
-            myUtils.myToastHelper.showText(getContext(), "未知错误 请重试", Toast.LENGTH_LONG);
-        } else if (result == EXCEPTION) {
-            myUtils.myToastHelper.showText(getContext(), "出现异常 请重试", Toast.LENGTH_LONG);
-        } else if (result == ERROR_RESPONSE) {
-            myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
+        int result=GetData.attemptCreateTask(mContext,task);
+        if(result == POSITIVE_RESPONSE) {
+            myUtils.myToastHelper.showText(getContext(),"创建成功",Toast.LENGTH_LONG);
+        }else if(result == NEGATIVE_RESPONSE){
+            Log.d("okkkkk","ok");
+            myUtils.myToastHelper.showText(getContext(),"有时间冲突 创建失败",Toast.LENGTH_LONG);
+        }else if(result == NETWORK_UNAVAILABLE){
+            myUtils.myToastHelper.showText(getContext(),"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
+        }else if(result == UNKNOWN_RESPONSE){
+            myUtils.myToastHelper.showText(getContext(),"未知错误 请重试",Toast.LENGTH_LONG);
+        }else if(result == EXCEPTION){
+            myUtils.myToastHelper.showText(getContext(),"出现异常 请重试",Toast.LENGTH_LONG);
+        }else if(result == ERROR_RESPONSE){
+            myUtils.myToastHelper.showText(getContext(),"系统异常 请重试",Toast.LENGTH_LONG);
         }
+        FragTaskList.refreshTaskList();
     }
 
     private void deleteTask() {
-        // myUtils.myToastHelper.showText(getContext(), "删除任务中", Toast.LENGTH_SHORT);
-        int result = GetData.attemptDeleteTask(getContext(), taskId);
-        if (result == POSITIVE_RESPONSE) {
-            myUtils.myToastHelper.showText(getContext(), "删除成功", Toast.LENGTH_LONG);
-        } else if (result == NETWORK_UNAVAILABLE) {
-            myUtils.myToastHelper.showText(getContext(), "无法连接服务器 请检查网络", Toast.LENGTH_LONG);
-        } else if (result == UNKNOWN_RESPONSE) {
-            myUtils.myToastHelper.showText(getContext(), "未知错误 请重试", Toast.LENGTH_LONG);
-        } else if (result == EXCEPTION) {
-            myUtils.myToastHelper.showText(getContext(), "出现异常 请重试", Toast.LENGTH_LONG);
-        } else if (result == ERROR_RESPONSE) {
-            myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
+       // myUtils.myToastHelper.showText(getContext(), "删除任务中", Toast.LENGTH_SHORT);
+        int result=GetData.attemptDeleteTask(getContext(),taskId);
+        if(result == POSITIVE_RESPONSE) {
+            myUtils.myToastHelper.showText(getContext(),"删除成功",Toast.LENGTH_LONG);
+        }else if(result == NETWORK_UNAVAILABLE){
+            myUtils.myToastHelper.showText(getContext(),"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
+        }else if(result == UNKNOWN_RESPONSE){
+            myUtils.myToastHelper.showText(getContext(),"未知错误 请重试",Toast.LENGTH_LONG);
+        }else if(result == EXCEPTION){
+            myUtils.myToastHelper.showText(getContext(),"出现异常 请重试",Toast.LENGTH_LONG);
+        }else if(result == ERROR_RESPONSE){
+            myUtils.myToastHelper.showText(getContext(),"系统异常 请重试",Toast.LENGTH_LONG);
         }
+        FragTaskList.refreshTaskList();
     }
 
     private void cancelTask() {
         myUtils.myToastHelper.showText(getContext(), "取消任务中", Toast.LENGTH_SHORT);
-        int result = GetData.attemptCancelTask(getContext(), taskId);
-        if (result == POSITIVE_RESPONSE) {
-            myUtils.myToastHelper.showText(getContext(), "取消成功", Toast.LENGTH_LONG);
-        } else if (result == NETWORK_UNAVAILABLE) {
-            myUtils.myToastHelper.showText(getContext(), "无法连接服务器 请检查网络", Toast.LENGTH_LONG);
-        } else if (result == UNKNOWN_RESPONSE) {
-            myUtils.myToastHelper.showText(getContext(), "未知错误 请重试", Toast.LENGTH_LONG);
-        } else if (result == EXCEPTION) {
-            myUtils.myToastHelper.showText(getContext(), "出现异常 请重试", Toast.LENGTH_LONG);
-        } else if (result == ERROR_RESPONSE) {
-            myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
+        int result=GetData.attemptCancelTask(getContext(),taskId);
+        if(result == POSITIVE_RESPONSE) {
+            myUtils.myToastHelper.showText(getContext(),"取消成功",Toast.LENGTH_LONG);
+        }else if(result == NETWORK_UNAVAILABLE){
+            myUtils.myToastHelper.showText(getContext(),"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
+        }else if(result == UNKNOWN_RESPONSE){
+            myUtils.myToastHelper.showText(getContext(),"未知错误 请重试",Toast.LENGTH_LONG);
+        }else if(result == EXCEPTION){
+            myUtils.myToastHelper.showText(getContext(),"出现异常 请重试",Toast.LENGTH_LONG);
+        }else if(result == ERROR_RESPONSE){
+            myUtils.myToastHelper.showText(getContext(),"系统异常 请重试",Toast.LENGTH_LONG);
         }
+        FragTaskList.refreshTaskList();
     }
 }

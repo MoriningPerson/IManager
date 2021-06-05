@@ -73,6 +73,9 @@ public class FragHome extends Fragment {
     private TextView total_complete_percent;
     private TextView motto;
     private TextView home_notice_board_title;
+    private TextView tx_next_task;
+    private TextView nextTaskTitle;
+    private TextView nextTaskInfo;
 
     private ImageView logo;
 
@@ -165,10 +168,14 @@ public class FragHome extends Fragment {
         int tot = tc0 + tc1;
         motto.setText(mottoManager.getRandomMotto());
         home_notice_board_title.setText(myUtils.myCalenderHelper.getChineseTotal());
-        total_complete_percent.setText((tc1 * 100 / tot) + "%");//今日任务完成比例
-        home_string_next.setText("下一任务");//or 正在执行
-        home_string_next_tasktitle.setText(NextTask.getTask_name());//任务title
-        task_time_location.setText(NextTask.getStart_time().substring(0, 5) + " ~ " + NextTask.getEnd_time().substring(0, 5) + "\n" + NextTask.getPlace_name());//任务开始时间&地点
+        if(tot == 0){
+            total_complete_percent.setTextSize(45);
+            total_complete_percent.setText("无任务");
+        }else {
+            total_complete_percent.setTextSize(60);
+            total_complete_percent.setText((tc1 * 100 / tot) + "%");//今日任务完成比例
+        }
+        refreshNextTask();
         uncomplete_percent.setText(tc0 + "/" + tot);//未完成/总
         complete_percent.setText(tc1 + "/" + tot);//完成/总
     }
@@ -204,6 +211,7 @@ public class FragHome extends Fragment {
 
     private void refreshNextTask() {
         //先查找有没有正在进行的任务
+        setHasOnGoingTask(3);
         List<Task> taskList1 = new ArrayList<>();
         taskList1= GetData.attemptGetTaskNow(getContext());
         if(taskList1==null){
@@ -212,21 +220,42 @@ public class FragHome extends Fragment {
         }
         if(taskList1.size()>0){
             NextTask = taskList1.get(0);
+            setHasOnGoingTask(1);
             return;
         }else if(taskList1.size()==0){
             List<Task> taskList2 = new ArrayList<>();
-            taskList2= GetData.attemptGetTaskNow(getContext());
+            taskList2= GetData.attemptGetTaskToDo(getContext());
             if(taskList2==null){
                 myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
                 return;
             }
             if(taskList2.size()>0){
                 NextTask = taskList2.get(0);
+                setHasOnGoingTask(2);
                 return;
             }else NextTask=task1;//这要改，如果当天没有没完成的任务了咋办，这里要返回null吗
         }
     }
+    @SuppressLint("SetTextI18n")
+    private void setHasOnGoingTask(int  hasOnGoingTask){
 
+        if(hasOnGoingTask == 1){
+            nextTask.setRotation(90);
+            home_string_next_tasktitle.setText(NextTask.getTask_name());//任务title
+            home_string_next.setText("正在进行");
+            task_time_location.setText(NextTask.getStart_time().substring(0, 5) + " ~ " + NextTask.getEnd_time().substring(0, 5) + "\n" + NextTask.getPlace_name());//任务开始时间&地点
+        }else if(hasOnGoingTask == 2){
+            nextTask.setRotation(0);
+            home_string_next.setText("下一任务");
+            home_string_next_tasktitle.setText(NextTask.getTask_name());//任务title
+            task_time_location.setText(NextTask.getStart_time().substring(0, 5) + " ~ " + NextTask.getEnd_time().substring(0, 5) + "\n" + NextTask.getPlace_name());//任务开始时间&地点
+        }else{
+            nextTask.setRotation(0);
+            home_string_next.setText("没有任务");
+            home_string_next_tasktitle.setText("------");//任务title
+            task_time_location.setText("--:--" + " ~ " + "--:--" + "\n" + "------");//任务开始时间&地点
+        }
+    }
     class myComparator_task implements Comparator {
 
         @Override

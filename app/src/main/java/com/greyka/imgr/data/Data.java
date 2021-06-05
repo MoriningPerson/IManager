@@ -3,6 +3,8 @@ package com.greyka.imgr.data;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.greyka.imgr.data.Data.User;
+
 public class Data {
 
     public static class Plan {
@@ -91,6 +93,57 @@ public class Data {
         }
     }
 
+    public static class User {
+        private long user_id;
+        private String user_name;
+        private String telephone;
+        private String password;
+
+        public  User(long user_id, String user_name, String telephone, String password) {
+            this.user_id = user_id;
+            this.user_name = user_name;
+            this.telephone = telephone;
+            this.password = password;
+        }
+
+        public  User() {
+        }
+
+        public long getUser_id() {
+            return user_id;
+        }
+
+        public void setUser_id(long user_id) {
+            this.user_id = user_id;
+        }
+
+        public String getUser_name() {
+            return user_name;
+        }
+
+        public void setUser_name(String user_name) {
+            this.user_name = user_name;
+        }
+
+        public String getTelephone() {
+            return telephone;
+        }
+
+        public void setTelephone(String telephone) {
+            this.telephone = telephone;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+
+    }
+
     public static class Task {
 
         private long task_id;
@@ -150,8 +203,7 @@ public class Data {
             this.succeedCount = succeedCount;
         }
 
-        public Task() {
-        }
+        public Task() {}
 
         public long getTask_id() {
             return task_id;
@@ -360,57 +412,6 @@ public class Data {
         public void setSucceedCount(int succeedCount) {
             this.succeedCount = succeedCount;
         }
-    }
-
-    public class User {
-        private long user_id;
-        private String user_name;
-        private String telephone;
-        private String password;
-
-        public User(long user_id, String user_name, String telephone, String password) {
-            this.user_id = user_id;
-            this.user_name = user_name;
-            this.telephone = telephone;
-            this.password = password;
-        }
-
-        public User() {
-        }
-
-        public long getUser_id() {
-            return user_id;
-        }
-
-        public void setUser_id(long user_id) {
-            this.user_id = user_id;
-        }
-
-        public String getUser_name() {
-            return user_name;
-        }
-
-        public void setUser_name(String user_name) {
-            this.user_name = user_name;
-        }
-
-        public String getTelephone() {
-            return telephone;
-        }
-
-        public void setTelephone(String telephone) {
-            this.telephone = telephone;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-
     }
 }
 

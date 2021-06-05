@@ -1,5 +1,7 @@
 package com.greyka.imgr.utilities;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.StrictMode;
@@ -14,12 +16,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static android.content.Context.MODE_PRIVATE;
 
 
-public class RequestUtil {
+public class RequestUtil
+{
     public static String postRequestGetSession(Context context, String url, RequestBody requestBody) throws Exception {
-        try {
+        try{
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -37,54 +39,65 @@ public class RequestUtil {
                 SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
                 SharedPreferences.Editor edit = share.edit();
                 edit.putString("sessionid", sessionid);
-                edit.apply();
+                edit.commit();
             }
             return responseData;
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             return null;
         }
     }
 
 
-    public static String postRequestWithSession(Context context, String url, RequestBody requestBody) {
-        try {
+    public static String postRequestWithSession(Context context, String url, RequestBody requestBody)
+    {
+        try
+        {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
             OkHttpClient client = new OkHttpClient();
-            SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
-            String sessionid = share.getString("sessionid", "null");
+            SharedPreferences share = context.getSharedPreferences("Session",MODE_PRIVATE);
+            String sessionid= share.getString("sessionid","null");
             Request request = new Request.Builder()
-                    .addHeader("cookie", sessionid)
+                    .addHeader("cookie",sessionid)
                     .url(url)
+                    .post(requestBody)
                     .build();
             Response response = client.newCall(request).execute();
             String responseData = response.body().string();
             return responseData;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             return null;
         }
     }
-
-    public static String postRequestWithSessionWithoutParameter(Context context, String url) {
-        try {
+    public static String postRequestWithSessionWithoutParameter(Context context, String url)
+    {
+        try
+        {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
             OkHttpClient client = new OkHttpClient();
-            SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
-            String sessionid = share.getString("sessionid", "null");
+            SharedPreferences share = context.getSharedPreferences("Session",MODE_PRIVATE);
+            String sessionid= share.getString("sessionid","null");
             Request request = new Request.Builder()
-                    .addHeader("cookie", sessionid)
+                    .addHeader("cookie",sessionid)
                     .url(url)
                     .build();
             Response response = client.newCall(request).execute();
             String responseData = response.body().string();
-            Log.d("response", responseData);
+            Log.d("response",responseData);
             return responseData;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             return null;
         }
     }
 
-    public static String postRequestWithoutSession(String url, RequestBody requestBody) {
-        try {
+    public static String postRequestWithoutSession(String url, RequestBody requestBody)
+    {
+        try
+        {
 
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
             OkHttpClient client = new OkHttpClient();
@@ -99,14 +112,17 @@ public class RequestUtil {
             String responseData = response.body().string();
 
             return responseData;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println(e.getMessage());
             return null;
         }
     }
-
-    public static String postRequestWithoutSessionWithoutParameter(String url) {
-        try {
+    public static String postRequestWithoutSessionWithoutParameter(String url)
+    {
+        try
+        {
 
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
             OkHttpClient client = new OkHttpClient();
@@ -120,39 +136,51 @@ public class RequestUtil {
             String responseData = response.body().string();
 
             return responseData;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println(e.getMessage());
             return null;
         }
     }
 
 
-    public static String getWithSession(Context context, String url) {
-        try {
+    public static String getWithSession(Context context,String url)
+    {
+        try
+        {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
             OkHttpClient client = new OkHttpClient();
-            SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
-            String sessionid = share.getString("sessionid", "null");
+            SharedPreferences share = context.getSharedPreferences("Session",MODE_PRIVATE);
+            String sessionid= share.getString("sessionid","null");
+            Log.d("sessionid",sessionid);
             Request request = new Request.Builder()
-                    .addHeader("cookie", sessionid)
+                    .addHeader("cookie",sessionid)
                     .url(url)
                     .build();
             Call call = client.newCall(request);
             Response response = call.execute();
-            if (response.isSuccessful()) {
+            if (response.isSuccessful())
+            {
                 return response.body().string();
-            } else {
-                Log.d("xdadz", "0");
+            }
+            else
+            {
+                Log.d("xdadz","0");
                 return null;
             }
-        } catch (Exception e) {
-            Log.d("xdadz", "1");
+        }
+        catch (Exception e)
+        {
+            Log.d("xdadz","1");
             return null;
         }
     }
 
-    public static String getWithoutSession(String url) {
-        try {
+    public static String getWithoutSession(String url)
+    {
+        try
+        {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -160,12 +188,17 @@ public class RequestUtil {
                     .build();
             Call call = client.newCall(request);
             Response response = call.execute();
-            if (response.isSuccessful()) {
+            if (response.isSuccessful())
+            {
                 return response.body().string();
-            } else {
+            }
+            else
+            {
                 return null;
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             return null;
         }
     }

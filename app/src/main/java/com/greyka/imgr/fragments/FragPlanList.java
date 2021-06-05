@@ -38,10 +38,10 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
     private static Context context;
 
 
-    private static List<Data.Plan> planList;
+    private static List<Data.Plan> planList = new ArrayList<>();
 
     private RecyclerView rv_selector_branch;
-    private PlanDialogMemberAdapter mSelectorBranchAdapter;
+    private static PlanDialogMemberAdapter mSelectorBranchAdapter;
     //private static int mPosition;
     private View view;
     private TaskListSelector taskListSelector;
@@ -62,6 +62,7 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
         myComparator_plan cmp = new myComparator_plan();
         Collections.sort(planList, cmp);
         Log.d("ref", "plan");
+        mSelectorBranchAdapter.setData(planList);
 //        mSelectorBranchAdapter = new PlanDialogMemberAdapter(planList, getContext());
 //        mSelectorBranchAdapter.setOnItemClickListener(this);
 //        rv_selector_branch.setAdapter(mSelectorBranchAdapter);
@@ -85,8 +86,8 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         this.view = view;
-        refreshPlanList();
         InitViews(view);
+        refreshPlanList();
     }
 
     public void showSelectorDialog(long plan_id) {
