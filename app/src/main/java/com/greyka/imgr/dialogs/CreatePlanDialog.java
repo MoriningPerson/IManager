@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,15 @@ import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.TaskDialogSelectAdapter;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
+import com.greyka.imgr.utilities.GetData;
+import com.greyka.imgr.utilities.myUtils;
+import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.EXCEPTION;
+import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +43,7 @@ public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.
     private List<Long> itemSelected = new ArrayList<>();
     private String Title = "无标题";
     private String Description = "无描述";
-    private Task task = data.new Task();
+    private Task task = new Task();
     private Context context;
     private TaskDialogSelectAdapter mSelectorBranchAdapter;
     private RecyclerView rv_selector_branch;
@@ -146,9 +156,46 @@ public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.
     }
 
     private void submitPlan() {
-        //提交后端
+        Data.Plan plan=new Data.Plan();
+        plan.setPlan_name(Title);
+        plan.setPlan_description(Description);
+        long result1= GetData.attemptCreatePlan(context,plan);
+        long plan_id;
+        if(result1 == NETWORK_UNAVAILABLE){
+            myUtils.myToastHelper.showText(context,"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
+            return;
+        }else if(result1 == UNKNOWN_RESPONSE){
+            myUtils.myToastHelper.showText(context,"未知错误 请重试",Toast.LENGTH_LONG);
+            return;
+        }else if(result1 == EXCEPTION){
+            myUtils.myToastHelper.showText(context,"出现异常 请重试",Toast.LENGTH_LONG);
+            return;
+        }else if(result1 == ERROR_RESPONSE){
+            myUtils.myToastHelper.showText(context,"系统异常 请重试",Toast.LENGTH_LONG);
+            return;
+        }else{
+            plan_id=result1;
+        }
+        for(int i=0;i<itemSelected.size();i++)
+        {
+            int result2=GetData.attemptAddTaskToPlan(context,plan_id,itemSelected.get(i));
+            if(result2 == POSITIVE_RESPONSE) {
+                myUtils.myToastHelper.showText(context,"创建成功",Toast.LENGTH_LONG);
+            }else if(result2 == NETWORK_UNAVAILABLE){
+                myUtils.myToastHelper.showText(context,"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
+                return;
+            }else if(result2 == UNKNOWN_RESPONSE){
+                myUtils.myToastHelper.showText(context,"未知错误 请重试",Toast.LENGTH_LONG);
+                return;
+            }else if(result2 == EXCEPTION){
+                myUtils.myToastHelper.showText(context,"出现异常 请重试",Toast.LENGTH_LONG);
+                return;
+            }else if(result2 == ERROR_RESPONSE){
+                myUtils.myToastHelper.showText(context,"系统异常 请重试",Toast.LENGTH_LONG);
+                return;
+            }
+        }
     }
-
     class myComparator_task implements Comparator {
 
         @Override
@@ -158,4 +205,6 @@ public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.
             return T1.getTask_name().compareTo(T2.getTask_name());
         }
     }
+
+
 }

@@ -20,6 +20,7 @@ import okhttp3.Response;
 
 public class RequestUtil
 {
+<<<<<<< HEAD
     public static String postRequestGetSession(Context context, String url, RequestBody requestBody) throws Exception
     {
 
@@ -46,6 +47,38 @@ public class RequestUtil
     }
 
     public static String postRequestWithSessionWithoutParameter(Context context, String url)
+=======
+    public static String postRequestGetSession(Context context, String url, RequestBody requestBody) throws Exception {
+        try{
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .build();
+            // 没网 服务器关闭 这边会丢异常
+            Response response = client.newCall(request).execute();
+            String responseData = response.body().string();
+            Headers headers = response.headers();
+            List cookies = headers.values("Set-Cookie");
+            if (cookies.size() > 0) {
+                String session = (String) cookies.get(0);
+                String sessionid = session.substring(0, session.indexOf(";"));
+                SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
+                SharedPreferences.Editor edit = share.edit();
+                edit.putString("sessionid", sessionid);
+                edit.commit();
+            }
+            return responseData;
+        }catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+
+    public static String postRequestWithSession(Context context, String url, RequestBody requestBody)
+>>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
     {
         try
         {
@@ -59,7 +92,10 @@ public class RequestUtil
                     .build();
             Response response = client.newCall(request).execute();
             String responseData = response.body().string();
+<<<<<<< HEAD
             Log.d("response",responseData);
+=======
+>>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
             return responseData;
         }
         catch (Exception e)
@@ -67,8 +103,7 @@ public class RequestUtil
             return null;
         }
     }
-
-    public static String postRequestWithSession(Context context, String url, RequestBody requestBody)
+    public static String postRequestWithSessionWithoutParameter(Context context, String url)
     {
         try
         {
@@ -79,7 +114,6 @@ public class RequestUtil
             Request request = new Request.Builder()
                     .addHeader("cookie",sessionid)
                     .url(url)
-                    .post(requestBody)
                     .build();
             Response response = client.newCall(request).execute();
             String responseData = response.body().string();
@@ -117,6 +151,31 @@ public class RequestUtil
             return null;
         }
     }
+    public static String postRequestWithoutSessionWithoutParameter(String url)
+    {
+        try
+        {
+
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            String responseData = response.body().string();
+
+            return responseData;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
 
     public static String getWithSession(Context context,String url)
     {
@@ -138,11 +197,13 @@ public class RequestUtil
             }
             else
             {
+                Log.d("xdadz","0");
                 return null;
             }
         }
         catch (Exception e)
         {
+            Log.d("xdadz","1");
             return null;
         }
     }

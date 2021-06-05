@@ -142,7 +142,7 @@ public class Data {
 
     }
 
-    public class Task {
+    public static class Task {
 
         private long task_id;
         private String task_name;
@@ -201,8 +201,7 @@ public class Data {
             this.succeedCount = succeedCount;
         }
 
-        public Task() {
-        }
+        public Task() {}
 
         public long getTask_id() {
             return task_id;

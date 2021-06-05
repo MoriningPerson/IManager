@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -25,8 +26,10 @@ import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.dialogs.BaseFullBottomSheetFragment;
 import com.greyka.imgr.dialogs.TaskListSelector;
 import com.greyka.imgr.dialogs.TodayTaskDialog;
+import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,19 +40,24 @@ import static com.greyka.imgr.utilities.GetData.attemptLogin;
 public class FragHome extends Fragment {
 
     Data data = new Data();
+<<<<<<< HEAD
     public Task task1 = data.new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
+=======
+
+    public Task task1 = new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
+>>>>>>> 7ea58c4b62671b15bfc696547187edf07bc62ef5
             "长风公园", 0, 0, 1, 1, 0, 1, "06:00:00", "07:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task2 = data.new Task(2, "UML", "太难了", "2021/5/10", "2021/5/10 10:00:00", 60, 7, 2, "2021/5/24",
-            "田家炳", 0, 0, 1, 1, 0, 2, "10:00:00", "11:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task3 = data.new Task(3, "数据库", "考太差了", "2021/4/9", "2021/4/9 14:00:00", 120, 7, 3, "2021/4/30",
-            "图书馆", 0, 0, 1, 1, 0, 0, "14:00:00", "16:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task4 = data.new Task(4, "打网球", "体育不能挂科", "2021/5/23", "2021/5/23 18:00:00", 40, 7, 2, "2021/6/6",
-            "网球场", 0, 0, 1, 1, 0, 1, "18:00:00", "18:40:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task5 = data.new Task(5, "健步走", "体育不能挂科", "2021/5/23", "2021/5/23 20:00:00", 30, 7, 2, "2021/6/6",
-            "共青场", 0, 0, 1, 1, 0, 2, "20:00:00", "20:30:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    Task taskExample = data.new Task();
-    private Data.User user = data.new User(0, "StellaDing", "13462057288", "Drx123456");
-    private List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5, task1, task2, task3, task4, task5);
+//    public Task task2 = new Task(2, "UML", "太难了", "2021/5/10", "2021/5/10 10:00:00", 60, 7, 2, "2021/5/24",
+//            "田家炳", 0, 0, 1, 1, 0, 2, "10:00:00", "11:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
+//    public Task task3 = new Task(3, "数据库", "考太差了", "2021/4/9", "2021/4/9 14:00:00", 120, 7, 3, "2021/4/30",
+//            "图书馆", 0, 0, 1, 1, 0, 0, "14:00:00", "16:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
+//    public Task task4 = new Task(4, "打网球", "体育不能挂科", "2021/5/23", "2021/5/23 18:00:00", 40, 7, 2, "2021/6/6",
+//            "网球场", 0, 0, 1, 1, 0, 1, "18:00:00", "18:40:00", 0, 0, 0, 0, 0, 0, 0, 0);
+//    public Task task5 = new Task(5, "健步走", "体育不能挂科", "2021/5/23", "2021/5/23 20:00:00", 30, 7, 2, "2021/6/6",
+//            "共青场", 0, 0, 1, 1, 0, 2, "20:00:00", "20:30:00", 0, 0, 0, 0, 0, 0, 0, 0);
+//    Task taskExample = new Task();
+//    private Data.User user = data.new User(0, "StellaDing", "13462057288", "Drx123456");
+//    private List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5, task1, task2, task3, task4, task5);
 
 
     private List<Task> taskCompleted[] = new List[2];
@@ -177,13 +185,51 @@ public class FragHome extends Fragment {
     }
 
     private void refreshTaskList(int completed) {
-        taskCompleted[completed] = Arrays.asList(task1, task2, task4, task5, task1, task2, task4, task5);
+        //taskCompleted[completed] = Arrays.asList(task1, task2, task4, task5, task1, task2, task4, task5);
+        if(completed==0){
+            List<Task> taskList = new ArrayList<>();
+            taskList= GetData.attemptGetTodayUncompletedTask(getContext());
+            if(taskList==null){
+                myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+                return;
+            }
+            taskCompleted[completed]=taskList;
+        }else if(completed==1){
+            List<Task> taskList = new ArrayList<>();
+            taskList= GetData.attemptGetTodayCompletedTask(getContext());
+            if(taskList==null){
+                myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+                return;
+            }
+            taskCompleted[completed]=taskList;
+        }
         myComparator_task cmp = new myComparator_task();
         Collections.sort(taskCompleted[completed], cmp);
     }
 
     private void refreshNextTask() {
-        NextTask = task1;
+        //先查找有没有正在进行的任务
+        List<Task> taskList1 = new ArrayList<>();
+        taskList1= GetData.attemptGetTaskNow(getContext());
+        if(taskList1==null){
+            myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+            return;
+        }
+        if(taskList1.size()>0){
+            NextTask = taskList1.get(0);
+            return;
+        }else if(taskList1.size()==0){
+            List<Task> taskList2 = new ArrayList<>();
+            taskList2= GetData.attemptGetTaskNow(getContext());
+            if(taskList2==null){
+                myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+                return;
+            }
+            if(taskList2.size()>0){
+                NextTask = taskList2.get(0);
+                return;
+            }else NextTask=task1;//这要改，如果当天没有没完成的任务了咋办，这里要返回null吗
+        }
     }
 
     class myComparator_task implements Comparator {

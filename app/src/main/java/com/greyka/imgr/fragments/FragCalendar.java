@@ -2,6 +2,7 @@ package com.greyka.imgr.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.myRecyclerViewAdapter;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
+import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
 import java.util.Arrays;
@@ -29,19 +31,19 @@ import java.util.List;
 public class FragCalendar extends Fragment {
 
 
-    public List<Task> taskList;
-    Data data = new Data();
-    public Task task1 = data.new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
-            "长风公园", 0, 0, 1, 1, 0, 1, "06:00:00", "07:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task2 = data.new Task(2, "UML", "太难了", "2021/5/10", "2021/5/10 10:00:00", 60, 7, 2, "2021/5/24",
-            "田家炳", 0, 0, 1, 1, 0, 2, "10:00:00", "11:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task3 = data.new Task(3, "数据库", "考太差了", "2021/4/9", "2021/4/9 14:00:00", 120, 7, 3, "2021/4/30",
-            "图书馆", 0, 0, 1, 1, 0, 0, "14:00:00", "16:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task4 = data.new Task(4, "打网球", "体育不能挂科", "2021/5/23", "2021/5/23 18:00:00", 40, 7, 2, "2021/6/6",
-            "网球场", 0, 0, 1, 1, 0, 1, "18:00:00", "18:40:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    public Task task5 = data.new Task(5, "健步走", "体育不能挂科", "2021/5/23", "2021/5/23 20:00:00", 30, 7, 2, "2021/6/6",
-            "共青场", 0, 0, 1, 1, 0, 2, "20:00:00", "20:30:00", 0, 0, 0, 0, 0, 0, 0, 0);
-    Task taskExample = data.new Task();
+//    public List<Task> taskList;
+//    Data data = new Data();
+//    public Task task1 = new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
+//            "长风公园", 0, 0, 1, 1, 0, 1, "06:00:00", "07:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
+//    public Task task2 = new Task(2, "UML", "太难了", "2021/5/10", "2021/5/10 10:00:00", 60, 7, 2, "2021/5/24",
+//            "田家炳", 0, 0, 1, 1, 0, 2, "10:00:00", "11:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
+//    public Task task3 = new Task(3, "数据库", "考太差了", "2021/4/9", "2021/4/9 14:00:00", 120, 7, 3, "2021/4/30",
+//            "图书馆", 0, 0, 1, 1, 0, 0, "14:00:00", "16:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
+//    public Task task4 = new Task(4, "打网球", "体育不能挂科", "2021/5/23", "2021/5/23 18:00:00", 40, 7, 2, "2021/6/6",
+//            "网球场", 0, 0, 1, 1, 0, 1, "18:00:00", "18:40:00", 0, 0, 0, 0, 0, 0, 0, 0);
+//    public Task task5 = new Task(5, "健步走", "体育不能挂科", "2021/5/23", "2021/5/23 20:00:00", 30, 7, 2, "2021/6/6",
+//            "共青场", 0, 0, 1, 1, 0, 2, "20:00:00", "20:30:00", 0, 0, 0, 0, 0, 0, 0, 0);
+//    Task taskExample = new Task();
     List<Data.Task> task;
     View memo;
     RecyclerView recyclerView;
@@ -76,6 +78,7 @@ public class FragCalendar extends Fragment {
     }
 
     private void initViews() {
+        Log.d("yyyyyyy","init");
         calenderCard.setOnTouchListener((v, event) -> {
             calenderCardMover.move(event, 0, 0, -v.getHeight() + density.dp2px(90), 0);
             memo.layout(memo.getLeft(), calenderCard.getBottom() + density.dp2px(10), memo.getRight(), memo.getBottom());
@@ -85,7 +88,9 @@ public class FragCalendar extends Fragment {
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             myUtils.myToastHelper.showText(view.getContext(), +year + "年" + (month + 1) + "月" + dayOfMonth + "日", Toast.LENGTH_SHORT);
             refreshTodayTask(year, month + 1, dayOfMonth);
+            //Log.d("yyyyyyy","initbefore");
             recyclerView.setAdapter(new myRecyclerViewAdapter(task));
+            //Log.d("yyyyyyy","initafter");
         });
     }
 
@@ -93,10 +98,16 @@ public class FragCalendar extends Fragment {
         //Data data= new Data();
         //Data.Task task=data.new Task();
         //List<Data.Task> tasks=task.taskList; //获取今日任务列表
-        taskList = Arrays.asList(task1, task2, task3, task4, task5, task1, task2, task3, task4, task5);
+        //taskList = Arrays.asList(task1, task2, task3, task4, task5, task1, task2, task3, task4, task5);
+        String date=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+        task = GetData.attemptGetSomedayAllTask(getContext(),date);
+        if(task==null){
+            myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+            return;
+        }
         myComparator_memo cmp = new myComparator_memo();
-        Collections.sort(taskList, cmp);
-        recyclerView.setAdapter(new myRecyclerViewAdapter(taskList));
+        Collections.sort(task, cmp);
+        recyclerView.setAdapter(new myRecyclerViewAdapter(task));
     }
 
     class myComparator_memo implements Comparator {

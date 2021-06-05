@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,8 @@ import com.greyka.imgr.adapters.PlanDialogMemberAdapter;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.dialogs.TaskListSelector;
+import com.greyka.imgr.utilities.GetData;
+import com.greyka.imgr.utilities.myUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,9 +56,16 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
 
     public static void refreshPlanList() {
         planList = attemptQueryPlans(context);
+        if(planList==null){
+            myUtils.myToastHelper.showText(context,"系统异常 请重试", Toast.LENGTH_LONG);
+            return;
+        }
         myComparator_plan cmp = new myComparator_plan();
         Collections.sort(planList, cmp);
         Log.d("ref", "plan");
+//        mSelectorBranchAdapter = new PlanDialogMemberAdapter(planList, getContext());
+//        mSelectorBranchAdapter.setOnItemClickListener(this);
+//        rv_selector_branch.setAdapter(mSelectorBranchAdapter);
     }
 
     @Override
@@ -99,7 +109,13 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
     }
 
     private List<Task> getTaskInPlan(long plan_id) {//根据id获取任务
-        return new ArrayList<>();
+        List<Task> taskList = new ArrayList<>();
+        taskList= GetData.attemptGetTasksInPlan(context,plan_id);
+        if(taskList==null){
+            myUtils.myToastHelper.showText(context,"系统异常 请重试", Toast.LENGTH_LONG);
+            return null;
+        }
+        return taskList;
     }
 
     static class myComparator_plan implements Comparator {
