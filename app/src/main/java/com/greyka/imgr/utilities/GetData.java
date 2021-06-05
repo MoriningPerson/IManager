@@ -1,6 +1,7 @@
 package com.greyka.imgr.utilities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 
@@ -13,10 +14,34 @@ import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.greyka.imgr.utilities.Constants.*;
 
 public class GetData
 {
+    public static int attemptTestSessionId(Context context)
+    {
+        try
+        {
+            String response;
+            response = RequestUtil.getWithSession(context, new String("http://1.117.107.95:8081/user/userinfo"));
+            if (response == null)
+            {
+                return NETWORK_UNAVAILABLE;
+            }else{
+                try {
+                    User user = JsonUtil.jsonToUser(response);
+                    return POSITIVE_RESPONSE;
+                }catch (Exception e){
+                    return NEGATIVE_RESPONSE;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            return EXCEPTION;
+        }
+    }
 
     public static int attemptLogin(Context context, String username, String password)
     {
@@ -54,7 +79,22 @@ public class GetData
 //            return "登陆失败";
 //        }
     }
-
+    public static int attemptLogout(Context context)
+    {
+        try
+        {
+            String response  = RequestUtil.postRequestWithSessionWithoutParameter(context,new String("http://1.117.107.95:8081/signOut"));
+            SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
+            SharedPreferences.Editor edit = share.edit();
+            edit.remove("sessionid");
+            edit.commit();
+            return POSITIVE_RESPONSE;
+        }
+        catch (Exception e)
+        {
+            return EXCEPTION;
+        }
+    }
     public static int attemptRegister(User user)
     {
         try
@@ -140,6 +180,7 @@ public class GetData
             return null;
         }
     }
+
 
 
 

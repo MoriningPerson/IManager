@@ -42,11 +42,11 @@ import java.util.Set;
 import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
 import static com.greyka.imgr.utilities.Constants.EXCEPTION;
 import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
 import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
 import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
 import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
-import static com.greyka.imgr.utilities.GetData.attemptLogin;
-import static com.greyka.imgr.utilities.GetData.attemptRegister;
+import static com.greyka.imgr.utilities.GetData.*;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -78,20 +78,23 @@ public class LoginActivity extends AppCompatActivity {
         initViews();
         SharedPreferences sp = getApplicationContext().getSharedPreferences("UserPassword", Context.MODE_PRIVATE);
         String username = sp.getString("username",null);
-        String password = sp.getString("password",null);
+        SharedPreferences share = getApplicationContext().getSharedPreferences("Session", MODE_PRIVATE);
+        //String password = sp.getString("password",null);
         if(username == null){
-            myUtils.myToastHelper.showText(getApplicationContext(),"请先登录",Toast.LENGTH_LONG);
         }else{
             Log.d("MainActivity","clickLogin");
-            int result = attemptLogin(getApplicationContext(),username,password);
+            int result = attemptTestSessionId(getApplicationContext());
             if(result == POSITIVE_RESPONSE){
                 myUtils.myToastHelper.showText(getApplicationContext(),"欢迎回来",Toast.LENGTH_SHORT);
                 startMainActivity();
             }else{
-                myUtils.myToastHelper.showText(getApplicationContext(),"登录失效 请重新登录",Toast.LENGTH_LONG);
+                if(result == NEGATIVE_RESPONSE) {
+                    myUtils.myToastHelper.showText(getApplicationContext(), "登录失效 请重新登录", Toast.LENGTH_LONG);
+                }else if(result == NETWORK_UNAVAILABLE){
+                    myUtils.myToastHelper.showText(getApplicationContext(), "连接异常 请检查网络", Toast.LENGTH_LONG);
+                }
                 SharedPreferences.Editor editor = sp.edit();
                 editor.remove("username");
-                editor.remove("password");
                 editor.commit();
             }
         }

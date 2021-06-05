@@ -36,12 +36,36 @@ public class RequestUtil
         if(cookies.size() > 0) {
             String session = (String) cookies.get(0);
             String sessionid = session.substring(0, session.indexOf(";"));
+            Log.d("log",sessionid);
             SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
             SharedPreferences.Editor edit = share.edit();
             edit.putString("sessionid", sessionid);
             edit.commit();
         }
         return responseData;
+    }
+
+    public static String postRequestWithSessionWithoutParameter(Context context, String url)
+    {
+        try
+        {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
+            OkHttpClient client = new OkHttpClient();
+            SharedPreferences share = context.getSharedPreferences("Session",MODE_PRIVATE);
+            String sessionid= share.getString("sessionid","null");
+            Request request = new Request.Builder()
+                    .addHeader("cookie",sessionid)
+                    .url(url)
+                    .build();
+            Response response = client.newCall(request).execute();
+            String responseData = response.body().string();
+            Log.d("response",responseData);
+            return responseData;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     public static String postRequestWithSession(Context context, String url, RequestBody requestBody)

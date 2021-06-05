@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#FFBEBEBE</color>
-    <color name="myThemeSShallow">#FF18CAC6</color>
+    <color name="myThemeSShallow">#18CAC6</color>
     <color name="myThemeShallow">#FF11ABAB</color>
     <color name="myThemeDeep">#FF00868B</color>
     <color name="rippleColor">#FFBEBEBE</color>

@@ -42,7 +42,7 @@ import overlay.PoiOverlay;
 
 public class MapPoiSearch extends AppCompatActivity
         implements View.OnClickListener, Inputtips.InputtipsListener, PoiSearch.OnPoiSearchListener,
-        TextWatcher, AMap.OnMarkerClickListener, AMap.InfoWindowAdapter {
+        TextWatcher, AMap.OnMarkerClickListener, AMap.InfoWindowAdapter,AMap.OnMapClickListener{
 
     private String keyWord = "";
     private MapView mapView;
@@ -53,6 +53,7 @@ public class MapPoiSearch extends AppCompatActivity
     private LatLng latLng;
     private String poiName;
     private String nickName;
+    private Marker markerNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,6 @@ public class MapPoiSearch extends AppCompatActivity
         mapView = findViewById(R.id.mapView2);
         mapView.onCreate(savedInstanceState);
         init();
-        new myUtils.myWindowManager();
         myUtils.myWindowManager.setWindow(this);
     }
 
@@ -78,6 +78,7 @@ public class MapPoiSearch extends AppCompatActivity
         searchText = findViewById(R.id.keyWord);
         searchText.addTextChangedListener(this);
         aMap.setOnMarkerClickListener(this);
+        aMap.setOnMapClickListener(this);
         aMap.setInfoWindowAdapter(this);
         SharedPreferences sharedPreferences = getSharedPreferences("LatLng", MODE_PRIVATE);
         LatLng latLng = new LatLng(
@@ -119,6 +120,13 @@ public class MapPoiSearch extends AppCompatActivity
             setPoiWordButton();
         } else {
             throw new IllegalStateException("Error!");
+        }
+    }
+    @Override
+    public void onMapClick(LatLng latLng) {
+        if(markerNow != null){
+            markerNow.hideInfoWindow();
+            markerNow = null;
         }
     }
 
@@ -238,14 +246,20 @@ public class MapPoiSearch extends AppCompatActivity
         marker.showInfoWindow();
         latLng = marker.getPosition();
         poiName = marker.getTitle();
-        return false;
+        markerNow = marker;
+        return true;
     }
 
     @Override
     public View getInfoWindow(final Marker marker) {
+
         @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.poikeywordsearch_uri, null);
         TextView title = view.findViewById(R.id.title);
-        title.setText(marker.getTitle());
+        String Title = marker.getTitle();
+        if(Title == null){
+            Title = "当前位置无信息";
+        }
+        title.setText(Title);
         TextView snippet = view.findViewById(R.id.snippet);
         snippet.setText(marker.getSnippet());
         Button button = view.findViewById(R.id.set_poi_word);
