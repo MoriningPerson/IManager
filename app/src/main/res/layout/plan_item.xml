@@ -1,157 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_branch_item_root"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:orientation="vertical"
-    android:layout_marginTop="4dp">
+    android:layout_marginTop="4dp"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="0dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginBottom="0dp"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="@color/calendar_white"
         app:cardCornerRadius="15dp"
-        app:cardElevation="2dp"
-        android:foreground="?android:attr/selectableItemBackground">
+        app:cardElevation="2dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/plan_note"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:layout_marginEnd="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.509"
-            app:srcCompat="@drawable/ic_note"
-            app:tint="@color/myThemeShallow" />
+            <ImageView
+                android:id="@+id/plan_note"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.509"
+                app:srcCompat="@drawable/ic_note"
+                app:tint="@color/myThemeShallow" />
 
-        <ImageView
-            android:id="@+id/ic_plan_task_completed"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginBottom="18dp"
-            android:gravity="center"
-            android:layout_marginEnd="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/plan_tasks_status"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_task_completed"
-            app:tint="@color/blue" />
+            <ImageView
+                android:id="@+id/ic_plan_task_completed"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="18dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/plan_tasks_status"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_task_completed"
+                app:tint="@color/blue" />
 
-        <ImageView
-            android:id="@+id/ic_plan_task_failed"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/ic_plan_task_completed"
-            app:layout_constraintHorizontal_bias="0.657"
-            app:layout_constraintStart_toStartOf="@+id/ic_plan_task_completed"
-            app:layout_constraintTop_toBottomOf="@+id/ic_plan_task_completed"
-            app:layout_constraintVertical_bias="0.969"
-            app:srcCompat="@drawable/ic_task_failed"
-            app:tint="@color/Red3" />
+            <ImageView
+                android:id="@+id/ic_plan_task_failed"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="@+id/ic_plan_task_completed"
+                app:layout_constraintHorizontal_bias="0.657"
+                app:layout_constraintStart_toStartOf="@+id/ic_plan_task_completed"
+                app:layout_constraintTop_toBottomOf="@+id/ic_plan_task_completed"
+                app:layout_constraintVertical_bias="0.969"
+                app:srcCompat="@drawable/ic_task_failed"
+                app:tint="@color/Red3" />
 
-        <ImageView
-            android:id="@+id/plan_right"
-            android:layout_width="15dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="20dp"
-            android:gravity="center"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.52"
-            app:srcCompat="@drawable/ic_right"
-            app:tint="@color/myThemeShallow" />
+            <ImageView
+                android:id="@+id/plan_right"
+                android:layout_width="15dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="20dp"
+                android:gravity="center"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.52"
+                app:srcCompat="@drawable/ic_right"
+                app:tint="@color/myThemeShallow" />
 
-        <TextView
-            android:id="@+id/plan_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="title"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginStart="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/plan_right"
-            app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/plan_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="32dp"
+                android:text="title"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/plan_right"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/plan_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="description"
-            android:textColor="@color/dimgrey"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/plan_name"
-            app:layout_constraintTop_toBottomOf="@+id/plan_name" />
+            <TextView
+                android:id="@+id/plan_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="description"
+                android:textColor="@color/dimgrey"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/plan_name"
+                app:layout_constraintTop_toBottomOf="@+id/plan_name" />
 
-        <TextView
-            android:id="@+id/plan_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="start_date"
-            android:textColor="@color/dimgrey"
-            android:textSize="12sp"
+            <TextView
+                android:id="@+id/plan_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="start_date"
+                android:textColor="@color/dimgrey"
+                android:textSize="12sp"
 
-            app:layout_constraintStart_toStartOf="@+id/plan_name"
-            app:layout_constraintTop_toBottomOf="@+id/plan_desc" />
+                app:layout_constraintStart_toStartOf="@+id/plan_name"
+                app:layout_constraintTop_toBottomOf="@+id/plan_desc" />
 
-        <TextView
-            android:id="@+id/plan_tasks_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="任务数:5"
-            android:layout_marginTop="2dp"
-            android:textColor="@color/dimgrey"
-            android:textSize="12sp"
+            <TextView
+                android:id="@+id/plan_tasks_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="任务数:5"
+                android:textColor="@color/dimgrey"
+                android:textSize="12sp"
 
-            app:layout_constraintEnd_toEndOf="@+id/plan_note"
-            app:layout_constraintStart_toStartOf="@+id/plan_note"
-            app:layout_constraintTop_toBottomOf="@+id/plan_note" />
+                app:layout_constraintEnd_toEndOf="@+id/plan_note"
+                app:layout_constraintStart_toStartOf="@+id/plan_note"
+                app:layout_constraintTop_toBottomOf="@+id/plan_note" />
 
-        <TextView
-            android:id="@+id/plan_tasks_completed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2"
-            android:textColor="@color/dimgrey"
-            android:textSize="12sp"
-            android:layout_marginStart="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ic_plan_task_completed"
-            app:layout_constraintStart_toEndOf="@+id/ic_plan_task_completed"
-            app:layout_constraintTop_toTopOf="@+id/ic_plan_task_completed" />
-        <TextView
-            android:id="@+id/plan_tasks_failed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            android:textColor="@color/dimgrey"
-            android:textSize="12sp"
-            android:layout_marginStart="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ic_plan_task_failed"
-            app:layout_constraintStart_toEndOf="@+id/ic_plan_task_failed"
-            app:layout_constraintTop_toTopOf="@+id/ic_plan_task_failed" />
+            <TextView
+                android:id="@+id/plan_tasks_completed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="2"
+                android:textColor="@color/dimgrey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_plan_task_completed"
+                app:layout_constraintStart_toEndOf="@+id/ic_plan_task_completed"
+                app:layout_constraintTop_toTopOf="@+id/ic_plan_task_completed" />
+
+            <TextView
+                android:id="@+id/plan_tasks_failed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="1"
+                android:textColor="@color/dimgrey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ic_plan_task_failed"
+                app:layout_constraintStart_toEndOf="@+id/ic_plan_task_failed"
+                app:layout_constraintTop_toTopOf="@+id/ic_plan_task_failed" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 

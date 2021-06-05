@@ -18,7 +18,6 @@
         android:width="200dp"
         android:height="300dp"
         android:drawable="@drawable/ic_launcher_page"
-        android:gravity="center"
-        />
+        android:gravity="center" />
 
 </layer-list>

@@ -19,11 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.myRecyclerViewAdapter;
 import com.greyka.imgr.data.Data;
-import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -31,7 +29,7 @@ import java.util.List;
 public class FragCalendar extends Fragment {
 
 
-//    public List<Task> taskList;
+    //    public List<Task> taskList;
 //    Data data = new Data();
 //    public Task task1 = new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
 //            "长风公园", 0, 0, 1, 1, 0, 1, "06:00:00", "07:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
@@ -78,7 +76,7 @@ public class FragCalendar extends Fragment {
     }
 
     private void initViews() {
-        Log.d("yyyyyyy","init");
+        Log.d("yyyyyyy", "init");
         calenderCard.setOnTouchListener((v, event) -> {
             calenderCardMover.move(event, 0, 0, -v.getHeight() + density.dp2px(90), 0);
             memo.layout(memo.getLeft(), calenderCard.getBottom() + density.dp2px(10), memo.getRight(), memo.getBottom());
@@ -99,10 +97,10 @@ public class FragCalendar extends Fragment {
         //Data.Task task=data.new Task();
         //List<Data.Task> tasks=task.taskList; //获取今日任务列表
         //taskList = Arrays.asList(task1, task2, task3, task4, task5, task1, task2, task3, task4, task5);
-        String date=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
-        task = GetData.attemptGetSomedayAllTask(getContext(),date);
-        if(task==null){
-            myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+        String date = year + "-" + month + "-" + day;
+        task = GetData.attemptGetSomedayAllTask(getContext(), date);
+        if (task == null) {
+            myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
             return;
         }
         myComparator_memo cmp = new myComparator_memo();

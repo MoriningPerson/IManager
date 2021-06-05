@@ -3,6 +3,8 @@
     <!-- 填充 -->
     <solid android:color="#ffffff" />
     <!-- 圆角 -->
-    <corners android:topLeftRadius="20dp" android:topRightRadius="20dp"/>
+    <corners
+        android:topLeftRadius="20dp"
+        android:topRightRadius="20dp" />
 
 </shape>

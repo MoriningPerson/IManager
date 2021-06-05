@@ -25,7 +25,6 @@ import com.greyka.imgr.dialogs.TaskListSelector;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -56,8 +55,8 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
 
     public static void refreshPlanList() {
         planList = attemptQueryPlans(context);
-        if(planList==null){
-            myUtils.myToastHelper.showText(context,"系统异常 请重试", Toast.LENGTH_LONG);
+        if (planList == null) {
+            myUtils.myToastHelper.showText(context, "系统异常 请重试", Toast.LENGTH_LONG);
             return;
         }
         myComparator_plan cmp = new myComparator_plan();
@@ -109,10 +108,10 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
     }
 
     private List<Task> getTaskInPlan(long plan_id) {//根据id获取任务
-        List<Task> taskList = new ArrayList<>();
-        taskList= GetData.attemptGetTasksInPlan(context,plan_id);
-        if(taskList==null){
-            myUtils.myToastHelper.showText(context,"系统异常 请重试", Toast.LENGTH_LONG);
+        List<Task> taskList;
+        taskList = GetData.attemptGetTasksInPlan(context, plan_id);
+        if (taskList == null) {
+            myUtils.myToastHelper.showText(context, "系统异常 请重试", Toast.LENGTH_LONG);
             return null;
         }
         return taskList;

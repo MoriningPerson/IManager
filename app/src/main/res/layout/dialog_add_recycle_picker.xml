@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textView9"
@@ -15,30 +14,32 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="周期"
         android:layout_marginStart="5dp"
+        android:text="周期"
         app:layout_constraintBottom_toBottomOf="@+id/recycle_picker_cycle_add"
         app:layout_constraintStart_toEndOf="@+id/recycle_picker_cycle_add"
         app:layout_constraintTop_toTopOf="@+id/recycle_picker_cycle_add" />
 
     <Button
         android:id="@+id/submit_add_recycle_picker"
-        android:layout_margin="5dp"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
+        android:layout_margin="5dp"
         android:backgroundTint="@color/transparent"
         android:foreground="?android:attr/selectableItemBackground"
         android:text="确认"
         android:textColor="@color/myThemeShallow"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.greyka.imgr.classes.PickerView
         android:id="@+id/recycle_picker_cycle_add"
         android:layout_width="35dp"
@@ -90,66 +91,66 @@
         android:id="@+id/bbb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        android:layout_marginStart="2dp"
         app:layout_constraintStart_toStartOf="@+id/radioGroup2"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup2">
-            <TextView
-                android:id="@+id/seven"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="日"
-                android:textColor="@color/dimgrey" />
 
-            <TextView
-                android:id="@+id/one"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="一"
-                android:textColor="@color/dimgrey" />
+        <TextView
+            android:id="@+id/seven"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="日"
+            android:textColor="@color/dimgrey" />
 
-            <TextView
-                android:id="@+id/two"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="二"
-                android:textColor="@color/dimgrey" />
+        <TextView
+            android:id="@+id/one"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="一"
+            android:textColor="@color/dimgrey" />
 
-            <TextView
-                android:id="@+id/three"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="三"
-                android:textColor="@color/dimgrey" />
+        <TextView
+            android:id="@+id/two"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="二"
+            android:textColor="@color/dimgrey" />
 
-            <TextView
-                android:id="@+id/four"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="四"
-                android:textColor="@color/dimgrey" />
+        <TextView
+            android:id="@+id/three"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="三"
+            android:textColor="@color/dimgrey" />
 
-            <TextView
-                android:id="@+id/five"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="五"
-                android:textColor="@color/dimgrey" />
+        <TextView
+            android:id="@+id/four"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="四"
+            android:textColor="@color/dimgrey" />
 
-            <TextView
-                android:id="@+id/six"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="六"
-                android:textColor="@color/dimgrey"
-                />
+        <TextView
+            android:id="@+id/five"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="五"
+            android:textColor="@color/dimgrey" />
+
+        <TextView
+            android:id="@+id/six"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="六"
+            android:textColor="@color/dimgrey" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

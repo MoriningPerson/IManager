@@ -20,18 +20,17 @@ import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
-import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.EXCEPTION;
-import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.EXCEPTION;
+import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
+import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
 
 
 public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.OnItemClickListener, ViewUpdator {
@@ -156,46 +155,46 @@ public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.
     }
 
     private void submitPlan() {
-        Data.Plan plan=new Data.Plan();
+        Data.Plan plan = new Data.Plan();
         plan.setPlan_name(Title);
         plan.setPlan_description(Description);
-        long result1= GetData.attemptCreatePlan(context,plan);
+        long result1 = GetData.attemptCreatePlan(context, plan);
         long plan_id;
-        if(result1 == NETWORK_UNAVAILABLE){
-            myUtils.myToastHelper.showText(context,"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
+        if (result1 == NETWORK_UNAVAILABLE) {
+            myUtils.myToastHelper.showText(context, "无法连接服务器 请检查网络", Toast.LENGTH_LONG);
             return;
-        }else if(result1 == UNKNOWN_RESPONSE){
-            myUtils.myToastHelper.showText(context,"未知错误 请重试",Toast.LENGTH_LONG);
+        } else if (result1 == UNKNOWN_RESPONSE) {
+            myUtils.myToastHelper.showText(context, "未知错误 请重试", Toast.LENGTH_LONG);
             return;
-        }else if(result1 == EXCEPTION){
-            myUtils.myToastHelper.showText(context,"出现异常 请重试",Toast.LENGTH_LONG);
+        } else if (result1 == EXCEPTION) {
+            myUtils.myToastHelper.showText(context, "出现异常 请重试", Toast.LENGTH_LONG);
             return;
-        }else if(result1 == ERROR_RESPONSE){
-            myUtils.myToastHelper.showText(context,"系统异常 请重试",Toast.LENGTH_LONG);
+        } else if (result1 == ERROR_RESPONSE) {
+            myUtils.myToastHelper.showText(context, "系统异常 请重试", Toast.LENGTH_LONG);
             return;
-        }else{
-            plan_id=result1;
+        } else {
+            plan_id = result1;
         }
-        for(int i=0;i<itemSelected.size();i++)
-        {
-            int result2=GetData.attemptAddTaskToPlan(context,plan_id,itemSelected.get(i));
-            if(result2 == POSITIVE_RESPONSE) {
-                myUtils.myToastHelper.showText(context,"创建成功",Toast.LENGTH_LONG);
-            }else if(result2 == NETWORK_UNAVAILABLE){
-                myUtils.myToastHelper.showText(context,"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
+        for (int i = 0; i < itemSelected.size(); i++) {
+            int result2 = GetData.attemptAddTaskToPlan(context, plan_id, itemSelected.get(i));
+            if (result2 == POSITIVE_RESPONSE) {
+                myUtils.myToastHelper.showText(context, "创建成功", Toast.LENGTH_LONG);
+            } else if (result2 == NETWORK_UNAVAILABLE) {
+                myUtils.myToastHelper.showText(context, "无法连接服务器 请检查网络", Toast.LENGTH_LONG);
                 return;
-            }else if(result2 == UNKNOWN_RESPONSE){
-                myUtils.myToastHelper.showText(context,"未知错误 请重试",Toast.LENGTH_LONG);
+            } else if (result2 == UNKNOWN_RESPONSE) {
+                myUtils.myToastHelper.showText(context, "未知错误 请重试", Toast.LENGTH_LONG);
                 return;
-            }else if(result2 == EXCEPTION){
-                myUtils.myToastHelper.showText(context,"出现异常 请重试",Toast.LENGTH_LONG);
+            } else if (result2 == EXCEPTION) {
+                myUtils.myToastHelper.showText(context, "出现异常 请重试", Toast.LENGTH_LONG);
                 return;
-            }else if(result2 == ERROR_RESPONSE){
-                myUtils.myToastHelper.showText(context,"系统异常 请重试",Toast.LENGTH_LONG);
+            } else if (result2 == ERROR_RESPONSE) {
+                myUtils.myToastHelper.showText(context, "系统异常 请重试", Toast.LENGTH_LONG);
                 return;
             }
         }
     }
+
     class myComparator_task implements Comparator {
 
         @Override

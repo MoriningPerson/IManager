@@ -29,8 +29,6 @@ import com.greyka.imgr.dialogs.TodayTaskDialog;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,11 +37,10 @@ import static com.greyka.imgr.utilities.GetData.attemptLogin;
 
 public class FragHome extends Fragment {
 
-    Data data = new Data();
-
     public Task task1 = new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
             "长风公园", 0, 0, 1, 1, 0, 1, "06:00:00", "07:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
-//    public Task task2 = new Task(2, "UML", "太难了", "2021/5/10", "2021/5/10 10:00:00", 60, 7, 2, "2021/5/24",
+    Data data = new Data();
+    //    public Task task2 = new Task(2, "UML", "太难了", "2021/5/10", "2021/5/10 10:00:00", 60, 7, 2, "2021/5/24",
 //            "田家炳", 0, 0, 1, 1, 0, 2, "10:00:00", "11:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
 //    public Task task3 = new Task(3, "数据库", "考太差了", "2021/4/9", "2021/4/9 14:00:00", 120, 7, 3, "2021/4/30",
 //            "图书馆", 0, 0, 1, 1, 0, 0, "14:00:00", "16:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
@@ -54,9 +51,6 @@ public class FragHome extends Fragment {
 //    Task taskExample = new Task();
 //    private Data.User user = data.new User(0, "StellaDing", "13462057288", "Drx123456");
 //    private List<Task> taskList = Arrays.asList(task1, task2, task3, task4, task5, task1, task2, task3, task4, task5);
-
-
-
     private List<Task> taskCompleted[] = new List[2];
     private Task NextTask;
 
@@ -158,17 +152,14 @@ public class FragHome extends Fragment {
 //            Intent intent = new Intent(getContext(), MapPoiSearch.class);
 //            activityResultLauncher.launch(intent);
         });
-        logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        logo.setOnClickListener(v -> {
 
-                // Log.d("MainActivity","clickRegister");
-                // String result=attemptRegister(user);
-                // Log.d("Register",result);
-                Log.d("MainActivity", "clickLogin");
-                int result = attemptLogin(getContext(), "StellaDing", "Drx123456");
+            // Log.d("MainActivity","clickRegister");
+            // String result=attemptRegister(user);
+            // Log.d("Register",result);
+            Log.d("MainActivity", "clickLogin");
+            int result = attemptLogin(getContext(), "StellaDing", "Drx123456");
 
-            }
         });
 
     }
@@ -196,22 +187,22 @@ public class FragHome extends Fragment {
 
     private void refreshTaskList(int completed) {
         //taskCompleted[completed] = Arrays.asList(task1, task2, task4, task5, task1, task2, task4, task5);
-        if(completed==0){
-            List<Task> taskList = new ArrayList<>();
-            taskList= GetData.attemptGetTodayUncompletedTask(getContext());
-            if(taskList==null){
-                myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+        if (completed == 0) {
+            List<Task> taskList;
+            taskList = GetData.attemptGetTodayUncompletedTask(getContext());
+            if (taskList == null) {
+                myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
                 return;
             }
-            taskCompleted[completed]=taskList;
-        }else if(completed==1){
-            List<Task> taskList = new ArrayList<>();
-            taskList= GetData.attemptGetTodayCompletedTask(getContext());
-            if(taskList==null){
-                myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+            taskCompleted[completed] = taskList;
+        } else if (completed == 1) {
+            List<Task> taskList;
+            taskList = GetData.attemptGetTodayCompletedTask(getContext());
+            if (taskList == null) {
+                myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
                 return;
             }
-            taskCompleted[completed]=taskList;
+            taskCompleted[completed] = taskList;
         }
         myComparator_task cmp = new myComparator_task();
         Collections.sort(taskCompleted[completed], cmp);
@@ -219,26 +210,26 @@ public class FragHome extends Fragment {
 
     private void refreshNextTask() {
         //先查找有没有正在进行的任务
-        List<Task> taskList1 = new ArrayList<>();
-        taskList1= GetData.attemptGetTaskNow(getContext());
-        if(taskList1==null){
-            myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+        List<Task> taskList1;
+        taskList1 = GetData.attemptGetTaskNow(getContext());
+        if (taskList1 == null) {
+            myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
             return;
         }
-        if(taskList1.size()>0){
+        if (taskList1.size() > 0) {
             NextTask = taskList1.get(0);
             return;
-        }else if(taskList1.size()==0){
-            List<Task> taskList2 = new ArrayList<>();
-            taskList2= GetData.attemptGetTaskNow(getContext());
-            if(taskList2==null){
-                myUtils.myToastHelper.showText(getContext(),"系统异常 请重试", Toast.LENGTH_LONG);
+        } else if (taskList1.size() == 0) {
+            List<Task> taskList2;
+            taskList2 = GetData.attemptGetTaskNow(getContext());
+            if (taskList2 == null) {
+                myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
                 return;
             }
-            if(taskList2.size()>0){
+            if (taskList2.size() > 0) {
                 NextTask = taskList2.get(0);
                 return;
-            }else NextTask=task1;//这要改，如果当天没有没完成的任务了咋办，这里要返回null吗
+            } else NextTask = task1;//这要改，如果当天没有没完成的任务了咋办，这里要返回null吗
         }
     }
 

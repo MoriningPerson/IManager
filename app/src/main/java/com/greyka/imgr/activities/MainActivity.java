@@ -1,17 +1,12 @@
 package com.greyka.imgr.activities;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
@@ -19,11 +14,6 @@ import androidx.fragment.app.DialogFragment;
 import com.greyka.imgr.R;
 import com.greyka.imgr.dialogs.myPermissionDialogFragment;
 import com.greyka.imgr.utilities.myUtils;
-
-import java.util.Map;
-import java.util.Set;
-
-import static com.greyka.imgr.utilities.GetData.attemptLogin;
 
 public class MainActivity extends AppCompatActivity implements myPermissionDialogFragment.NoticeDialogListener {
     private final ActivityResultLauncher<String> requestLocationPermissionLauncher =

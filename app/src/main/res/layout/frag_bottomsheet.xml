@@ -29,8 +29,8 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
             android:backgroundTint="@color/transparent"
             android:foreground="?android:attr/selectableItemBackground"
             android:text="添加"
@@ -65,12 +65,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
         <RelativeLayout
+            android:id="@+id/today_button"
             android:layout_width="50dp"
             android:layout_height="30dp"
-            android:id="@+id/today_button"
             android:layout_marginStart="15dp"
             android:background="@drawable/date_button_shape"
             android:orientation="horizontal">
@@ -84,10 +85,11 @@
                 android:textColor="@color/dimgrey" />
 
         </RelativeLayout>
+
         <RelativeLayout
+            android:id="@+id/tomorrow_button"
             android:layout_width="50dp"
             android:layout_height="30dp"
-            android:id="@+id/tomorrow_button"
             android:layout_marginStart="15dp"
             android:background="@drawable/date_button_shape"
             android:orientation="horizontal">
@@ -100,12 +102,13 @@
                 android:text="明天"
                 android:textColor="@color/dimgrey" />
         </RelativeLayout>
+
         <RelativeLayout
-            android:layout_marginTop="-5dp"
+            android:id="@+id/select_button"
             android:layout_width="90dp"
             android:layout_height="30dp"
-            android:id="@+id/select_button"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="-5dp"
             android:background="@drawable/date_button_shape"
             android:orientation="horizontal">
 
@@ -117,19 +120,22 @@
                 android:layout_marginStart="10dp"
                 android:text="选择日期"
                 android:textColor="@color/dimgrey" />
+
             <ImageView
                 android:id="@+id/date_detail"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_toEndOf="@id/select"
                 android:layout_marginTop="5dp"
-                app:srcCompat="@drawable/detail"/>
+                android:layout_toEndOf="@id/select"
+                app:srcCompat="@drawable/detail" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/date_selected"
                 android:layout_width="wrap_content"
@@ -141,9 +147,9 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="7dp"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_marginTop="7dp"
         android:gravity="center_vertical">
 
         <RelativeLayout
@@ -164,34 +170,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:textColor="@color/white"
-                android:text="开始时间:" />
+                android:text="开始时间:"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/start_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_toEndOf="@+id/start_time_string"
                 android:layout_marginEnd="10dp"
-                android:textColor="@color/white"
-                android:text="00:00" />
+                android:layout_toEndOf="@+id/start_time_string"
+                android:text="00:00"
+                android:textColor="@color/white" />
+
             <TextView
                 android:id="@+id/duration_string"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/start_time"
-                android:textColor="@color/white"
-                android:text="时长:" />
+                android:text="时长:"
+                android:textColor="@color/white" />
+
             <TextView
                 android:id="@+id/duraion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_toEndOf="@+id/duration_string"
                 android:layout_marginEnd="15dp"
-                android:textColor="@color/white"
-                android:text="00:01" />
+                android:layout_toEndOf="@+id/duration_string"
+                android:text="00:01"
+                android:textColor="@color/white" />
 
         </RelativeLayout>
 
@@ -208,8 +216,8 @@
                 android:id="@+id/ic_location"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginStart="10dp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/time_selector"
                 app:layout_constraintTop_toTopOf="parent"
@@ -250,8 +258,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
         <RadioButton
             android:id="@+id/sign_up"
             android:layout_width="wrap_content"
@@ -259,6 +268,7 @@
             android:layout_marginHorizontal="10dp"
             android:buttonTint="@color/myThemeShallow"
             android:text="打卡" />
+
         <RadioButton
             android:id="@+id/alarm"
             android:layout_width="wrap_content"
@@ -266,6 +276,7 @@
             android:layout_marginHorizontal="5dp"
             android:buttonTint="@color/myThemeShallow"
             android:text="提醒" />
+
         <Switch
             android:id="@+id/strong_alarm_option"
             android:layout_width="wrap_content"
@@ -274,36 +285,41 @@
             android:track="@drawable/switch_selector"
 
             tools:ignore="UseSwitchCompatOrMaterialXml" />
+
         <TextView
-            android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="强提醒"/>
+            android:layout_marginStart="5dp"
+            android:text="强提醒" />
+
         <LinearLayout
             android:id="@+id/cycle_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
-        <ImageView
-            android:id="@+id/ic_recycle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/time_start"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_recycle"
-            app:tint="@color/grey"/>
-        <TextView
-            android:id="@+id/recycle_info"
-            android:layout_marginStart="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="单次 无循环" />
+
+            <ImageView
+                android:id="@+id/ic_recycle"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/time_start"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_recycle"
+                app:tint="@color/grey" />
+
+            <TextView
+                android:id="@+id/recycle_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="单次 无循环" />
         </LinearLayout>
 
 
     </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="35dp"
@@ -356,13 +372,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
 </LinearLayout>

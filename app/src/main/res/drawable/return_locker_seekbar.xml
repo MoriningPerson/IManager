@@ -17,8 +17,8 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <corners android:radius="5dp"/>
-                <solid android:color="@color/myThemeShallow"/>
+                <corners android:radius="5dp" />
+                <solid android:color="@color/myThemeShallow" />
             </shape>
         </clip>
     </item>

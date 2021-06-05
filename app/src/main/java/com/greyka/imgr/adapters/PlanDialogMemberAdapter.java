@@ -16,24 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.greyka.imgr.R;
 import com.greyka.imgr.data.Data;
-import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.dialogs.CreatePlanDialog;
 import com.greyka.imgr.dialogs.PlanDeleteDialog;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
-import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.EXCEPTION;
-import static com.greyka.imgr.utilities.Constants.NEGATIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.NO_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
-import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.EXCEPTION;
+import static com.greyka.imgr.utilities.Constants.NETWORK_UNAVAILABLE;
+import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
+import static com.greyka.imgr.utilities.Constants.UNKNOWN_RESPONSE;
 import static com.greyka.imgr.utilities.GetData.attemptDeletePlan;
 
 /**
@@ -133,29 +128,29 @@ public class PlanDialogMemberAdapter extends RecyclerView.Adapter<PlanDialogMemb
 //                "共青场", 0, 0, 1, 1, 0, 2, "20:00:00", "20:30:00", 0, 0, 0, 0, 0, 0, 0, 0);
 //        return Arrays.asList(task1, task2, task4, task5, task1, task2, task4, task5);
         List<Data.Task> taskList;
-        Log.d("adas","1");
-        taskList= GetData.attemptGetUserAllUnCompletedTask(mContext);
-        Log.d("adas","2");
-        if(taskList==null){
-            Log.d("adas","3");
-            myUtils.myToastHelper.showText(mContext,"系统异常 请重试", Toast.LENGTH_LONG);
+        Log.d("adas", "1");
+        taskList = GetData.attemptGetUserAllUnCompletedTask(mContext);
+        Log.d("adas", "2");
+        if (taskList == null) {
+            Log.d("adas", "3");
+            myUtils.myToastHelper.showText(mContext, "系统异常 请重试", Toast.LENGTH_LONG);
             return null;
         }
         return taskList;
     }
 
     private void deletePlan(long plan_id) {
-        int result=attemptDeletePlan(mContext,plan_id);
-        if(result == POSITIVE_RESPONSE) {
-            myUtils.myToastHelper.showText(mContext,"删除成功", Toast.LENGTH_LONG);
-        }else if(result == NETWORK_UNAVAILABLE){
-            myUtils.myToastHelper.showText(mContext,"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
-        }else if(result == UNKNOWN_RESPONSE){
-            myUtils.myToastHelper.showText(mContext,"未知错误 请重试",Toast.LENGTH_LONG);
-        }else if(result == EXCEPTION){
-            myUtils.myToastHelper.showText(mContext,"出现异常 请重试",Toast.LENGTH_LONG);
-        }else if(result == ERROR_RESPONSE){
-            myUtils.myToastHelper.showText(mContext,"系统异常 请重试",Toast.LENGTH_LONG);
+        int result = attemptDeletePlan(mContext, plan_id);
+        if (result == POSITIVE_RESPONSE) {
+            myUtils.myToastHelper.showText(mContext, "删除成功", Toast.LENGTH_LONG);
+        } else if (result == NETWORK_UNAVAILABLE) {
+            myUtils.myToastHelper.showText(mContext, "无法连接服务器 请检查网络", Toast.LENGTH_LONG);
+        } else if (result == UNKNOWN_RESPONSE) {
+            myUtils.myToastHelper.showText(mContext, "未知错误 请重试", Toast.LENGTH_LONG);
+        } else if (result == EXCEPTION) {
+            myUtils.myToastHelper.showText(mContext, "出现异常 请重试", Toast.LENGTH_LONG);
+        } else if (result == ERROR_RESPONSE) {
+            myUtils.myToastHelper.showText(mContext, "系统异常 请重试", Toast.LENGTH_LONG);
         }
     }
 

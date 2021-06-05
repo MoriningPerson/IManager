@@ -21,6 +21,8 @@ import androidx.fragment.app.DialogFragment;
 import com.greyka.imgr.R;
 import com.greyka.imgr.utilities.myUtils;
 
+import java.util.Objects;
+
 public class LocationInfoPickerDialog extends DialogFragment {
 
     // Use this instance of the interface to deliver action events
@@ -75,14 +77,11 @@ public class LocationInfoPickerDialog extends DialogFragment {
     }
 
     void initViews() {
-        sumbit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (nickName == "" || nickName == null) {
-                    nickName = "未命名";
-                }
-                mcallback.callback(nickName);
+        sumbit.setOnClickListener(v -> {
+            if (Objects.equals(nickName, "") || nickName == null) {
+                nickName = "未命名";
             }
+            mcallback.callback(nickName);
         });
         editText.addTextChangedListener(new TextWatcher() {
             @Override

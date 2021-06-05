@@ -5,11 +5,11 @@
     </style>
 
     <style name="SplashActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
-<!--        <item name="windowActionBar">false</item>-->
-<!--        <item name="windowNoTitle">true</item>-->
-<!--        <item name="android:windowFullscreen">true</item>-->
-<!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
-<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+        <!--        <item name="windowActionBar">false</item>-->
+        <!--        <item name="windowNoTitle">true</item>-->
+        <!--        <item name="android:windowFullscreen">true</item>-->
+        <!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
+        <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="android:windowFullscreen">true</item>
@@ -17,6 +17,7 @@
         <item name="android:windowBackground">@drawable/launcher_page</item>
 
     </style>
+
     <style name="LoginActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--        <item name="windowActionBar">false</item>-->
         <!--        <item name="windowNoTitle">true</item>-->
@@ -28,20 +29,23 @@
         <item name="android:windowFullscreen">true</item>
 
     </style>
-    <style name="CustomSeekbarStyle" >
+
+    <style name="CustomSeekbarStyle">
         <item name="android:maxHeight">5dp</item>
         <item name="android:indeterminateOnly">false</item>
         <item name="android:indeterminateDrawable">@color/myThemeShallow</item>
         <item name="android:progressDrawable">@drawable/seekbar_progress_drawable</item>
         <item name="android:minHeight">5dp</item>
     </style>
-    <style name="return_locker_seekbar" >
+
+    <style name="return_locker_seekbar">
         <item name="android:maxHeight">50dp</item>
         <item name="android:indeterminateOnly">false</item>
         <item name="android:indeterminateDrawable">@color/myThemeShallow</item>
         <item name="android:progressDrawable">@drawable/seekbar_progress_drawable</item>
         <item name="android:minHeight">50dp</item>
     </style>
+
     <style name="BottomSheetStyle" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowSoftInputMode">adjustResize</item>

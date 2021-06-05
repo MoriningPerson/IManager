@@ -23,7 +23,6 @@ import com.greyka.imgr.dialogs.ViewUpdator;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +33,6 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
     public static final String ARG_OBJECT = "object";
     private static List<Data.Task> taskList;
     private static int mPosition;
-    Data data = new Data();
     public Data.Task task1 = new Task(1, "打太极拳", "一日之计在于晨", "2021/5/23", "2021/5/23 06:00:00", 60, 2, 20, "2021/7/1",
             "长风公园", 0, 0, 1, 1, 0, 1, "06:00:00", "07:00:00", 0, 0, 0, 0, 0, 0, 0, 0);
     public Data.Task task2 = new Task(2, "UML", "太难了", "2021/5/10", "2021/5/10 10:00:00", 60, 7, 2, "2021/5/24",
@@ -45,6 +43,7 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
             "网球场", 0, 0, 1, 1, 0, 1, "18:00:00", "18:40:00", 0, 0, 0, 0, 0, 0, 0, 0);
     public Data.Task task5 = new Task(5, "健步走", "体育不能挂科", "2021/5/23", "2021/5/23 20:00:00", 30, 7, 2, "2021/6/6",
             "共青场", 0, 0, 1, 1, 0, 2, "20:00:00", "20:30:00", 0, 0, 0, 0, 0, 0, 0, 0);
+    Data data = new Data();
     Data.Task taskExample = new Task();
     private Context context;
     private RecyclerView rv_selector_branch;
@@ -102,9 +101,9 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
 
     public void refreshTaskList() {
         //taskList = Arrays.asList(task1, task2, task3, task4, task5, task1, task2, task3, task4, task5);//获取任务
-        taskList= GetData.attemptGetUserAllTask(context);
-        if(taskList==null){
-            myUtils.myToastHelper.showText(context,"系统异常 请重试", Toast.LENGTH_LONG);
+        taskList = GetData.attemptGetUserAllTask(context);
+        if (taskList == null) {
+            myUtils.myToastHelper.showText(context, "系统异常 请重试", Toast.LENGTH_LONG);
             return;
         }
         myComparator_task cmp = new myComparator_task();

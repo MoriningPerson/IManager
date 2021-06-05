@@ -12,25 +12,25 @@
         <attr name="rcv_bottomLeftRadiu" format="dimension" />
 
     </declare-styleable>
-        <declare-styleable name="TasksCompletedView">
-            <attr name="radius" format="dimension"/>
-            <attr name="strokeWidth" format="dimension"/>
-            <attr name="strokeBgWidth" format="dimension"/>
-            <attr name="circleColor" format="color"/>
-            <attr name="ringColor" format="color"/>
-            <attr name="ringBgColor" format="color"/>
-            <attr name="elevation" format="dimension"/>
-        </declare-styleable>
+    <declare-styleable name="TasksCompletedView">
+        <attr name="radius" format="dimension" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="strokeBgWidth" format="dimension" />
+        <attr name="circleColor" format="color" />
+        <attr name="ringColor" format="color" />
+        <attr name="ringBgColor" format="color" />
+        <attr name="elevation" format="dimension" />
+    </declare-styleable>
 
     <declare-styleable name="PickerView">
-        <attr name="textColor" format="color"/>
-        <attr name="slowDownRate" format="float"/>
-        <attr name="fastSlideSpeed" format="float"/>
-        <attr name="maxTextSizeRate" format="float"/>
-        <attr name="minTextSizeRate" format="float"/>
-        <attr name="maxTextAlpha" format="float"/>
-        <attr name="minTextAlpha" format="float"/>
-        <attr name="onSelectedChangeInterval" format="integer"/>
+        <attr name="textColor" format="color" />
+        <attr name="slowDownRate" format="float" />
+        <attr name="fastSlideSpeed" format="float" />
+        <attr name="maxTextSizeRate" format="float" />
+        <attr name="minTextSizeRate" format="float" />
+        <attr name="maxTextAlpha" format="float" />
+        <attr name="minTextAlpha" format="float" />
+        <attr name="onSelectedChangeInterval" format="integer" />
     </declare-styleable>
 
 </resources>
