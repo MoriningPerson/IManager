@@ -181,10 +181,10 @@
                     android:id="@+id/string_complete_situation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="21dp"
                     android:text="@string/string_situation"
                     android:textColor="@color/black"
                     android:textSize="12sp"
-                    android:layout_marginStart="21dp"
                     app:layout_constraintStart_toStartOf="@+id/vertical_0.05"
                     app:layout_constraintTop_toBottomOf="@+id/total_complete_percent"
                     tools:ignore="MissingConstraints" />

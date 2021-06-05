@@ -30,7 +30,6 @@
             tools:ignore="MissingConstraints,RtlSymmetry" />
 
 
-
     </androidx.cardview.widget.CardView>
     <!--    为啥你总是一个TextView撑死父容器  然后再在里面写-->
 

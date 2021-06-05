@@ -77,7 +77,7 @@ public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.
         title = findViewById(R.id.plan_title_add);
         description = findViewById(R.id.plan_desc_add);
         submit = findViewById(R.id.submit);
-        rv_selector_branch = (RecyclerView) findViewById(R.id.task_selector);
+        rv_selector_branch = findViewById(R.id.task_selector);
     }
 
     private void initViews() {

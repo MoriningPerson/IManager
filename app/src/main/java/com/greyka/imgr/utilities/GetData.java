@@ -30,7 +30,7 @@ public class GetData {
                     .add("username", username)
                     .add("password", password)
                     .build();
-            String response = RequestUtil.postRequestGetSession(context, new String("http://1.117.107.95:8081/signIn"), requestBody);
+            String response = RequestUtil.postRequestGetSession(context, "http://1.117.107.95:8081/signIn", requestBody);
             if (response == null) {
                 return NETWORK_UNAVAILABLE;
             } else if (response.equals("1")) {
@@ -48,7 +48,7 @@ public class GetData {
 
     public static int attemptLogout(Context context) {
         try {
-            String response = RequestUtil.postRequestWithSessionWithoutParameter(context, new String("http://1.117.107.95:8081/signOut"));
+            String response = RequestUtil.postRequestWithSessionWithoutParameter(context, "http://1.117.107.95:8081/signOut");
             if (response == null)
                 return NETWORK_UNAVAILABLE;
             else {
@@ -62,7 +62,7 @@ public class GetData {
     public static int attemptTestSessionId(Context context) {
         try {
             String response;
-            response = RequestUtil.getWithSession(context, new String("http://1.117.107.95:8081/user/userinfo"));
+            response = RequestUtil.getWithSession(context, "http://1.117.107.95:8081/user/userinfo");
             if (response == null) {
                 return NETWORK_UNAVAILABLE;
             } else {
@@ -105,7 +105,7 @@ public class GetData {
 
     public static int attemptDeleteUser(Context context) {
         try {
-            String response = RequestUtil.postRequestWithSessionWithoutParameter(context, new String("http://1.117.107.95:8081/signOut"));
+            String response = RequestUtil.postRequestWithSessionWithoutParameter(context, "http://1.117.107.95:8081/signOut");
             if (response == null)
                 return NETWORK_UNAVAILABLE;
             else if (response.equals("删除成功")) {
@@ -125,7 +125,7 @@ public class GetData {
         try {
             String response;
             try {
-                response = RequestUtil.getWithSession(context, new String("http://1.117.107.95:8081/user/userinfo"));
+                response = RequestUtil.getWithSession(context, "http://1.117.107.95:8081/user/userinfo");
             } catch (Exception e) {
                 return null;
             }
@@ -328,7 +328,7 @@ public class GetData {
     //既包括失败也包括未完成
     public static List<Task> attemptGetTodayUncompletedTask(Context context) {
         try {
-            List<Task> tasks = new ArrayList<Task>();
+            List<Task> tasks = new ArrayList<>();
             String url1 = "http://1.117.107.95:8081/user/today/uncompleted";
             String url2 = "http://1.117.107.95:8081/user/today/failed";
             String response1 = RequestUtil.getWithSession(context, url1);
@@ -386,7 +386,7 @@ public class GetData {
     //既包括失败也包括未完成
     public static List<Task> attemptGetSomedayUncompletedTask(Context context, String date) {
         try {
-            List<Task> tasks = new ArrayList<Task>();
+            List<Task> tasks = new ArrayList<>();
             String url1 = "http://1.117.107.95:8081/user/task/uncompleted?date=" + date;
             String url2 = "http://1.117.107.95:8081/user/task/failed?date=" + date;
             String response1 = RequestUtil.getWithSession(context, url1);
@@ -509,7 +509,7 @@ public class GetData {
 
     public static List<Data.Task> attemptGetTasksInPlan(Context context, long plan_id) {
         try {
-            String url = "http://1.117.107.95:8081/user/plan/task?plan_id=" + String.valueOf(plan_id);
+            String url = "http://1.117.107.95:8081/user/plan/task?plan_id=" + plan_id;
             String response = RequestUtil.getWithSession(context, url);
             //Log.d("response",response);
             if (response == null) {

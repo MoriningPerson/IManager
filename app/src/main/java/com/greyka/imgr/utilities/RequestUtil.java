@@ -37,7 +37,7 @@ public class RequestUtil {
                 SharedPreferences share = context.getSharedPreferences("Session", MODE_PRIVATE);
                 SharedPreferences.Editor edit = share.edit();
                 edit.putString("sessionid", sessionid);
-                edit.commit();
+                edit.apply();
             }
             return responseData;
         } catch (Exception e) {

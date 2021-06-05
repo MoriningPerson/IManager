@@ -50,12 +50,9 @@ public class FragMine extends Fragment {
         sp = this.getActivity().getSharedPreferences("UserPassword", Context.MODE_PRIVATE);
         String userName = sp.getString("username", "获取用户名失败");
         username.setText(userName);
-        logout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                userLogout();
-                return true;
-            }
+        logout.setOnLongClickListener(v -> {
+            userLogout();
+            return true;
         });
     }
 

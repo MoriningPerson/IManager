@@ -232,10 +232,10 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         lock.setEnabled(false);
         lockPercentSeekBar.setProgress(lockPercent);
         lockPercentSeekBar.setEnabled(false);
-        title.setHint((CharSequence) Title);
+        title.setHint(Title);
         title.setHintTextColor(getActivity().getColor(R.color.black));
         title.setEnabled(false);
-        description.setHint((CharSequence) Description);
+        description.setHint(Description);
         description.setHintTextColor(getActivity().getColor(R.color.dimgrey));
         description.setEnabled(false);
         String[][] submitInfo = new String[][]{
@@ -375,20 +375,14 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
 
     private void initViews() {
 
-        addLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MapPoiSearch.class);
-                activityResultLauncher.launch(intent);
-            }
+        addLocation.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), MapPoiSearch.class);
+            activityResultLauncher.launch(intent);
         });
-        addLocation.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                haveLocation = false;
-                refreshLocationInfo();
-                return true;
-            }
+        addLocation.setOnLongClickListener(v -> {
+            haveLocation = false;
+            refreshLocationInfo();
+            return true;
         });
         addRecycle.setOnClickListener(v -> {
             AddRecyclePickerDialog recycleDialog = new AddRecyclePickerDialog();
@@ -612,8 +606,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         Data.Task task = new Task();
         task.setTask_name(Title);
         task.setTask_description(Description);
-        String start_date = String.valueOf(Year) + "-" + String.valueOf(Month) + "-" + String.valueOf(Day) +
-                " " + String.valueOf(startHour) + ":" + String.valueOf(startMinute) + ":00";
+        String start_date = Year + "-" + Month + "-" + Day + " " + startHour + ":" + startMinute + ":00";
         task.setStart_date(start_date);
         task.setDuration(lenHour * 60 + lenMinute);
         task.setRepeat_count(Cycle);

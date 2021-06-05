@@ -75,7 +75,7 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
     }
 
     private void InitViews(View view) {
-        rv_selector_branch = (RecyclerView) view.findViewById(R.id.plan_recycle);
+        rv_selector_branch = view.findViewById(R.id.plan_recycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rv_selector_branch.setLayoutManager(layoutManager);
         mSelectorBranchAdapter = new PlanDialogMemberAdapter(planList, getContext());

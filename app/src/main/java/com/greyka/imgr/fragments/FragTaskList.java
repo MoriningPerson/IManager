@@ -79,7 +79,7 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
     }
 
     private void InitViews(View view) {
-        rv_selector_branch = (RecyclerView) view.findViewById(R.id.task_recycle);
+        rv_selector_branch = view.findViewById(R.id.task_recycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rv_selector_branch.setLayoutManager(layoutManager);
         mSelectorBranchAdapter = new TaskDialogMemberAdapter(taskList, getContext(), false);

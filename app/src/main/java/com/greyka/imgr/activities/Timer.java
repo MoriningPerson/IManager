@@ -84,12 +84,12 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
         setContentView(R.layout.activity_timer);
         getTimerService();
 
-        mPgBar = (CirclePgBar) findViewById(R.id.timer_PgBar);
-        ic_alwaysOn = (ImageView) findViewById(R.id.timer_alwaysOn);
-        ic_lockEnabled = (ImageView) findViewById(R.id.timer_lock);
-        mTimeRemain = (TextView) findViewById(R.id.timer_remain);
-        mTimeTotal = (TextView) findViewById(R.id.timer_total);
-        mPanel = (ViewGroup) findViewById(R.id.timer_pannel);
+        mPgBar = findViewById(R.id.timer_PgBar);
+        ic_alwaysOn = findViewById(R.id.timer_alwaysOn);
+        ic_lockEnabled = findViewById(R.id.timer_lock);
+        mTimeRemain = findViewById(R.id.timer_remain);
+        mTimeTotal = findViewById(R.id.timer_total);
+        mPanel = findViewById(R.id.timer_pannel);
         ic_alwaysOn.setOnClickListener(v -> {
             if (!myService.cdtHasInstance()) {
                 return;
