@@ -3,6 +3,8 @@ package com.greyka.imgr.data;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.greyka.imgr.data.Data.User;
+
 public class Data {
 
     public static class Plan {
@@ -91,20 +93,20 @@ public class Data {
         }
     }
 
-    public class User {
+    public static class User {
         private long user_id;
         private String user_name;
         private String telephone;
         private String password;
 
-        public User(long user_id, String user_name, String telephone, String password) {
+        public  User(long user_id, String user_name, String telephone, String password) {
             this.user_id = user_id;
             this.user_name = user_name;
             this.telephone = telephone;
             this.password = password;
         }
 
-        public User() {
+        public  User() {
         }
 
         public long getUser_id() {

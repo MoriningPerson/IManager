@@ -60,6 +60,7 @@ public class RequestUtil
             Request request = new Request.Builder()
                     .addHeader("cookie",sessionid)
                     .url(url)
+                    .post(requestBody)
                     .build();
             Response response = client.newCall(request).execute();
             String responseData = response.body().string();
@@ -152,6 +153,7 @@ public class RequestUtil
             OkHttpClient client = new OkHttpClient();
             SharedPreferences share = context.getSharedPreferences("Session",MODE_PRIVATE);
             String sessionid= share.getString("sessionid","null");
+            Log.d("sessionid",sessionid);
             Request request = new Request.Builder()
                     .addHeader("cookie",sessionid)
                     .url(url)

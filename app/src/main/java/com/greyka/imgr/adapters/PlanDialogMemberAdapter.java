@@ -19,6 +19,7 @@ import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.dialogs.CreatePlanDialog;
 import com.greyka.imgr.dialogs.PlanDeleteDialog;
+import com.greyka.imgr.fragments.FragPlanList;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
@@ -52,7 +53,11 @@ public class PlanDialogMemberAdapter extends RecyclerView.Adapter<PlanDialogMemb
         this.list = list;
         this.mContext = mContext;
     }
-
+    public void setData(List<Data.Plan> list){
+        this.list = list;
+        this.list.add(null);
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemViewType(int position) {
 
@@ -157,6 +162,7 @@ public class PlanDialogMemberAdapter extends RecyclerView.Adapter<PlanDialogMemb
         }else if(result == ERROR_RESPONSE){
             myUtils.myToastHelper.showText(mContext,"系统异常 请重试",Toast.LENGTH_LONG);
         }
+        FragPlanList.refreshPlanList();
     }
 
     /**

@@ -58,8 +58,6 @@ public class LoginActivity extends AppCompatActivity {
     private String username = "";
     private String password = "";
     private ImageView Login;
-    private View view;
-    private boolean logined = false;
     private boolean registerMode = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         if(username == null){
         }else{
             Log.d("MainActivity","clickLogin");
-
-            Data.User temp = attemptQueryUser(getApplicationContext());
-
-            int result = attemptLogin(getApplicationContext(),username,password);
+            int result = attemptTestSessionId(getApplicationContext());
             if(result == POSITIVE_RESPONSE){
                 myUtils.myToastHelper.showText(getApplicationContext(),"欢迎回来",Toast.LENGTH_SHORT);
                 startMainActivity();
@@ -195,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void submitRegister(){
         myUtils.myToastHelper.showText(getApplicationContext(),"注册中",Toast.LENGTH_LONG);
-        int result = attemptRegister(new Data().new User(0,username,"",password));
+        int result = attemptRegister(new Data.User(0,username,"",password));
         Log.d("abc",result+"");
         if(result == POSITIVE_RESPONSE) {
             myUtils.myToastHelper.showText(getApplicationContext(),"注册成功",Toast.LENGTH_LONG);
@@ -217,13 +212,11 @@ public class LoginActivity extends AppCompatActivity {
         int result = attemptLogin(getApplicationContext(), username, password);
         Log.d("result",result+"");
         if (result == POSITIVE_RESPONSE) {
-            myUtils.myToastHelper.showText(getApplicationContext(), "欢迎登录", Toast.LENGTH_LONG);
             SharedPreferences sp = getApplicationContext().getSharedPreferences("UserPassword", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("username", username);
-            editor.putString("password", password);
             editor.commit();
-            logined = true;
+            myUtils.myToastHelper.showText(getApplicationContext(), "欢迎登录", Toast.LENGTH_LONG);
             startMainActivity();
         } else if(result == NEGATIVE_RESPONSE){
             myUtils.myToastHelper.showText(getApplicationContext(), "登陆失败 请检查用户名和密码", Toast.LENGTH_LONG);

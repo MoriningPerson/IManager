@@ -18,6 +18,7 @@ import com.greyka.imgr.R;
 import com.greyka.imgr.adapters.TaskDialogSelectAdapter;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
+import com.greyka.imgr.fragments.FragPlanList;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 import static com.greyka.imgr.utilities.Constants.ERROR_RESPONSE;
@@ -178,23 +179,14 @@ public class CreatePlanDialog extends Dialog implements TaskDialogSelectAdapter.
         }
         for(int i=0;i<itemSelected.size();i++)
         {
+            int cnt = 0;
             int result2=GetData.attemptAddTaskToPlan(context,plan_id,itemSelected.get(i));
             if(result2 == POSITIVE_RESPONSE) {
-                myUtils.myToastHelper.showText(context,"创建成功",Toast.LENGTH_LONG);
-            }else if(result2 == NETWORK_UNAVAILABLE){
-                myUtils.myToastHelper.showText(context,"无法连接服务器 请检查网络",Toast.LENGTH_LONG);
-                return;
-            }else if(result2 == UNKNOWN_RESPONSE){
-                myUtils.myToastHelper.showText(context,"未知错误 请重试",Toast.LENGTH_LONG);
-                return;
-            }else if(result2 == EXCEPTION){
-                myUtils.myToastHelper.showText(context,"出现异常 请重试",Toast.LENGTH_LONG);
-                return;
-            }else if(result2 == ERROR_RESPONSE){
-                myUtils.myToastHelper.showText(context,"系统异常 请重试",Toast.LENGTH_LONG);
-                return;
+                cnt++;
             }
+            myUtils.myToastHelper.showText(context,"计划已创建 成功添加 "+cnt+" 条任务",Toast.LENGTH_LONG);
         }
+        FragPlanList.refreshPlanList();
     }
     class myComparator_task implements Comparator {
 

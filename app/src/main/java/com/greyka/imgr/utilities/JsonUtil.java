@@ -1,5 +1,7 @@
 package com.greyka.imgr.utilities;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
@@ -9,6 +11,7 @@ import com.greyka.imgr.data.Data.Plan;
 
 
 import java.util.ArrayList;
+
 
 
 
@@ -24,8 +27,8 @@ public class JsonUtil
 
     public static User jsonToUser(String data)
     {
-        User user = JSON.parseObject(data, new TypeReference<User>() {});
-        return user;
+        ArrayList<User> user = JSON.parseObject(data, new TypeReference<ArrayList<User>>(){});
+        return user.get(0);
     }
 
     public static String taskToJson(Task task)

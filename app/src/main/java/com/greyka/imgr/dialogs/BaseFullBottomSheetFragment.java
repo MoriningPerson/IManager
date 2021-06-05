@@ -36,9 +36,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.greyka.imgr.R;
+import com.greyka.imgr.activities.MapDisplayActivity;
 import com.greyka.imgr.activities.MapPoiSearch;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
+import com.greyka.imgr.fragments.FragTaskList;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
@@ -126,6 +128,10 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     public void setValues(Data.Task task) {
+        Latitude = task.getLatitude();
+        Longitude = task.getLongitude();
+        locationNickname = task.getPlace_name();
+        haveLocation = (Latitude != 0 || Longitude != 0);
         taskId = task.getTask_id();
         completed = task.getCompleted();
         String str = task.getStart_date();
@@ -199,6 +205,24 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         refreshTimeInfo();
         refreshCycleInfo();
         refreshLocationInfo();
+        if(!haveLocation){
+            addLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }else{
+            addLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), MapDisplayActivity.class);
+                    intent.putExtra("latitude", Latitude);
+                    intent.putExtra("longitude", Longitude);
+                    startActivity(intent);
+                }
+            });
+        }
         signUp.setChecked(Signup);
         signUp.setEnabled(false);
         alarm.setChecked(Alarm);
@@ -575,7 +599,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
                         Latitude = data.getDoubleExtra("latitude", 0);
                         Longitude = data.getDoubleExtra("longitude", 0);
                         locationNickname = data.getStringExtra("nickname");
-                        Log.d("name", data.getStringExtra("name"));
+                        Log.d("name", locationNickname);
                         Log.d("name", Latitude + " " + Longitude);
                         haveLocation = true;
                         refreshLocationInfo();
@@ -642,17 +666,23 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
             int select=0;
             if(DayOfWeek[1]=true){
                 select+=1;
-            }else if(DayOfWeek[2]=true){
+            }
+            if(DayOfWeek[2]=true){
                 select+=2;
-            }else if(DayOfWeek[3]=true){
+            }
+            if(DayOfWeek[3]=true){
                 select+=4;
-            }else if(DayOfWeek[4]=true){
+            }
+            if(DayOfWeek[4]=true){
                 select+=8;
-            }else if(DayOfWeek[5]=true){
+            }
+            if(DayOfWeek[5]=true){
                 select+=16;
-            }else if(DayOfWeek[6]=true){
+            }
+            if(DayOfWeek[6]=true){
                 select+=32;
-            }else if(DayOfWeek[0]=true){
+            }
+            if(DayOfWeek[0]=true){
                 select+=64;
             }
             task.setSelected(select);
@@ -673,6 +703,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         }else if(result == ERROR_RESPONSE){
             myUtils.myToastHelper.showText(getContext(),"系统异常 请重试",Toast.LENGTH_LONG);
         }
+        FragTaskList.refreshTaskList();
     }
 
     private void deleteTask() {
@@ -689,6 +720,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         }else if(result == ERROR_RESPONSE){
             myUtils.myToastHelper.showText(getContext(),"系统异常 请重试",Toast.LENGTH_LONG);
         }
+        FragTaskList.refreshTaskList();
     }
 
     private void cancelTask() {
@@ -705,5 +737,6 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         }else if(result == ERROR_RESPONSE){
             myUtils.myToastHelper.showText(getContext(),"系统异常 请重试",Toast.LENGTH_LONG);
         }
+        FragTaskList.refreshTaskList();
     }
 }
