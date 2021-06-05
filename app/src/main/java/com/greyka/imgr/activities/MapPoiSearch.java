@@ -42,7 +42,7 @@ import overlay.PoiOverlay;
 
 public class MapPoiSearch extends AppCompatActivity
         implements View.OnClickListener, Inputtips.InputtipsListener, PoiSearch.OnPoiSearchListener,
-        TextWatcher, AMap.OnMarkerClickListener, AMap.InfoWindowAdapter,AMap.OnMapClickListener{
+        TextWatcher, AMap.OnMarkerClickListener, AMap.InfoWindowAdapter, AMap.OnMapClickListener {
 
     private String keyWord = "";
     private MapView mapView;
@@ -122,9 +122,10 @@ public class MapPoiSearch extends AppCompatActivity
             throw new IllegalStateException("Error!");
         }
     }
+
     @Override
     public void onMapClick(LatLng latLng) {
-        if(markerNow != null){
+        if (markerNow != null) {
             markerNow.hideInfoWindow();
             markerNow = null;
         }
@@ -256,7 +257,7 @@ public class MapPoiSearch extends AppCompatActivity
         @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.poikeywordsearch_uri, null);
         TextView title = view.findViewById(R.id.title);
         String Title = marker.getTitle();
-        if(Title == null){
+        if (Title == null) {
             Title = "当前位置无信息";
         }
         title.setText(Title);

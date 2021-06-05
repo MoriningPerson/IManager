@@ -25,6 +25,7 @@ import com.greyka.imgr.dialogs.TaskListSelector;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,9 +40,8 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
 
 
     private static List<Data.Plan> planList = new ArrayList<>();
-
-    private RecyclerView rv_selector_branch;
     private static PlanDialogMemberAdapter mSelectorBranchAdapter;
+    private RecyclerView rv_selector_branch;
     //private static int mPosition;
     private View view;
     private TaskListSelector taskListSelector;
