@@ -35,10 +35,12 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
         this.list = list;
         this.mcontext = mcontext;
     }
-    public void setData(List<Task> list){
+
+    public void setData(List<Task> list) {
         this.list = list;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -79,12 +81,7 @@ public class TaskDialogMemberAdapter extends RecyclerView.Adapter<TaskDialogMemb
             holder.description.setTextColor(mcontext.getColor(R.color.grey));
         }
 
-        holder.item_selected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnItemClickListener.onItemClick(mPosition);
-            }
-        });
+        holder.item_selected.setOnClickListener(v -> mOnItemClickListener.onItemClick(mPosition));
 
     }
 

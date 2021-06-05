@@ -48,11 +48,13 @@ public class PlanDialogMemberAdapter extends RecyclerView.Adapter<PlanDialogMemb
         this.list = list;
         this.mContext = mContext;
     }
-    public void setData(List<Data.Plan> list){
+
+    public void setData(List<Data.Plan> list) {
         this.list = list;
         this.list.add(null);
         notifyDataSetChanged();
     }
+
     @Override
     public int getItemViewType(int position) {
 

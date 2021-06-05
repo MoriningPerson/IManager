@@ -19,9 +19,6 @@ import com.greyka.imgr.R;
 import com.greyka.imgr.activities.LoginActivity;
 import com.greyka.imgr.utilities.myUtils;
 
-import java.util.Map;
-import java.util.Set;
-
 import static com.greyka.imgr.utilities.Constants.POSITIVE_RESPONSE;
 import static com.greyka.imgr.utilities.GetData.attemptLogout;
 
@@ -43,13 +40,15 @@ public class FragMine extends Fragment {
         initViews();
 
     }
-    private void bindViews(View view){
+
+    private void bindViews(View view) {
         username = view.findViewById(R.id.username);
         logout = view.findViewById(R.id.ic_logout);
     }
-    private void initViews(){
+
+    private void initViews() {
         sp = this.getActivity().getSharedPreferences("UserPassword", Context.MODE_PRIVATE);
-        String userName = sp.getString("username","获取用户名失败");
+        String userName = sp.getString("username", "获取用户名失败");
         username.setText(userName);
         logout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -59,18 +58,19 @@ public class FragMine extends Fragment {
             }
         });
     }
-    private void userLogout(){
+
+    private void userLogout() {
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("username");
         editor.remove("password");
         editor.commit();
         int result = attemptLogout(getContext());
-        if(result == POSITIVE_RESPONSE) {
+        if (result == POSITIVE_RESPONSE) {
             myUtils.myToastHelper.showText(getContext(), "成功登出", Toast.LENGTH_SHORT);
             Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
             getActivity().finish();
-        }else{
+        } else {
             myUtils.myToastHelper.showText(getContext(), "登出出错 请重试", Toast.LENGTH_SHORT);
         }
     }
