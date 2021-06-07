@@ -17,6 +17,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.greyka.imgr.R;
+import com.greyka.imgr.utilities.myUtils;
 
 public class MapDisplayActivity extends AppCompatActivity implements AMap.OnMarkerClickListener, AMap.InfoWindowAdapter {
     private MapView mMapView = null;
@@ -48,6 +49,7 @@ public class MapDisplayActivity extends AppCompatActivity implements AMap.OnMark
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(name);
         Marker marker = aMap.addMarker(markerOptions);
+        myUtils.myWindowManager.setWindow(this);
     }
 
     @Override

@@ -34,7 +34,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/autoCompleteTextViewTheme"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activities.MapDisplayActivity" />
+        <activity android:name=".activities.MapDisplayActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"
@@ -48,7 +49,7 @@
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="92c3a4a8cddd18d0c03dfe29a1e132fd" />
+            android:value="e99be680f1c00a2be79e43cb9d276dcb" />
 
         <activity
             android:name=".activities.launcher"

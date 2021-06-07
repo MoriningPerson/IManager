@@ -98,6 +98,13 @@ public class FragHome extends Fragment {
     private void showSelectorDialog(int completed) {
         taskListSelector = new TaskListSelector(getActivity(), getFragmentManager(), taskCompleted[completed]);
         //taskListSelector.setCancelable(true);
+        taskListSelector.setCallback(new TaskListSelector.Callback() {
+            @Override
+            public List<Task> callback() {
+                refreshHomeData();
+                return taskCompleted[0];
+            }
+        });
         taskListSelector.show();
     }
 
@@ -150,13 +157,19 @@ public class FragHome extends Fragment {
         add_task.setOnClickListener(v -> {
             Log.d("MainActivity", "clickAdd");
             BaseFullBottomSheetFragment bfbsf = new BaseFullBottomSheetFragment();
+            bfbsf.setCallback(new BaseFullBottomSheetFragment.Callback() {
+                @Override
+                public void callback() {
+                    refreshHomeData();
+                }
+            });
             bfbsf.show(getFragmentManager(), "dialog");
 //            Intent intent = new Intent(getContext(), MapPoiSearch.class);
 //            activityResultLauncher.launch(intent);
         });
     }
 
-    void refreshHomeData() {
+    public void refreshHomeData() {
         refreshTaskList();
         int tc0 = taskCompleted[0].size();
         int tc1 = taskCompleted[1].size();

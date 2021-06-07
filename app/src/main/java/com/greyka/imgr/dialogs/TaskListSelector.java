@@ -33,11 +33,22 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
 
     private FragmentManager fm;
 
+    public interface Callback{
+        List<Task> callback();
+    }
+    Callback callback;
+    public void setCallback(Callback callback){
+        this.callback = callback;
+    }
     public TaskListSelector(Context context, FragmentManager fm, List<Task> mSimpleListItemEntity) {
         super(context);
         this.fm = fm;
         this.context = context;
         this.taskList = mSimpleListItemEntity;
+    }
+    public void setData(List<Task> list){
+        this.taskList = list;
+        mSelectorBranchAdapter.setData(this.taskList);
     }
 
     @Override
@@ -77,6 +88,13 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         taskItemDialog.setOnce(true);
         Log.d("here", "a");
         taskItemDialog.setValues(taskList.get(position));
+        taskItemDialog.setCallback(new BaseFullBottomSheetFragment.Callback() {
+            @Override
+            public void callback() {
+                taskList =  callback.callback();
+                mSelectorBranchAdapter.setData(taskList);
+            }
+        });
         taskItemDialog.show(fm, "aa");
     }
 
