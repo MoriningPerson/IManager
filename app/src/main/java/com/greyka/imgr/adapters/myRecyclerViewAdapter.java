@@ -23,7 +23,7 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
         ArrayList<String> time = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             title.add(list.get(i).getTask_name());
-            time.add(list.get(i).getStart_time() + " ~ " + list.get(i).getEnd_time());
+            time.add(list.get(i).getStart_time().substring(0,5) + " ~ " + list.get(i).getEnd_time().substring(0,5));
         }
         this.taskTitleList = title.toArray(new String[title.size()]);
         this.taskTimeList = time.toArray(new String[time.size()]);
