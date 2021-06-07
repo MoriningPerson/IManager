@@ -134,15 +134,16 @@ public class PlanDialogMemberAdapter extends RecyclerView.Adapter<PlanDialogMemb
 //        Task task5 = new Task(5, "健步走", "体育不能挂科", "2021/5/23", "2021/5/23 20:00:00", 30, 7, 2, "2021/6/6",
 //                "共青场", 0, 0, 1, 1, 0, 2, "20:00:00", "20:30:00", 0, 0, 0, 0, 0, 0, 0, 0);
 //        return Arrays.asList(task1, task2, task4, task5, task1, task2, task4, task5);
-        List<Data.Task> taskList;
+        List<Data.Task> taskList = new ArrayList<>();
         Log.d("adas", "1");
-        taskList = GetData.attemptGetUserAllUnCompletedTask(mContext);
+        List<Data.Task> newTaskList = GetData.attemptGetUserAllUnCompletedTask(mContext);
         Log.d("adas", "2");
-        if (taskList == null) {
+        if (newTaskList == null) {
             Log.d("adas", "3");
-            myUtils.myToastHelper.showText(mContext, "系统异常 请重试", Toast.LENGTH_LONG);
+            myUtils.myToastHelper.showText(mContext, "连接异常 请检查网络", Toast.LENGTH_LONG);
             return null;
         }
+        taskList = newTaskList;
         return taskList;
     }
 

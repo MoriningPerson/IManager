@@ -59,9 +59,9 @@ public class LoginActivity extends AppCompatActivity {
         bindViews();
         initViews();
         SharedPreferences sp = getApplicationContext().getSharedPreferences("UserPassword", Context.MODE_PRIVATE);
-        String username = sp.getString("username", null);
+        username = sp.getString("username", null);
+        password = sp.getString("password",null);
         SharedPreferences share = getApplicationContext().getSharedPreferences("Session", MODE_PRIVATE);
-        //String password = sp.getString("password",null);
         if (username == null) {
         } else {
             Log.d("MainActivity", "clickLogin");
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 startMainActivity();
             } else {
                 if (result == NEGATIVE_RESPONSE) {
-                    myUtils.myToastHelper.showText(getApplicationContext(), "登录失效 请重新登录", Toast.LENGTH_LONG);
+                    submitLogin();
                 } else if (result == NETWORK_UNAVAILABLE) {
                     myUtils.myToastHelper.showText(getApplicationContext(), "连接异常 请检查网络", Toast.LENGTH_LONG);
                 }
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.apply();
             }
         }
-        myUtils.SoftHideKeyBoardUtil.assistActivity(this);
+        myUtils.SoftHideKeyBoardUtil.assistActivity(this,1.2);
     }
 
     private void bindViews() {
@@ -195,6 +195,7 @@ public class LoginActivity extends AppCompatActivity {
             SharedPreferences sp = getApplicationContext().getSharedPreferences("UserPassword", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("username", username);
+            editor.putString("password",password);
             editor.apply();
             myUtils.myToastHelper.showText(getApplicationContext(), "欢迎登录", Toast.LENGTH_LONG);
             startMainActivity();

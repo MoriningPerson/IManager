@@ -24,7 +24,10 @@ public class MainActivity extends AppCompatActivity implements myPermissionDialo
                     myUtils.myToastHelper.showText(this, "获取位置权限失败", Toast.LENGTH_SHORT);
                 }
             });
-
+    static MainActivity mainActivity;
+    public static MainActivity getInstance(){
+        return mainActivity;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements myPermissionDialo
         new myUtils.myWindowManager().setWindow(this);
         new myUtils.myPermissionManager(this).getPermissionDialog();
         new myUtils.myNavigationManagerForMainActivity().runNavigation(this);
+        mainActivity = this;
     }
 
     @Override

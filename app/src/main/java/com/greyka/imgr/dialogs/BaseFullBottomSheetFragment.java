@@ -729,7 +729,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     private void cancelTask() {
         myUtils.myToastHelper.showText(getContext(), "aaabbb", Toast.LENGTH_SHORT);
         myUtils.myToastHelper.showText(getContext(), "取消任务中", Toast.LENGTH_SHORT);
-        int result = GetData.attemptCancelTask(getContext(), taskId);
+        int result = GetData.attemptSetTaskFailed(getContext(), taskId);
         if (result == POSITIVE_RESPONSE) {
             myUtils.myToastHelper.showText(getContext(), "取消成功", Toast.LENGTH_LONG);
         } else if (result == NETWORK_UNAVAILABLE) {
@@ -742,7 +742,9 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
             myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
         }
         FragTaskList.refreshTaskList();
-        callback.callback();
+        if(callback != null) {
+            callback.callback();
+        }
     }
 
     public interface Callback {

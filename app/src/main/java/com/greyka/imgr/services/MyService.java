@@ -16,10 +16,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import com.greyka.imgr.R;
+import com.greyka.imgr.activities.MainActivity;
+import com.greyka.imgr.data.Data;
 import com.greyka.imgr.utilities.myUtils;
 
 public class MyService extends Service {
@@ -79,7 +82,8 @@ public class MyService extends Service {
             @Override
             public void onTickEvent() {
                 if (lockEnabled) {
-                    if (myUtils.myForegroundActivityManager.isForeground(timerActivity)) {
+                    if (myUtils.myForegroundActivityManager.isForeground(timerActivity)
+                        || myUtils.myForegroundActivityManager.isForeground(MainActivity.getInstance())) {
                         if (popWindowEnabled) {
                             dismissWindow();
                         }
@@ -97,6 +101,8 @@ public class MyService extends Service {
             @Override
             public void onFinishEvent() {
                 timerFinish();
+                showTimer();
+                myUtils.myToastHelper.showText(getApplicationContext(),"计时结束", Toast.LENGTH_LONG);
             }
 
             @Override
@@ -176,7 +182,8 @@ public class MyService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void popWindow() {
-        if (!myUtils.myForegroundActivityManager.isForeground(timerActivity)) {
+        if (!myUtils.myForegroundActivityManager.isForeground(timerActivity) &&
+            !myUtils.myForegroundActivityManager.isForeground(MainActivity.getInstance())) {
             if (Settings.canDrawOverlays(timerActivity)) {
                 // 获取WindowManager服务
                 if (windowManager == null) {
@@ -200,13 +207,15 @@ public class MyService extends Service {
                 // 将悬浮窗控件添加到WindowManager
                 windowManager.addView(screenLocker, layoutParams);
             }
+            popWindowEnabled = true;
         }
-        popWindowEnabled = true;
     }
 
     public void dismissWindow() {
-        windowManager.removeView(screenLocker);
-        popWindowEnabled = false;
+        if(popWindowEnabled) {
+            windowManager.removeView(screenLocker);
+            popWindowEnabled = false;
+        }
     }
 
     public boolean getPopWindowEnabled() {

@@ -76,8 +76,9 @@ public class myUtils {
         private int contentHeight;//获取setContentView本来view的高度
         private boolean isfirst = true;//只用获取一次
         private int statusBarHeight;//状态栏高度
+        private double bias_percent;
 
-        private SoftHideKeyBoardUtil(Activity activity) {
+        private SoftHideKeyBoardUtil(Activity activity,double bias) {
             //1､找到Activity的最外层布局控件，它其实是一个DecorView,它所用的控件就是FrameLayout
             FrameLayout content = activity.findViewById(android.R.id.content);
             //2､获取到setContentView放进去的View
@@ -94,10 +95,11 @@ public class myUtils {
             });
             //6､获取到Activity的xml布局的放置参数
             frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
+            bias_percent = bias;
         }
 
-        public static void assistActivity(Activity activity) {
-            new SoftHideKeyBoardUtil(activity);
+        public static void assistActivity(Activity activity, double bias) {
+            new SoftHideKeyBoardUtil(activity,bias);
         }
 
         // 获取界面可用高度，如果软键盘弹起后，Activity的xml布局可用高度需要减去键盘高度
@@ -115,8 +117,10 @@ public class myUtils {
                     // 6､键盘弹出了，Activity的xml布局高度应当减去键盘高度
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         frameLayoutParams.height = usableHeightSansKeyboard - heightDifference + statusBarHeight;
+                        frameLayoutParams.height *= bias_percent;
                     } else {
                         frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
+                        frameLayoutParams.height *= bias_percent;
                     }
                 } else {
                     frameLayoutParams.height = contentHeight;
@@ -650,15 +654,14 @@ public class myUtils {
     }
 
     public static class myForegroundActivityManager {
-        public static boolean isForeground(Activity activity) {
-            return isForeground(activity, activity.getClass().getName());
-        }
-
         /**
          * 判断某个界面是否在前台,返回true，为显示,否则不是
          */
-        public static boolean isForeground(Activity context, String className) {
-            if (context == null || TextUtils.isEmpty(className))
+        public static boolean isForeground(Activity context) {
+            if (context == null)
+                return false;
+            String className = context.getClass().getName();
+            if(TextUtils.isEmpty(className))
                 return false;
             ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
             List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);

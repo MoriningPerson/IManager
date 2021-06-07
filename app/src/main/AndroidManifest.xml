@@ -31,13 +31,16 @@
         <activity android:name=".activities.NotificationActivity"></activity>
         <activity
             android:name=".activities.MapPoiSearch"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/autoCompleteTextViewTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activities.MapDisplayActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.LoginActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/LoginActivityTheme"
             android:windowSoftInputMode="adjustResize" />
@@ -53,6 +56,7 @@
 
         <activity
             android:name=".activities.launcher"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/SplashActivityTheme">
             <intent-filter>
@@ -63,12 +67,14 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Timer" />
+        <activity android:name=".activities.Timer"
+            android:launchMode="singleTask"/>
 
         <service android:name="com.amap.api.location.APSService" />
     </application>

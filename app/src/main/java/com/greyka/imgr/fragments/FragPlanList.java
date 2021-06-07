@@ -54,11 +54,12 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
     }
 
     public static void refreshPlanList() {
-        planList = attemptQueryPlans(context);
-        if (planList == null) {
-            myUtils.myToastHelper.showText(context, "系统异常 请重试", Toast.LENGTH_LONG);
+        List<Data.Plan> newPlan = attemptQueryPlans(context);
+        if (newPlan == null) {
+            myUtils.myToastHelper.showText(context, "连接异常 请检查网络", Toast.LENGTH_LONG);
             return;
         }
+        planList = newPlan;
         myComparator_plan cmp = new myComparator_plan();
         Collections.sort(planList, cmp);
         Log.d("ref", "plan");
@@ -112,8 +113,8 @@ public class FragPlanList extends Fragment implements PlanDialogMemberAdapter.On
         List<Task> taskList;
         taskList = GetData.attemptGetTasksInPlan(context, plan_id);
         if (taskList == null) {
-            myUtils.myToastHelper.showText(context, "系统异常 请重试", Toast.LENGTH_LONG);
-            return null;
+            myUtils.myToastHelper.showText(context, "连接异常 请检查网络", Toast.LENGTH_LONG);
+            return new ArrayList<>();
         }
         return taskList;
     }

@@ -182,7 +182,8 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
 
     @Override
     protected void onDestroy() {
-        if (myService.getLocked() && !myService.getPopWindowEnabled() && myService.getCDTisRunning()) {
+        if (myService.getLocked() && !myService.getPopWindowEnabled() && myService.getCDTisRunning()
+            && !myUtils.myForegroundActivityManager.isForeground(MainActivity.getInstance())) {
             myService.popWindow();
         }
         if (myService != null && !myService.cdtHasInstance()) {
@@ -194,7 +195,8 @@ public class Timer extends AppCompatActivity implements myTimerCancelFragment.No
 
     @Override
     protected void onPause() {
-        if (myService.getLocked() && !myService.getPopWindowEnabled() && myService.getCDTisRunning()) {
+        if (myService.getLocked() && !myService.getPopWindowEnabled() && myService.getCDTisRunning()
+        && !myUtils.myForegroundActivityManager.isForeground(MainActivity.getInstance())) {
             myService.popWindow();
         }
         super.onPause();
