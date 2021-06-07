@@ -33,12 +33,11 @@ import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.greyka.imgr.R;
 import com.greyka.imgr.dialogs.LocationInfoPickerDialog;
+import com.greyka.imgr.overlay.PoiOverlay;
 import com.greyka.imgr.utilities.myUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import overlay.PoiOverlay;
 
 public class MapPoiSearch extends AppCompatActivity
         implements View.OnClickListener, Inputtips.InputtipsListener, PoiSearch.OnPoiSearchListener,

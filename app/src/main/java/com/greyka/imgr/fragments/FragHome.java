@@ -29,7 +29,6 @@ import com.greyka.imgr.dialogs.TodayTaskDialog;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -98,12 +97,9 @@ public class FragHome extends Fragment {
     private void showSelectorDialog(int completed) {
         taskListSelector = new TaskListSelector(getActivity(), getFragmentManager(), taskCompleted[completed]);
         //taskListSelector.setCancelable(true);
-        taskListSelector.setCallback(new TaskListSelector.Callback() {
-            @Override
-            public List<Task> callback() {
-                refreshHomeData();
-                return taskCompleted[0];
-            }
+        taskListSelector.setCallback(() -> {
+            refreshHomeData();
+            return taskCompleted[0];
         });
         taskListSelector.show();
     }
@@ -157,12 +153,7 @@ public class FragHome extends Fragment {
         add_task.setOnClickListener(v -> {
             Log.d("MainActivity", "clickAdd");
             BaseFullBottomSheetFragment bfbsf = new BaseFullBottomSheetFragment();
-            bfbsf.setCallback(new BaseFullBottomSheetFragment.Callback() {
-                @Override
-                public void callback() {
-                    refreshHomeData();
-                }
-            });
+            bfbsf.setCallback(this::refreshHomeData);
             bfbsf.show(getFragmentManager(), "dialog");
 //            Intent intent = new Intent(getContext(), MapPoiSearch.class);
 //            activityResultLauncher.launch(intent);
@@ -197,7 +188,7 @@ public class FragHome extends Fragment {
     private void refreshTaskList(int completed) {
         //taskCompleted[completed] = Arrays.asList(task1, task2, task4, task5, task1, task2, task4, task5);
         if (completed == 0) {
-            List<Task> taskList = new ArrayList<>();
+            List<Task> taskList;
             taskList = GetData.attemptGetTodayUncompletedTask(getContext());
             if (taskList == null) {
                 myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
@@ -205,7 +196,7 @@ public class FragHome extends Fragment {
             }
             taskCompleted[completed] = taskList;
         } else if (completed == 1) {
-            List<Task> taskList = new ArrayList<>();
+            List<Task> taskList;
             taskList = GetData.attemptGetTodayCompletedTask(getContext());
             if (taskList == null) {
                 myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
@@ -220,7 +211,7 @@ public class FragHome extends Fragment {
     private void refreshNextTask() {
         //先查找有没有正在进行的任务
         setHasOnGoingTask(3);
-        List<Task> taskList1 = new ArrayList<>();
+        List<Task> taskList1;
         taskList1 = GetData.attemptGetTaskNow(getContext());
         if (taskList1 == null) {
             myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
@@ -231,7 +222,7 @@ public class FragHome extends Fragment {
             setHasOnGoingTask(1);
             return;
         } else if (taskList1.size() == 0) {
-            List<Task> taskList2 = new ArrayList<>();
+            List<Task> taskList2;
             taskList2 = GetData.attemptGetTaskToDo(getContext());
             if (taskList2 == null) {
                 myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
