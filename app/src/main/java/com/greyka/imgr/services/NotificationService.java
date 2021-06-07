@@ -7,7 +7,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -24,8 +23,6 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        createNotificationChannel();
-        createInform();
     }
 
     public void createInform() {
@@ -43,7 +40,6 @@ public class NotificationService extends Service {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(notificationId, builder.build());
-        Toast.makeText(this, "finished", Toast.LENGTH_SHORT).show();
     }
 
     private void createNotificationChannel() {
@@ -66,18 +62,18 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         contentTitle = intent.getStringExtra("contentTitle");
         contentText = intent.getStringExtra("contentText");
+        createNotificationChannel();
+        createInform();
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO Auto-generated method stub
         return null;
     }
 }
