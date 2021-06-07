@@ -1,4 +1,4 @@
-package overlay;
+package com.greyka.imgr.overlay;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
