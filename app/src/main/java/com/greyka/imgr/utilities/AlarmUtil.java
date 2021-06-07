@@ -53,7 +53,9 @@ public class AlarmUtil {
             alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
         }
     }
+    public static void setAlarm(Data.Task task){
 
+    }
     private static List<Data.Task> getTodayTaskList() {
         return null;
     }
