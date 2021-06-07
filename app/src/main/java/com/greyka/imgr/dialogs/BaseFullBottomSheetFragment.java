@@ -40,7 +40,6 @@ import com.greyka.imgr.activities.MapDisplayActivity;
 import com.greyka.imgr.activities.MapPoiSearch;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
-import com.greyka.imgr.fragments.FragHome;
 import com.greyka.imgr.fragments.FragTaskList;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
@@ -117,14 +116,12 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     private String locationNickname = "未添加位置信息";
     private double Latitude;
     private double Longitude;
-
-    public interface Callback{
-        void callback();
-    }
     private Callback callback;
-    public void setCallback(Callback callback){
+
+    public void setCallback(Callback callback) {
         this.callback = callback;
     }
+
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
@@ -225,8 +222,8 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
                     Intent intent = new Intent(getContext(), MapDisplayActivity.class);
                     intent.putExtra("latitude", Latitude);
                     intent.putExtra("longitude", Longitude);
-                    intent.putExtra("name","自定义任务地点");
-                    intent.putExtra("nickname",locationNickname);
+                    intent.putExtra("name", "自定义任务地点");
+                    intent.putExtra("nickname", locationNickname);
                     startActivity(intent);
                 }
             });
@@ -314,7 +311,6 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
             clickButton(rl_today, tv_today);
         }
     }
-
 
     @Override
     public void onStart() {
@@ -482,7 +478,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
                 @Override
                 public void afterTextChanged(Editable s) {
                     Title = s.toString();
-                    if(Title == null || Title == ""){
+                    if (Title == null || Title == "") {
                         Title = "无标题";
                     }
                 }
@@ -501,7 +497,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
                 @Override
                 public void afterTextChanged(Editable s) {
                     Description = s.toString();
-                    if(Description == null || Description == ""){
+                    if (Description == null || Description == "") {
                         Description = "无任务描述";
                     }
                 }
@@ -731,7 +727,7 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void cancelTask() {
-        myUtils.myToastHelper.showText(getContext(),"aaabbb",Toast.LENGTH_SHORT);
+        myUtils.myToastHelper.showText(getContext(), "aaabbb", Toast.LENGTH_SHORT);
         myUtils.myToastHelper.showText(getContext(), "取消任务中", Toast.LENGTH_SHORT);
         int result = GetData.attemptCancelTask(getContext(), taskId);
         if (result == POSITIVE_RESPONSE) {
@@ -747,5 +743,9 @@ public class BaseFullBottomSheetFragment extends BottomSheetDialogFragment {
         }
         FragTaskList.refreshTaskList();
         callback.callback();
+    }
+
+    public interface Callback {
+        void callback();
     }
 }

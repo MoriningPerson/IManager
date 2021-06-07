@@ -22,6 +22,7 @@ import java.util.List;
 public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.OnItemClickListener, ViewUpdator {
     private static int mPosition;
     Data data = new Data();
+    Callback callback;
     private List<Task> taskList;    //选择列表的数据
     private Task task = new Task();
     private Context context;
@@ -30,23 +31,20 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
     //private TodayTaskDialog todayTaskDialog;
     //private TaskItemDialog taskItemDialog;
     private ImageView editTitle;
-
     private FragmentManager fm;
 
-    public interface Callback{
-        List<Task> callback();
-    }
-    Callback callback;
-    public void setCallback(Callback callback){
-        this.callback = callback;
-    }
     public TaskListSelector(Context context, FragmentManager fm, List<Task> mSimpleListItemEntity) {
         super(context);
         this.fm = fm;
         this.context = context;
         this.taskList = mSimpleListItemEntity;
     }
-    public void setData(List<Task> list){
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    public void setData(List<Task> list) {
         this.taskList = list;
         mSelectorBranchAdapter.setData(this.taskList);
     }
@@ -69,7 +67,6 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         rv_selector_branch.setAdapter(mSelectorBranchAdapter);
     }
 
-
     /**
      * adpter里面的checkbox监听接口
      *
@@ -91,7 +88,7 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         taskItemDialog.setCallback(new BaseFullBottomSheetFragment.Callback() {
             @Override
             public void callback() {
-                taskList =  callback.callback();
+                taskList = callback.callback();
                 mSelectorBranchAdapter.setData(taskList);
             }
         });
@@ -104,5 +101,9 @@ public class TaskListSelector extends Dialog implements TaskDialogMemberAdapter.
         mSelectorBranchAdapter.UpdateItem(mPosition, task_edited);
         this.InitViews();
         // this.show();
+    }
+
+    public interface Callback {
+        List<Task> callback();
     }
 }

@@ -12,6 +12,8 @@
     <string name="string_complete">已完成</string>
     <string name="string_motto">每日一句</string>
     <string name="string_situation">今日任务完成情况</string>
+    <string name="channel_name">com.greyka.imgr.channel.name</string>
+    <string name="channel_description">com.greyka.imgr.channel.description</string>
     <!--    一些固定不变的资源  就是值  放在String这个资源下-->
     <drawable name="clr_normal">#ff6501</drawable>
     <drawable name="clr_pressed">#a44100</drawable>
