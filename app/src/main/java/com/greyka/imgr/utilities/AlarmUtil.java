@@ -18,11 +18,13 @@ import java.util.Objects;
 public class AlarmUtil {
     public static void alarmUtil(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("lastDay", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences1 = context.getSharedPreferences("task_id", Context.MODE_PRIVATE);
         String date = sharedPreferences.getString("date", "");
         java.sql.Date dateNow = new java.sql.Date(System.currentTimeMillis());
         AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (!Objects.equals(date, dateNow.toString())) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
+            SharedPreferences.Editor editor1 = sharedPreferences1.edit();
             editor.putString("date", dateNow.toString());
             editor.apply();
             PendingIntent alarmIntent;
@@ -39,10 +41,14 @@ public class AlarmUtil {
                     intent.putExtra("text", i.getTask_description());
                     alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
                     alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+                    calendar.add(Calendar.MINUTE, -10);
+                    alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+                    editor1.putBoolean(i.getTask_name(), true);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
+            editor1.apply();
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, 1);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
