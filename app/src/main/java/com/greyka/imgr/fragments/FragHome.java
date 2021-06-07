@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.greyka.imgr.R;
@@ -24,8 +25,10 @@ import com.greyka.imgr.classes.mottoManager;
 import com.greyka.imgr.data.Data;
 import com.greyka.imgr.data.Data.Task;
 import com.greyka.imgr.dialogs.BaseFullBottomSheetFragment;
+import com.greyka.imgr.dialogs.SignUpDialog;
 import com.greyka.imgr.dialogs.TaskListSelector;
 import com.greyka.imgr.dialogs.TodayTaskDialog;
+import com.greyka.imgr.utilities.Constants;
 import com.greyka.imgr.utilities.GetData;
 import com.greyka.imgr.utilities.myUtils;
 
@@ -55,9 +58,9 @@ public class FragHome extends Fragment {
 
 
     private CardView timer;
-    private CardView button2;
+//    private CardView button2;
     private ImageButton refresh;
-    private TodayTaskDialog todayTaskDialog;
+//    private TodayTaskDialog todayTaskDialog;
     private TaskListSelector taskListSelector;
     private CardView add_task;
     private TextView home_string_next;
@@ -68,9 +71,9 @@ public class FragHome extends Fragment {
     private TextView total_complete_percent;
     private TextView motto;
     private TextView home_notice_board_title;
-    private TextView tx_next_task;
-    private TextView nextTaskTitle;
-    private TextView nextTaskInfo;
+//    private TextView tx_next_task;
+//    private TextView nextTaskTitle;
+//    private TextView nextTaskInfo;
 
     private ImageView logo;
 
@@ -78,6 +81,8 @@ public class FragHome extends Fragment {
     private ImageView todayTaskCompleted;
     private ImageView todayTaskUncompleted;
     private ImageView nextTask;
+
+    private int hasGoingTask = 3;
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
 
@@ -109,11 +114,19 @@ public class FragHome extends Fragment {
     }
 
     private void showNextTask() {
-        BaseFullBottomSheetFragment next = new BaseFullBottomSheetFragment();
-        next.setOnce(true);
-        next.setEditable(false);
-        next.setValues(NextTask);
-        next.show(getFragmentManager(), "nextTask");
+        if(NextTask != null) {
+            BaseFullBottomSheetFragment next = new BaseFullBottomSheetFragment();
+            next.setOnce(true);
+            next.setEditable(false);
+            next.setValues(NextTask);
+            next.setCallback(new BaseFullBottomSheetFragment.Callback() {
+                @Override
+                public void callback() {
+                    refreshHomeData();
+                }
+            });
+            next.show(getFragmentManager(), "nextTask");
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -147,6 +160,13 @@ public class FragHome extends Fragment {
 
     private void initViews() {
         nextTask.setOnClickListener(v -> showNextTask());
+        nextTask.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                trySignUp();
+                return true;
+            }
+        });
         refresh.setOnClickListener(v -> refreshHomeData());
         timer.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), Timer.class);
@@ -197,18 +217,16 @@ public class FragHome extends Fragment {
     private void refreshTaskList(int completed) {
         //taskCompleted[completed] = Arrays.asList(task1, task2, task4, task5, task1, task2, task4, task5);
         if (completed == 0) {
-            List<Task> taskList = new ArrayList<>();
-            taskList = GetData.attemptGetTodayUncompletedTask(getContext());
+            List<Task> taskList = GetData.attemptGetTodayUncompletedTask(getContext());
             if (taskList == null) {
-                myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
+                myUtils.myToastHelper.showText(getContext(), "连接异常 请检查网络", Toast.LENGTH_LONG);
                 return;
             }
             taskCompleted[completed] = taskList;
         } else if (completed == 1) {
-            List<Task> taskList = new ArrayList<>();
-            taskList = GetData.attemptGetTodayCompletedTask(getContext());
+            List<Task> taskList = GetData.attemptGetTodayCompletedTask(getContext());
             if (taskList == null) {
-                myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
+                myUtils.myToastHelper.showText(getContext(), "连接异常 请检查网络", Toast.LENGTH_LONG);
                 return;
             }
             taskCompleted[completed] = taskList;
@@ -223,7 +241,7 @@ public class FragHome extends Fragment {
         List<Task> taskList1 = new ArrayList<>();
         taskList1 = GetData.attemptGetTaskNow(getContext());
         if (taskList1 == null) {
-            myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
+            myUtils.myToastHelper.showText(getContext(), "连接异常 请检查网络", Toast.LENGTH_LONG);
             return;
         }
         if (taskList1.size() > 0) {
@@ -231,25 +249,26 @@ public class FragHome extends Fragment {
             setHasOnGoingTask(1);
             return;
         } else if (taskList1.size() == 0) {
-            List<Task> taskList2 = new ArrayList<>();
-            taskList2 = GetData.attemptGetTaskToDo(getContext());
+            List<Task> taskList2 = GetData.attemptGetTaskToDo(getContext());
             if (taskList2 == null) {
-                myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
+                myUtils.myToastHelper.showText(getContext(), "连接异常 请检查网络", Toast.LENGTH_LONG);
                 return;
             }
             if (taskList2.size() > 0) {
                 NextTask = taskList2.get(0);
                 setHasOnGoingTask(2);
                 return;
-            } else NextTask = task1;//这要改，如果当天没有没完成的任务了咋办，这里要返回null吗
+            }else{
+                NextTask = null;
+            }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private void setHasOnGoingTask(int hasOnGoingTask) {
-
+        this.hasGoingTask = hasOnGoingTask;
         if (hasOnGoingTask == 1) {
-            nextTask.setRotation(90);
+            nextTask.setRotation(-90);
             home_string_next_tasktitle.setText(NextTask.getTask_name());//任务title
             home_string_next.setText("正在进行");
             task_time_location.setText(NextTask.getStart_time().substring(0, 5) + " ~ " + NextTask.getEnd_time().substring(0, 5) + "\n" + NextTask.getPlace_name());//任务开始时间&地点
@@ -263,6 +282,35 @@ public class FragHome extends Fragment {
             home_string_next.setText("没有任务");
             home_string_next_tasktitle.setText("------");//任务title
             task_time_location.setText("--:--" + " ~ " + "--:--" + "\n" + "------");//任务开始时间&地点
+        }
+    }
+    private void trySignUp(){
+        refreshNextTask();
+        if(hasGoingTask == 1) {
+            if(NextTask.getClock() == 1){
+                SignUpDialog dialog = new SignUpDialog();
+                dialog.setListener(new SignUpDialog.NoticeDialogListener() {
+                    @Override
+                    public void onDialogPositiveClick() {
+                        SignUp();
+                    }
+                });
+                dialog.show(getFragmentManager(),"signup");
+            }else{
+                myUtils.myToastHelper.showText(getContext(),"当前任务无需打卡",Toast.LENGTH_SHORT);
+            }
+        }
+    }
+    private void SignUp(){
+        myUtils.myToastHelper.showText(getContext(),"打卡中",Toast.LENGTH_LONG);
+        int result = GetData.attemptSetTaskSucceed(getContext(),NextTask.getTask_id());
+        if(result == Constants.POSITIVE_RESPONSE){
+            myUtils.myToastHelper.showText(getContext(),"打卡成功",Toast.LENGTH_LONG);
+            refreshHomeData();
+        }else if(result == Constants.NETWORK_UNAVAILABLE){
+            myUtils.myToastHelper.showText(getContext(),"连接异常 请检查网络",Toast.LENGTH_LONG);
+        }else{
+            myUtils.myToastHelper.showText(getContext(),"打卡失败 请重试",Toast.LENGTH_LONG);
         }
     }
 

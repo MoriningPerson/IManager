@@ -57,12 +57,12 @@ public class FragMine extends Fragment {
     }
 
     private void userLogout() {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove("username");
-        editor.remove("password");
-        editor.commit();
         int result = attemptLogout(getContext());
         if (result == POSITIVE_RESPONSE) {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.remove("username");
+            editor.remove("password");
+            editor.commit();
             myUtils.myToastHelper.showText(getContext(), "成功登出", Toast.LENGTH_SHORT);
             Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);

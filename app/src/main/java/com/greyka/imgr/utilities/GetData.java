@@ -464,11 +464,12 @@ public class GetData {
 
     public static int attemptSetTaskFailed(Context context, long task_id) {
         try {
-            String url = "http://1.117.107.95:8081/user/set/UnClockInTask/failed";
+            String url = "http://1.117.107.95:8081/user/set/UnClockInTask/Failed";
             RequestBody requestBody = new FormBody.Builder()
                     .add("task_id", String.valueOf(task_id))
                     .build();
             String response = RequestUtil.postRequestWithSession(context, url, requestBody);
+            Log.d("response",response);
             if (response == null) {
                 return NETWORK_UNAVAILABLE;
             } else if (response.equals("任务当前不是进行状态")) {

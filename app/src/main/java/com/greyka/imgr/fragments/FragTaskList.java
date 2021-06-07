@@ -59,11 +59,13 @@ public class FragTaskList extends Fragment implements TaskDialogMemberAdapter.On
 
     public static void refreshTaskList() {
         //taskList = Arrays.asList(task1, task2, task3, task4, task5, task1, task2, task3, task4, task5);//获取任务
-        taskList = GetData.attemptGetUserAllTask(context);
-        if (taskList == null) {
-            myUtils.myToastHelper.showText(context, "系统异常 请重试", Toast.LENGTH_LONG);
+
+        List<Task> newTaskList = GetData.attemptGetUserAllTask(context);
+        if (newTaskList == null) {
+            myUtils.myToastHelper.showText(context, "连接异常 请检查网络", Toast.LENGTH_LONG);
             return;
         }
+        taskList = newTaskList;
         myComparator_task cmp = new myComparator_task();
         Collections.sort(taskList, cmp);
         if (mSelectorBranchAdapter != null) {

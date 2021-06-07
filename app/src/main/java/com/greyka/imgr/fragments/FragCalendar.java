@@ -98,11 +98,12 @@ public class FragCalendar extends Fragment {
         //List<Data.Task> tasks=task.taskList; //获取今日任务列表
         //taskList = Arrays.asList(task1, task2, task3, task4, task5, task1, task2, task3, task4, task5);
         String date = year + "-" + month + "-" + day;
-        task = GetData.attemptGetSomedayAllTask(getContext(), date);
-        if (task == null) {
-            myUtils.myToastHelper.showText(getContext(), "系统异常 请重试", Toast.LENGTH_LONG);
+        List<Data.Task> newTask = GetData.attemptGetSomedayAllTask(getContext(), date);
+        if (newTask == null) {
+            myUtils.myToastHelper.showText(getContext(), "连接异常 请检查网络", Toast.LENGTH_LONG);
             return;
         }
+        task = newTask;
         myComparator_memo cmp = new myComparator_memo();
         Collections.sort(task, cmp);
         recyclerView.setAdapter(new myRecyclerViewAdapter(task));
